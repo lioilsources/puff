@@ -125,3 +125,10 @@ local high score per environment via shared_preferences. No accounts.
   few seconds because Forge2D reports each contact to both bodies and
   resting fragments re-trigger contacts. Now each pair is counted once and a
   hit needs 2 m/s relative speed; multiplier step 0.15, cap x4.
+- iPhone 12 mini (wireless, iOS 26.6): `flutter run --profile` compiled
+  (AOT + shaders, 194 s) and installed `com.ol1n.puff` 1.0.0, built with
+  `PUFF_DEMO` + `PUFF_DEBUG` so the fps overlay is on. Launch via Xcode
+  automation stalled (needs the "control Xcode" permission prompt) and
+  `devicectl` could not launch it because the phone was locked. Unlock the
+  phone and open Puff to watch the demo with the fps counter; no numbers
+  recorded yet.
