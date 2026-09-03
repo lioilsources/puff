@@ -18,8 +18,18 @@ class DemoDriver extends Component with HasGameReference<PuffGame> {
   final _drift = Vector2.zero();
   static const _pointer = 999;
 
+  double _menuDelay = 4.0;
+
   @override
   void update(double dt) {
+    if (game.phase == GamePhase.menu) {
+      // Leave the menu on screen for a moment (screenshots), then play.
+      _menuDelay -= dt;
+      if (_menuDelay <= 0) {
+        game.startGame();
+      }
+      return;
+    }
     if (!game.isPlaying) {
       _holding = false;
       _timer = 1.0;

@@ -40,7 +40,6 @@ class _PuffAppState extends State<PuffApp> {
       hapticsEnabled: s.haptics,
       soundEnabled: s.sound,
       debugOverlayEnabled: s.debugOverlay,
-      startInMenu: !PuffGame.demoMode,
       onRunFinished: (game, score) =>
           s.submitScore(game.environment.kind, score),
     );

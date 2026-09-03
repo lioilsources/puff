@@ -1,17 +1,29 @@
-# puff
+# Puff
 
-A new Flutter project.
+Minimalist neon physics toy: **hold** to charge a pressure cloud, **drag** it
+around, **release** to blast the geometry drifting toward the core.
 
-## Getting Started
+Flutter + Flame + Forge2D (Box2D v3), fragment shaders via `FragmentProgram`
+on Impeller.
 
-This project is a starting point for a Flutter application.
+## Run
 
-A few resources to get you started if this is your first Flutter project:
+```
+dart pub get --offline        # or plain `flutter pub get` if pub.dev is fast for you
+flutter run --no-pub -d <ios-device-or-simulator>
+flutter run --no-pub --dart-define=PUFF_DEMO=true   # scripted touches for screenshots
+flutter test --no-pub
+dart tool/gen_sfx.dart        # regenerate the synthesized SFX
+```
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+## Layout
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- `lib/game/sim/` pure Dart: energy curve, blast math, fracture rules,
+  scoring, environments, modifiers. No Flame imports, unit tested.
+- `lib/game/components/` Flame components: cloud, shapes, core, spawner, HUD.
+- `lib/game/physics/` detonator, fracture system, modifier system, force fields.
+- `lib/game/fx/` shaders, bloom post-process, particles, arcs, shake, audio, haptics.
+- `lib/app/` menus, settings, neon widgets.
+- `shaders/` GLSL fragment shaders. `lib/game/tuning.dart` holds every knob.
+
+See `DEVLOG.md` for per-phase notes and `Prompts/PUFF_PLAN.md` for the spec.
