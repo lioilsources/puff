@@ -19,8 +19,15 @@ class Hud extends PositionComponent with HasGameReference<PuffGame> {
   final _barBg = Paint()..style = PaintingStyle.fill;
   final _bar = Paint()..style = PaintingStyle.fill;
 
-  TextPaint _paint(Color color, double size, {FontWeight weight = FontWeight.w600}) =>
-      TextPaint(
+  final Map<int, TextPaint> _paintCache = {};
+
+  /// Text renderers are cached per (color, size) so palette switches work
+  /// without allocating a TextPaint every frame.
+  TextPaint _paint(Color color, double size, {FontWeight weight = FontWeight.w600}) {
+    final key = Object.hash(color.toARGB32(), size, weight);
+    return _paintCache.putIfAbsent(
+      key,
+      () => TextPaint(
         style: TextStyle(
           color: color,
           fontSize: size,
@@ -28,7 +35,9 @@ class Hud extends PositionComponent with HasGameReference<PuffGame> {
           fontFamily: 'monospace',
           letterSpacing: 1.5,
         ),
-      );
+      ),
+    );
+  }
 
   @override
   Future<void> onLoad() async {
