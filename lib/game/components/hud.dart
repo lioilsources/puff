@@ -79,7 +79,7 @@ class Hud extends PositionComponent with HasGameReference<PuffGame> {
     final s = game.score;
     _score.text = '${s.score}';
     _score.textRenderer = _paint(p.primary, 30);
-    _multiplier.text = s.combo > 0
+    _multiplier.text = s.combo > 0 && game.isPlaying
         ? 'x${s.multiplier.toStringAsFixed(2)}  combo ${s.combo}'
         : '';
     _multiplier.textRenderer = _paint(p.accent, 16);
@@ -87,8 +87,7 @@ class Hud extends PositionComponent with HasGameReference<PuffGame> {
         ? game.environment.name.toUpperCase()
         : '${game.environment.name.toUpperCase()}  escaped ${game.escapes}/${Tuning.maxEscapes}';
     _status.textRenderer = _paint(p.secondary, 13);
-    _center.text = game.isPlaying ? '' : 'GAME OVER\n\ntap to restart';
-    _center.textRenderer = _paint(p.glow, 22);
+    _center.text = '';
   }
 
   @override

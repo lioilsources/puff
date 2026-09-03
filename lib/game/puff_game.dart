@@ -75,6 +75,9 @@ class PuffGame extends Forge2DGame {
   /// Scripted input for screenshots: `--dart-define=PUFF_DEMO=true`.
   static const bool demoMode = bool.fromEnvironment('PUFF_DEMO');
 
+  /// Force the debug overlay on: `--dart-define=PUFF_DEBUG=true`.
+  static const bool debugForced = bool.fromEnvironment('PUFF_DEBUG');
+
   late final ShapeFactory shapeFactory = ShapeFactory(
     random,
     baseBreakThreshold: Tuning.breakThreshold,
@@ -178,7 +181,7 @@ class PuffGame extends Forge2DGame {
       add(DemoDriver(random));
     }
     _applyQuality();
-    showDebugOverlay(debugOverlayEnabled);
+    showDebugOverlay(debugOverlayEnabled || debugForced);
 
     phase = startInMenu ? GamePhase.menu : GamePhase.playing;
     _syncOverlays();

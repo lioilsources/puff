@@ -26,6 +26,17 @@ class DemoDriver extends Component with HasGameReference<PuffGame> {
       // Leave the menu on screen for a moment (screenshots), then play.
       _menuDelay -= dt;
       if (_menuDelay <= 0) {
+        _menuDelay = 3.0;
+        game.startGame();
+      }
+      return;
+    }
+    if (game.phase == GamePhase.gameOver) {
+      _holding = false;
+      _timer = 1.0;
+      _menuDelay -= dt;
+      if (_menuDelay <= 0) {
+        _menuDelay = 3.0;
         game.startGame();
       }
       return;

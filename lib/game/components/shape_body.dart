@@ -31,6 +31,12 @@ class ShapeBody extends BodyComponent<PuffGame>
   /// Fracture depth: 0 for spawned shapes, +1 per split.
   final int generation;
 
+  static int _nextId = 0;
+
+  /// Monotonic id, used to report each shape-shape contact exactly once
+  /// (Forge2D delivers the begin event to both sides).
+  final int id = _nextId++;
+
   final Vector2 _initialPosition;
   final Vector2 _initialVelocity;
   final double _initialAngle;
@@ -161,6 +167,8 @@ class ShapeBody extends BodyComponent<PuffGame>
       final relative = (body.linearVelocity - other.body.linearVelocity).length;
       if (relative > 0.8) {
         hitFlash = 1;
+      }
+      if (relative > Tuning.comboHitSpeed && id < other.id) {
         game.onShapeHit(this, other, relative);
       }
     }

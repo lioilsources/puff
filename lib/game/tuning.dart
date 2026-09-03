@@ -105,8 +105,11 @@ abstract final class Tuning {
 
   // ---- Score ---------------------------------------------------------------
   static const double pointsPerImpulse = 12;
-  static const double comboWindow = 1.2;
-  static const double comboStep = 0.25;
-  static const double maxMultiplier = 5;
+  static const double comboWindow = 1.0;
+  static const double comboStep = 0.15;
+  static const double maxMultiplier = 4;
+
+  /// Shape-shape contacts slower than this (m/s, relative) don't count.
+  static const double comboHitSpeed = 2.0;
   static const int fractureBonus = 25;
 }
