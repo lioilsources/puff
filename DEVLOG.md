@@ -111,3 +111,17 @@ local high score per environment via shared_preferences. No accounts.
 - On-device profiling on Pixel 6a / iPhone 12 class hardware. The wireless
   iPhone 12 mini was visible to `flutter devices` but not used for a
   profile run yet.
+
+## Verification log (2026-09-03)
+
+- iPhone 17 simulator (Impeller/Metal): menu, HUD pause button, game over
+  overlay with persisted "NEW BEST", star-field background, cloud shader
+  (soft body + rim), bloom on strokes, particle bursts, fractured square
+  shards with spark trails, all seen in screenshots driven by `PUFF_DEMO`.
+- 22 unit tests + 8 fracture/modifier tests pass (`flutter test --no-pub`).
+- Android: `flutter build apk --debug --no-pub` succeeds (compile check
+  only; no Android device/emulator run).
+- First tuning pass from watching the demo: combo was exploding to x5 in a
+  few seconds because Forge2D reports each contact to both bodies and
+  resting fragments re-trigger contacts. Now each pair is counted once and a
+  hit needs 2 m/s relative speed; multiplier step 0.15, cap x4.

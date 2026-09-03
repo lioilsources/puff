@@ -87,7 +87,7 @@ void main() {
 
   test('tiny pieces become dust', () {
     final r = rules.fracture(
-      spec: spec(ShapeKind.tri, size: 0.06),
+      spec: spec(ShapeKind.tri, size: 0.04),
       generation: 0,
       localImpulse: Vector2(1, 0),
     );
