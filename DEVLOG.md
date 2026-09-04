@@ -132,3 +132,49 @@ local high score per environment via shared_preferences. No accounts.
   `devicectl` could not launch it because the phone was locked. Unlock the
   phone and open Puff to watch the demo with the fps counter; no numbers
   recorded yet.
+
+## Release build on device (2026-09-03)
+
+- Local Flutter checkout had been hard-reset to 3.41.6 (Dart 3.11.4), below
+  the `^3.12.2` SDK constraint, so `pub get` and the Xcode build both failed
+  (the missing `FlutterGeneratedPluginSwiftPackage` was a symptom). Reset the
+  SDK back to `ad70ec4` = 3.44.4, the revision `.metadata` records.
+- `flutter build ios --release`: automatic signing with team P82HWPG7FN,
+  `Runner.app` 18.1 MB. No `PUFF_DEMO` / `PUFF_DEBUG` this time, so it is the
+  plain game with no fps overlay.
+- Installed `com.ol1n.puff` 1.0.0 (build 1) on the cabled iPhone 12 mini and
+  launched it with `xcrun devicectl device process launch` — the Xcode
+  automation stall from the profile run does not happen over the cable.
+- 33 unit tests pass on 3.44.4.
+
+## Store pipeline (2026-09-04)
+
+Wired up against the `Distribution` repo's template.
+
+- **Icon.** New pineapple/banana artwork. The source is 478x556 Display P3
+  with paper grain and a grey vignette baked into the bottom-right corner, so
+  `tool/gen_icon.py` converts it to sRGB, drops the vignette, collapses every
+  cream tone (background, the pineapple's outline and its lattice) to one flat
+  `#ECDCC8`, and centres it on a square. Flattening matters: padding a
+  textured background out to a square leaves a visible seam. Output is a
+  1024x1024 opaque master plus a 60% foreground for the Android adaptive
+  safe zone; `flutter_launcher_icons` fans them out.
+  - `flutter_launcher_icons` 0.14.4 also rewrites
+    `ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS` from `YES`
+    to `AppIcon` in `project.pbxproj` — a naive sed hitting the wrong key,
+    since `ASSETCATALOG_COMPILER_APPICON_NAME` was already correct. Reverted;
+    re-check after every icon regeneration.
+- **Android signing.** `android/app/build.gradle.kts` still had the Flutter
+  template signing release with the *debug* key, which Play rejects. Now it
+  reads `android/key.properties` when present (written by CI from the
+  Bitwarden-backed secrets) and falls back to debug for local dev.
+- **Workflows.** `align-project.sh` generated `ci.yml`, `release-ios.yml`,
+  `release-android.yml` (tag `v*` / manual), `ios/ExportOptions.plist`, and
+  set `ITSAppUsesNonExemptEncryption=false`. iOS Release signing is now
+  Manual with a `CI_PROFILE_NAME` placeholder that CI swaps for the real
+  profile UUID — so a *local* `flutter build ios --release` no longer works
+  until the App Store profile exists. Debug/Profile stay automatic, so
+  `flutter run` on a device is unaffected.
+- **Not done, needs credentials:** App ID + provisioning profile, the App
+  Store Connect app record, Play Console app + first manual AAB, and
+  `setup-gh-secrets.sh` (Bitwarden vault is locked).
