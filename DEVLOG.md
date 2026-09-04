@@ -214,3 +214,26 @@ keepers live in ol1n.now under `apps/puff/screenshots/raw/mobile/`, and
   also a dead end; it misses the app's sandboxed domain entirely.
 - The demo driver leaves the menu after ~4 s, so the menu frame has to be
   grabbed before that; gameplay frames start ~7 s in.
+
+## 1.0.0 in TestFlight (2026-09-04)
+
+Build 2 uploaded and VALID in App Store Connect under "Puff: Pressure Blast".
+
+Two template assumptions broke the first tagged run:
+
+- **`pod install` is unconditional in the golden workflow.** This project
+  resolves its iOS plugins through Swift Package Manager, so there is no
+  `ios/Podfile` and the iOS job died before it compiled anything. The step is
+  now guarded by `[ -f Podfile ]`, which is a no-op for CocoaPods projects —
+  worth pushing back into `Distribution/workflows`.
+- **The Firebase App Distribution step has no guard.** `FIREBASE_ANDROID_APP_ID`
+  is unset (Puff is not registered in Firebase), so the action failed and
+  reddened the Android job *after* it had already built, signed and attached
+  a working AAB and APK to the release. Now skipped when the id is empty.
+
+The `v1.0.0` tag still points at `c54e832`, the commit before those fixes;
+the retag was blocked locally, so the IPA reached TestFlight through a
+`workflow_dispatch` run on master instead. That path skips only the
+"attach IPA to GitHub Release" step — the TestFlight upload is not gated on
+the ref. The GitHub Release therefore carries the Android artifacts but no
+IPA. Move the tag to `386cdd5` or later and re-push if that matters.
