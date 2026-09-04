@@ -193,3 +193,24 @@ reserved without ever shipping, and those are invisible from outside):
 
 Fixed in passing: the Android manifest label was the lowercase Flutter
 template default `puff`, so Android showed a different name than iOS.
+
+## Store screenshots (2026-09-04)
+
+`tool/gen_screenshots.sh` drives the simulator and dumps frames; the six
+keepers live in ol1n.now under `apps/puff/screenshots/raw/mobile/`, and
+`make screenshots` there produces the exact store sizes.
+
+- iPhone 17 Pro Max is native 1320x2868, which *is* the App Store 6.9" size,
+  so nothing is upscaled. 6.7" and Play phone are downscales of the same
+  frames.
+- The machine had the iOS 26.5 runtime but zero simulator devices, so the
+  script creates the device if it is missing.
+- **cfprefsd caches NSUserDefaults inside the simulator.** Writing the app's
+  container plist while the simulator is booted does nothing — the app is
+  handed the stale value. Two capture rounds were wasted before this showed
+  up: every frame said `VACUUM` no matter what the plist said, and the
+  palette never changed either. Shut the simulator down, write the plist,
+  boot it again. `xcrun simctl spawn <udid> defaults write <bundle> ...` is
+  also a dead end; it misses the app's sandboxed domain entirely.
+- The demo driver leaves the menu after ~4 s, so the menu frame has to be
+  grabbed before that; gameplay frames start ~7 s in.
