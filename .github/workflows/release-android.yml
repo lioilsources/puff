@@ -80,7 +80,10 @@ jobs:
           draft: false
           prerelease: true
 
+      # Skipped until the app is registered in Firebase; without the app id
+      # the action fails and reds the whole job after the artifacts are out.
       - name: Upload to Firebase App Distribution
+        if: ${{ secrets.FIREBASE_ANDROID_APP_ID != '' }}
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: ${{ secrets.FIREBASE_ANDROID_APP_ID }}

@@ -38,9 +38,16 @@ jobs:
           rm -f pubspec.yaml.bak
           echo "Build version: ${NEW}"
 
+      # This project resolves its iOS plugins through Swift Package Manager,
+      # so there is no Podfile. Kept conditional for CocoaPods projects.
       - name: Install CocoaPods dependencies
         working-directory: ./ios
-        run: pod install
+        run: |
+          if [ -f Podfile ]; then
+            pod install
+          else
+            echo "No Podfile — plugins come from Swift Package Manager, skipping."
+          fi
 
       - name: Import signing certificate
         env:
