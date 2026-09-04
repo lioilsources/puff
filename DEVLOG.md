@@ -178,3 +178,18 @@ Wired up against the `Distribution` repo's template.
 - **Not done, needs credentials:** App ID + provisioning profile, the App
   Store Connect app record, Play Console app + first manual AAB, and
   `setup-gh-secrets.sh` (Bitwarden vault is locked).
+
+## Store name (2026-09-04)
+
+App Store Connect rejects "Puff" — the name is taken (closest published
+matches: "Puff." by Frosty Pop Games and "Puff Up" by Voodoo, both Games).
+
+Only the *listing* name has to be unique; `CFBundleDisplayName` does not. So
+the store listing is **"Puff: Pressure Blast"** while the app stays "Puff" on
+the home screen, in `lib/main.dart` and on ol1n.now. No published app uses
+that string. Fallbacks if App Store Connect still refuses it (names can be
+reserved without ever shipping, and those are invisible from outside):
+"Puff: Neon Pressure", "Puff: Pressure Physics".
+
+Fixed in passing: the Android manifest label was the lowercase Flutter
+template default `puff`, so Android showed a different name than iOS.
