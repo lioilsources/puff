@@ -76,10 +76,14 @@ class Environment {
 
   static const water = Environment(
     kind: EnvironmentKind.water,
-    linearDamping: 3.0,
-    angularDamping: 2.0,
+    // Damping this side of 1 still reads as viscous (air is 0.4, vacuum 0) but
+    // leaves the spawn velocity enough range to carry a shape to the core;
+    // at 3.0 it died after 40 cm and nothing ever arrived.
+    linearDamping: 1.0,
+    angularDamping: 0.8,
     blastMultiplier: 0.6,
-    gravityY: 0.35,
+    // Terminal speed is gravity / damping: 0.9 here against air's 3.0.
+    gravityY: 0.9,
   );
 
   static const plasma = Environment(
