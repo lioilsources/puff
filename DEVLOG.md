@@ -286,3 +286,24 @@ released green on iOS and Android.
   to cross the screen. Shapes stalled at the edge, nothing reached the core, and
   blast fragments stopped where they were born. 1.0 / 0.9 keeps water clearly
   viscous next to air (0.4 / 1.2) and took a demo run from 18 points to 81.
+
+## 1.0.3 — water ripples (2026-09-06)
+
+A blast in water leaves an expanding ring: the background shader draws the
+crests and bends the caustics under them, and the front rocks the shapes it
+sweeps past.
+
+- The rings live in `sim/ripples.dart`, not in `BackgroundLayer`, because the
+  physics needs them too. `EnvironmentForces` ages them and applies the nudge;
+  the renderer only reads.
+- `q` space is the reason the uniforms stay simple: `q = vec2(uv.x * aspect,
+  uv.y)` works out to `(world - rect.topLeft) / rect.height` on *both* axes, so
+  a centre in metres and a radius in metres divide by the same number.
+- The first attempt looked like a shooting target. A ripple wants a *narrow*
+  packet: gaussian 90 → 420, crest wavelength 95 → 150, amplitude down to a
+  fifth. Three or four thin circles, gone in 2.6 s.
+- The body nudge is `-sin(pi * offset / width)` across the front, which pulls a
+  shape toward the oncoming crest and pushes it out behind — it sways and stays
+  put. A one-directional push would have blown the shapes outward.
+- `liveShapes` allocates a fresh list on every read; the nudge walks it once for
+  all three rings rather than once per ring.
