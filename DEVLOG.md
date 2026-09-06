@@ -265,3 +265,24 @@ Iterating on the shader through the simulator is far too slow. Inlining
 `FlutterFragCoord()` in terms of `gl_FragCoord` makes the file run unchanged in
 a WebGL2 page, which headless Chrome will screenshot in a second or two.
 `flutter build bundle` is the quick check that impellerc still accepts it.
+
+## 1.0.1 / 1.0.2 (2026-09-06)
+
+`v1.0.1` shipped the environment backgrounds, `v1.0.2` the water retune. Both
+released green on iOS and Android.
+
+- **The Android release workflow had never run since 386cdd5.**
+  `if: ${{ secrets.FIREBASE_ANDROID_APP_ID != '' }}` is not legal — the secrets
+  context is unavailable in a step-level `if`, so GitHub rejects the whole file
+  and reports a zero-job failed run for *any* push, tag filters included. The
+  guard now reads a job-level env var. Worth pushing back into
+  `Distribution/workflows` along with the Podfile fix; the same pattern is the
+  obvious way to write it and it silently disables the workflow.
+- The v1.0.1 tag had to be moved onto the fixed commit for the Android half to
+  build, so the GitHub Release carries an IPA, an AAB and an APK.
+- **Water was unplayable, and it was tuning rather than rendering.**
+  `linearDamping: 3.0` consumed a spawn velocity of ~1.15 m/s within 40 cm, and
+  gravity 0.35 against that damping is a terminal speed of 0.12 m/s — 80 seconds
+  to cross the screen. Shapes stalled at the edge, nothing reached the core, and
+  blast fragments stopped where they were born. 1.0 / 0.9 keeps water clearly
+  viscous next to air (0.4 / 1.2) and took a demo run from 18 points to 81.
