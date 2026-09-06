@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Puff — Neon Pressure Physics</title>
+  <meta name="description" content="Puff is a minimalist neon physics toy for iOS and Android. Hold to charge a pressure cloud, drag it, release to blast the geometry apart.">
+  <link rel="icon" href="icon.png">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .hero { text-align: center; padding-top: 8px; }
+    .hero img.icon {
+      width: 96px; height: 96px; border-radius: 22px;
+      box-shadow: 0 0 40px rgba(0, 240, 255, 0.18);
+      margin-bottom: 20px;
+    }
+    .hero h1 { font-size: 3rem; letter-spacing: 0.18em; }
+    .tagline { color: var(--secondary); letter-spacing: 0.18em; text-transform: uppercase; font-size: 0.85rem; margin-bottom: 22px; }
+    .lede { max-width: 560px; margin: 0 auto 32px; color: #b9c9d6; }
+    .badges { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-bottom: 44px; }
+    .badge {
+      background: rgba(20, 17, 46, 0.8);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 0.95rem;
+    }
+    .badge:hover { border-color: var(--primary); }
+    .shots { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 10px; margin: 8px 0 12px; }
+    .shots img {
+      width: 165px; flex: 0 0 auto; border-radius: 14px;
+      border: 1px solid var(--line);
+    }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+    .card { background: rgba(20, 17, 46, 0.55); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; }
+    .card h3 { margin-top: 0; }
+    .card p { font-size: 0.92rem; color: #b9c9d6; margin-bottom: 0; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <img class="icon" src="icon.png" alt="Puff icon">
+    <h1>PUFF</h1>
+    <p class="tagline">Hold · Drag · Release</p>
+    <p class="lede">
+      A minimalist neon physics toy. Press anywhere and a pressure cloud grows
+      under your finger. Drag it to where it matters. Let go, and the pressure
+      blows apart the geometry drifting toward the core.
+    </p>
+    <div class="badges">
+      <a class="badge" href="https://apps.apple.com/app/puff-pressure-blast">App&nbsp;Store</a>
+      <a class="badge" href="https://play.google.com/store/apps/details?id=com.ol1n.puff">Google&nbsp;Play</a>
+      <a class="badge" href="https://github.com/lioilsources/puff">Source</a>
+    </div>
+  </div>
+
+  <div class="shots">
+    <img src="shots/puff_1_blast.png" alt="A blast tearing shapes apart in vacuum">
+    <img src="shots/puff_3_plasma.png" alt="Plasma environment with arcs between shapes">
+    <img src="shots/puff_5_water.png" alt="Water environment with caustics and bubbles">
+    <img src="shots/puff_6_air.png" alt="Air environment with haze and wind streaks">
+  </div>
+
+  <h2>One question every round</h2>
+  <p>
+    When do you release? The longer you hold, the harder the blast — but past
+    the overpressure line the cloud only fizzles: no shockwave, no points, and
+    a penalty on top. The rim flickers through the last quarter of the charge,
+    so an overcharge is always your own call. Shapes that drift into the cloud
+    drain the charge while you wait.
+  </p>
+
+  <h2>Four environments, one control</h2>
+  <div class="grid">
+    <div class="card"><h3>Vacuum</h3><p>Nothing is damped. Every blast is a slingshot, under a nebula band and three layers of stars.</p></div>
+    <div class="card"><h3>Air</h3><p>Light gravity and a wind that shifts across the screen, with haze banks and drifting dust.</p></div>
+    <div class="card"><h3>Water</h3><p>Blasts become short shoves, everything sinks slowly through caustics and light shafts.</p></div>
+    <div class="card"><h3>Plasma</h3><p>Arcs jump between nearby shapes on their own, whether you fire or not.</p></div>
+  </div>
+
+  <h2>Things actually shatter</h2>
+  <p>
+    Shapes do not fall apart into pre-baked pieces. They split into convex
+    shards around the point the blast landed, and those shards can be shattered
+    again. Whatever is too small is left behind as dust.
+  </p>
+
+  <h2>Five modifiers that bend the rules</h2>
+  <ul>
+    <li><strong>Pressure</strong> — a plain outward blast.</li>
+    <li><strong>Implosion</strong> — pull everything in, then a small pop.</li>
+    <li><strong>Magnet</strong> — only metal shapes react, but hard.</li>
+    <li><strong>Gravity well</strong> — leaves a decaying attractor behind.</li>
+    <li><strong>Chain spark</strong> — arcs jump from shape to shape.</li>
+  </ul>
+
+  <h2>No strings</h2>
+  <p>
+    No account, no ads, no in-app purchases, no tracking, no analytics — and no
+    network at all. Puff runs in airplane mode and your scores never leave the
+    device. See the <a href="privacy.html">Privacy Policy</a>.
+  </p>
+
+  <h2>Under the hood</h2>
+  <p>
+    Built with Flutter, Flame and Forge2D (Box2D v3), drawn with custom
+    fragment shaders on Impeller. The source is on
+    <a href="https://github.com/lioilsources/puff">GitHub</a>.
+  </p>
+
+  <footer>
+    <a href="support.html">Support</a> &nbsp;·&nbsp;
+    <a href="privacy.html">Privacy Policy</a> &nbsp;·&nbsp;
+    <a href="terms.html">Terms of Use</a> &nbsp;·&nbsp;
+    <a href="https://olin.now">olin.now</a> &nbsp;·&nbsp;
+    &copy; 2026 Oldřich Vořechovský
+  </footer>
+</div>
+</body>
+</html>
