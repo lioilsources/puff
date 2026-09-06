@@ -10,11 +10,28 @@ uniform float uTime;
 uniform float uEnv;       // 0 vacuum, 1 air, 2 water, 3 plasma
 uniform float uFlash;     // plasma arc flash 0..1
 uniform float uWind;      // air wind phase -1..1
+// Water blast rings: xy centre and z radius in q units, w amplitude (0 = none).
+uniform vec4 uRipple0;
+uniform vec4 uRipple1;
+uniform vec4 uRipple2;
 uniform vec3 uBg;
 uniform vec3 uBgAlt;
 uniform vec3 uPrimary;
 uniform vec3 uSecondary;
 out vec4 fragColor;
+
+// Crests of one expanding ring, plus the outward direction they push in.
+// Returns (wave, wave * direction) so callers can both light the crest and
+// drag the water underneath it.
+vec3 puffRipple(vec2 q, vec4 ring) {
+  vec2 delta = q - ring.xy;
+  float d = max(length(delta), 1e-4);
+  float offset = d - ring.z;
+  // A short packet of crests riding the front, thinning as the ring grows.
+  float envelope = exp(-offset * offset * 420.0) * ring.w / (0.6 + ring.z);
+  float wave = sin(offset * 150.0) * envelope;
+  return vec3(wave, delta * (wave / d));
+}
 
 void main() {
   vec2 uv = (FlutterFragCoord().xy - uOrigin) / uSize;
@@ -100,8 +117,12 @@ void main() {
   } else if (env < 2.5) {
     // Water: caustics off the surface, light shafts, bubbles on their way up.
     float depth = uv.y;
-    vec2 w = q + vec2(sin(q.y * 9.0 + uTime * 0.7) * 0.02,
-                      sin(q.x * 7.0 - uTime * 0.5) * 0.015);
+    vec3 rings = puffRipple(q, uRipple0)
+               + puffRipple(q, uRipple1)
+               + puffRipple(q, uRipple2);
+    vec2 w = q + rings.yz * 0.012
+           + vec2(sin(q.y * 9.0 + uTime * 0.7) * 0.02,
+                  sin(q.x * 7.0 - uTime * 0.5) * 0.015);
     float c1 = sin(w.x * 41.0 + uTime * 1.1) * sin(w.y * 33.0 - uTime * 0.9);
     float c2 = sin((w.x + w.y) * 29.0 - uTime * 0.8) * sin((w.x - w.y) * 47.0 + uTime * 0.6);
     float caustic = pow(smoothstep(0.25, 0.95, (c1 + c2) * 0.5), 2.5)
@@ -132,6 +153,9 @@ void main() {
         col += mix(uPrimary, uSecondary, 0.25) * (ring * 0.4 + halo) * on * (0.7 - 0.25 * fl);
       }
     }
+
+    // The rings themselves, bright on the crest and dark in the trough.
+    col += mix(uPrimary, uSecondary, 0.35) * rings.x * 0.10;
 
     // Depth swallows the light.
     col = mix(col, uBg * 0.75, smoothstep(0.35, 1.0, depth) * 0.4);

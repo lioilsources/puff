@@ -99,6 +99,18 @@ abstract final class Tuning {
   static const double chainTargetsPerEnergy = 5;
   static const double plasmaArcRange = 3.0;
 
+  // ---- Water ripples -------------------------------------------------------
+  /// How fast a blast ring spreads across the surface, m/s.
+  static const double waterRippleSpeed = 2.2;
+  static const double waterRippleLife = 2.6;
+
+  /// Half-width of the band around the front that pushes bodies, meters.
+  static const double waterRippleWidth = 0.5;
+
+  /// Peak force per kg a passing front applies. Deliberately small: the front
+  /// should rock a shape, not throw it.
+  static const double waterRippleNudge = 1.4;
+
   // ---- FX (Phase 5) --------------------------------------------------------
   /// Bodies faster than this (m/s) leave spark trails.
   static const double sparkTrailSpeed = 5.5;

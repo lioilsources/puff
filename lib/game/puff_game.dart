@@ -28,6 +28,7 @@ import 'sim/environment.dart';
 import 'sim/explosion_event.dart';
 import 'sim/fx_event.dart';
 import 'sim/modifier.dart';
+import 'sim/ripples.dart';
 import 'sim/score.dart';
 import 'sim/shapes.dart';
 import 'tuning.dart';
@@ -97,6 +98,9 @@ class PuffGame extends Forge2DGame {
   late final FractureSystem fractureSystem;
   late final ModifierSystem modifiers;
   late final EnvironmentForces forces;
+
+  /// Blast rings on the water; empty in every other environment.
+  final WaterRipples ripples = WaterRipples();
   late final FxSystem fx;
   late final AudioSystem audio;
   late final HapticsSystem haptics;
@@ -458,6 +462,7 @@ class PuffGame extends Forge2DGame {
 
   void setEnvironment(Environment env) {
     environment = env;
+    ripples.clear();
     world.gravity = env.gravity();
     for (final shape in liveShapes) {
       shape.body.linearDamping = env.linearDamping;

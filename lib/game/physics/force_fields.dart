@@ -7,8 +7,9 @@ import '../puff_game.dart';
 import '../sim/fx_event.dart';
 import '../tuning.dart';
 
-/// Environment-driven per-frame forces: sinusoidal wind and the plasma
-/// ambient arcs that periodically jolt a random pair of shapes.
+/// Environment-driven per-frame forces: sinusoidal wind, the water blast
+/// rings, and the plasma ambient arcs that periodically jolt a random pair of
+/// shapes.
 class EnvironmentForces extends Component with HasGameReference<PuffGame> {
   EnvironmentForces(this.random);
 
@@ -19,6 +20,7 @@ class EnvironmentForces extends Component with HasGameReference<PuffGame> {
   void reset() {
     _time = 0;
     _ambientCooldown = 2;
+    game.ripples.clear();
   }
 
   @override
@@ -31,12 +33,43 @@ class EnvironmentForces extends Component with HasGameReference<PuffGame> {
         shape.body.applyForce(wind * shape.body.mass);
       }
     }
+    game.ripples.update(dt);
+    _rockOnRipples();
     final ambient = env.ambient;
     if (ambient != null && game.isPlaying) {
       _ambientCooldown -= dt;
       if (_ambientCooldown <= 0) {
         _ambientCooldown = ambient.interval * (0.7 + 0.6 * random.nextDouble());
         _arc(ambient.strength);
+      }
+    }
+  }
+
+  /// Rocks each shape as a ring front sweeps over it: drawn in toward the
+  /// oncoming crest, then pushed out behind it. The amplitude is small enough
+  /// that a floating shape sways rather than travels.
+  void _rockOnRipples() {
+    final ripples = game.ripples.active;
+    if (ripples.isEmpty) {
+      return;
+    }
+    const width = Tuning.waterRippleWidth;
+    // liveShapes rebuilds a list on every read, so walk it once.
+    final shapes = game.liveShapes;
+    for (final ripple in ripples) {
+      final radius = ripple.radius;
+      final amplitude = Tuning.waterRippleNudge * ripple.fade * ripple.strength;
+      for (final shape in shapes) {
+        final delta = shape.body.position - ripple.position;
+        final distance = delta.length;
+        final offset = distance - radius;
+        if (distance < 1e-3 || offset.abs() >= width) {
+          continue;
+        }
+        final swing = -math.sin(math.pi * offset / width);
+        shape.body.applyForce(
+          delta * (amplitude * swing * shape.body.mass / distance),
+        );
       }
     }
   }

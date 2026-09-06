@@ -98,6 +98,12 @@ class FxSystem extends Component with HasGameReference<PuffGame> {
       post.addShockwave(e.position, energy);
       post.addFlash(0.05 + 0.18 * energy, role);
     }
+    if (game.environment.kind == EnvironmentKind.water && energy > 0.08) {
+      game.ripples.add(
+        e.position,
+        (fizzle ? 0.4 : 1.0) * (0.35 + 0.65 * energy),
+      );
+    }
   }
 
   void onFracture(FractureEvent f) {

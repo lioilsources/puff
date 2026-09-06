@@ -6,6 +6,7 @@ import 'package:flame/components.dart';
 import '../fx/shaders.dart';
 import '../puff_game.dart';
 import '../sim/environment.dart';
+import '../sim/ripples.dart';
 
 /// Per-environment shader background, drawn in world space under everything
 /// (so it is part of the post-processed scene).
@@ -61,11 +62,32 @@ class BackgroundLayer extends Component with HasGameReference<PuffGame> {
       ..f(envIndex)
       ..f(flash)
       ..f(_wind)
+      ..ripple(game.ripples.at(0), rect)
+      ..ripple(game.ripples.at(1), rect)
+      ..ripple(game.ripples.at(2), rect)
       ..color(p.bg)
       ..color(p.bgAlt)
       ..color(p.primary)
       ..color(p.secondary);
     _paint.shader = shader;
     canvas.drawRect(rect, _paint);
+  }
+}
+
+extension on UniformWriter {
+  /// A ring in the shader's q space: both axes are measured in rect heights,
+  /// so a world position maps by the same divisor as the radius.
+  void ripple(WaterRipple? ripple, Rect rect) {
+    if (ripple == null) {
+      v4(0, 0, 0, 0);
+      return;
+    }
+    final unit = rect.height;
+    v4(
+      (ripple.position.x - rect.left) / unit,
+      (ripple.position.y - rect.top) / unit,
+      ripple.radius / unit,
+      ripple.fade * ripple.strength,
+    );
   }
 }
