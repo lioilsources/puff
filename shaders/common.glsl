@@ -8,6 +8,10 @@ float puffHash(vec2 p) {
   return fract(p.x * p.y);
 }
 
+vec2 puffHash2(vec2 p) {
+  return vec2(puffHash(p), puffHash(p + vec2(37.2, 11.7)));
+}
+
 float puffNoise(vec2 p) {
   vec2 i = floor(p);
   vec2 f = fract(p);

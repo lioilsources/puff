@@ -18,6 +18,9 @@ class BackgroundLayer extends Component with HasGameReference<PuffGame> {
   /// Plasma flash, decays quickly.
   double flash = 0;
 
+  /// Wind phase the air background drifts with, -1..1.
+  double _wind = 0;
+
   final _paint = Paint();
 
   @override
@@ -30,6 +33,8 @@ class BackgroundLayer extends Component with HasGameReference<PuffGame> {
   void update(double dt) {
     time += dt;
     flash = math.max(0, flash - dt * 4);
+    final env = game.environment;
+    _wind = env.windAmplitude == 0 ? 0 : env.wind(time).x / env.windAmplitude;
   }
 
   @override
@@ -55,6 +60,7 @@ class BackgroundLayer extends Component with HasGameReference<PuffGame> {
       ..f(time)
       ..f(envIndex)
       ..f(flash)
+      ..f(_wind)
       ..color(p.bg)
       ..color(p.bgAlt)
       ..color(p.primary)

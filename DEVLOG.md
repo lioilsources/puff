@@ -237,3 +237,31 @@ the retag was blocked locally, so the IPA reached TestFlight through a
 "attach IPA to GitHub Release" step — the TestFlight upload is not gated on
 the ref. The GitHub Release therefore carries the Android artifacts but no
 IPA. Move the tag to `386cdd5` or later and re-push if that matters.
+
+## Environment backgrounds (2026-09-06)
+
+`background.frag` had all four branches from the start, but only plasma was
+worth looking at — air was a flat grid, water's caustics were invisible, vacuum
+was a plain star field. Vacuum now gets a nebula band, three parallax star
+layers with diffraction spikes and an occasional meteor; air gets haze banks,
+per-row wind streaks and dust; water gets surface caustics, light shafts and
+rising bubbles. Plasma is untouched.
+
+- **`patch` is a reserved word in GLSL ES.** A local named that compiles
+  nowhere. Caught in the browser preview, not by anything in the Flutter
+  toolchain until the shader was actually built.
+- **Caustic frequencies are in radians per `q` unit, and `q.x` only spans the
+  aspect ratio (~0.46 in portrait).** `sin(q.x * 13.0)` is *one cycle* across
+  the screen, i.e. big smooth blobs, which is why the original caustics read as
+  nothing at all. They needed ~40.
+- Bubbles had to be dimmed and shrunk after seeing them in-game: at full
+  strength a bubble ring looks exactly like a circle body you are supposed to
+  pop.
+- `uWind` is new: the air background drifts with the same wind the physics
+  applies, normalised to -1..1 in `BackgroundLayer`.
+
+Iterating on the shader through the simulator is far too slow. Inlining
+`common.glsl`, dropping the `#version`/`#include` lines and defining
+`FlutterFragCoord()` in terms of `gl_FragCoord` makes the file run unchanged in
+a WebGL2 page, which headless Chrome will screenshot in a second or two.
+`flutter build bundle` is the quick check that impellerc still accepts it.
