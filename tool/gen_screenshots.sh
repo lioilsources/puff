@@ -17,9 +17,13 @@
 
 set -euo pipefail
 
-DEVICE_TYPE=com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro-Max
-SIM_NAME=Puff-Shots
-OUT=/tmp/shots_final
+# Device/output are overridable so the same driver can shoot the iPad set:
+#   DEVICE_TYPE=com.apple.CoreSimulator.SimDeviceType.iPad-Pro-13-inch-M4-8GB \
+#     SIM_NAME=Puff-Shots-iPad OUT=/tmp/shots_ipad ./tool/gen_screenshots.sh
+# (iPad Pro 13" is natively 2064x2752 = the App Store 13" size, again no upscaling.)
+DEVICE_TYPE=${DEVICE_TYPE:-com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro-Max}
+SIM_NAME=${SIM_NAME:-Puff-Shots}
+OUT=${OUT:-/tmp/shots_final}
 BUNDLE=com.ol1n.puff
 SHOTS_PER_RUN=16
 
