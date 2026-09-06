@@ -5,19 +5,27 @@ import '../game/palette.dart';
 import '../game/puff_game.dart';
 import '../game/sim/environment.dart';
 import '../game/sim/modifier.dart';
+import 'game_center.dart';
 import 'settings.dart';
 import 'theme.dart';
 
 class MainMenuOverlay extends StatelessWidget {
-  const MainMenuOverlay({super.key, required this.game, required this.settings});
+  const MainMenuOverlay({
+    super.key,
+    required this.game,
+    required this.settings,
+    required this.gameCenter,
+  });
 
   final PuffGame game;
   final PuffSettings settings;
+  final GameCenter gameCenter;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: settings,
+      // Game Center signs in after the menu is already up.
+      animation: Listenable.merge([settings, gameCenter]),
       builder: (context, _) {
         final p = settings.palette;
         return OverlayScrim(
@@ -91,6 +99,15 @@ class MainMenuOverlay extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 12),
+              if (gameCenter.available)
+                NeonButton(
+                  label: 'LEADERBOARD',
+                  color: p.accent,
+                  onTap: () {
+                    game.audio.click();
+                    gameCenter.show(settings.environment);
+                  },
+                ),
               NeonButton(
                 label: 'SETTINGS',
                 color: p.secondary,
@@ -192,10 +209,16 @@ class PauseOverlay extends StatelessWidget {
 }
 
 class GameOverOverlay extends StatelessWidget {
-  const GameOverOverlay({super.key, required this.game, required this.settings});
+  const GameOverOverlay({
+    super.key,
+    required this.game,
+    required this.settings,
+    required this.gameCenter,
+  });
 
   final PuffGame game;
   final PuffSettings settings;
+  final GameCenter gameCenter;
 
   @override
   Widget build(BuildContext context) {
@@ -244,6 +267,15 @@ class GameOverOverlay extends StatelessWidget {
               game.backToMenu();
             },
           ),
+          if (gameCenter.available)
+            NeonButton(
+              label: 'LEADERBOARD',
+              color: p.glow.withValues(alpha: 0.8),
+              onTap: () {
+                game.audio.click();
+                gameCenter.show(game.environment.kind);
+              },
+            ),
         ],
       ),
     );

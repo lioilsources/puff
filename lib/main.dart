@@ -2,6 +2,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'app/game_center.dart';
 import 'app/overlays.dart';
 import 'app/settings.dart';
 import 'game/puff_game.dart';
@@ -27,6 +28,7 @@ class PuffApp extends StatefulWidget {
 
 class _PuffAppState extends State<PuffApp> {
   late final PuffGame game;
+  final gameCenter = GameCenter();
 
   @override
   void initState() {
@@ -40,9 +42,18 @@ class _PuffAppState extends State<PuffApp> {
       hapticsEnabled: s.haptics,
       soundEnabled: s.sound,
       debugOverlayEnabled: s.debugOverlay,
-      onRunFinished: (game, score) =>
-          s.submitScore(game.environment.kind, score),
+      onRunFinished: (game, score) {
+        gameCenter.submit(game.environment.kind, score);
+        return s.submitScore(game.environment.kind, score);
+      },
     );
+    gameCenter.signIn();
+  }
+
+  @override
+  void dispose() {
+    gameCenter.dispose();
+    super.dispose();
   }
 
   @override
@@ -63,12 +74,12 @@ class _PuffAppState extends State<PuffApp> {
               game: game,
               overlayBuilderMap: {
                 PuffGame.menuOverlay: (_, g) =>
-                    MainMenuOverlay(game: g, settings: s),
+                    MainMenuOverlay(game: g, settings: s, gameCenter: gameCenter),
                 PuffGame.hudOverlay: (_, g) => HudOverlay(game: g, settings: s),
                 PuffGame.pauseOverlay: (_, g) =>
                     PauseOverlay(game: g, settings: s),
                 PuffGame.gameOverOverlay: (_, g) =>
-                    GameOverOverlay(game: g, settings: s),
+                    GameOverOverlay(game: g, settings: s, gameCenter: gameCenter),
                 PuffGame.settingsOverlay: (_, g) =>
                     SettingsOverlay(game: g, settings: s),
               },

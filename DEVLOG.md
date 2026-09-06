@@ -307,3 +307,41 @@ sweeps past.
   put. A one-directional push would have blown the shapes outward.
 - `liveShapes` allocates a fresh list on every read; the nudge walks it once for
   all three rings rather than once per ring.
+
+## Game Center leaderboards (2026-09-06)
+
+Four leaderboards, one per environment — scores differ by an order of magnitude
+between vacuum and water, so a single table would just rank environments.
+`lib/app/game_center.dart` wraps `games_services` 5.3.0; the menu and game-over
+screens grow a LEADERBOARD button, and every finished run is submitted (Game
+Center keeps the best of what it is sent, so local bests are not the gate).
+
+**Before the next release this needs three things done by hand, or the iOS job
+will fail to sign:**
+
+1. Apple Developer portal → App ID `com.ol1n.puff` → enable **Game Center**.
+2. Regenerate the App Store distribution provisioning profile and replace the
+   `IOS_PROVISION_PROFILE_BASE64` secret. The archive now carries
+   `com.apple.developer.game-center` (`ios/Runner/Runner.entitlements`) and
+   `xcodebuild -exportArchive` rejects a profile that does not grant it.
+3. App Store Connect → Puff → Game Center → create four **classic** leaderboards,
+   integer score, high-to-low, with IDs exactly:
+   `puff.vacuum`, `puff.air`, `puff.water`, `puff.plasma`.
+   The ids are built in `GameCenter.leaderboardId`.
+
+Notes from wiring it up:
+
+- **`games_services` 5.3.0 supports Swift Package Manager** (added in 5.1.0), so
+  no Podfile came back — the SPM setup survives. It does require Flutter 3.44 /
+  Dart 3.12, which is exactly what this project pins.
+- **The deployment target had to go from iOS 13 to iOS 14**, the plugin's floor.
+- Availability is driven by the `GameAuth.player` *stream*, not by a one-shot
+  check after `signIn()`. Authentication finishes well after that future
+  resolves, and a player can sign in from iOS Settings mid-session; a one-shot
+  check leaves the button hidden until the next launch.
+- Everything degrades silently: no Game Center on Android, the player may
+  decline, submission may fail offline. The button is simply absent and the
+  local high scores carry on. Verified in the simulator, where GameKit fails
+  with `GKErrorDomain Code=3` and the app is none the wiser.
+- The simulator cannot verify the signed-in half. That needs a sandbox Game
+  Center account on a real device with a provisioned build.
