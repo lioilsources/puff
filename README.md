@@ -26,4 +26,5 @@ dart tool/gen_sfx.dart        # regenerate the synthesized SFX
 - `lib/app/` menus, settings, neon widgets.
 - `shaders/` GLSL fragment shaders. `lib/game/tuning.dart` holds every knob.
 
-See `DEVLOG.md` for per-phase notes and `Prompts/PUFF_PLAN.md` for the spec.
+See `DEVLOG.md` for per-phase notes, `Prompts/PUFF_PLAN.md` for the spec and
+`Prompts/PUFF_MONETIZATION.md` for the monetization strategy.
