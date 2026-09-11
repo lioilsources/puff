@@ -345,3 +345,20 @@ Notes from wiring it up:
   with `GKErrorDomain Code=3` and the app is none the wiser.
 - The simulator cannot verify the signed-in half. That needs a sandbox Game
   Center account on a real device with a provisioned build.
+
+## 1.0.4 — Game Center leaderboards (2026-09-11)
+
+The leaderboards above, released. The code needed nothing more; the words did.
+
+- **Every public text said Puff had no network code.** The store description,
+  Notes to Review, privacy policy, support FAQ, terms and landing page all
+  promised that scores never leave the device. With Game Center that is false
+  for a signed-in player, and inaccurate metadata is a rejection. They now say
+  the score goes to Game Center when the player is signed in, and nothing else
+  leaves the device.
+- App Privacy stays **Data Not Collected**: the score goes to Apple through
+  GameKit, and Puff never reads player data back — it only opens the system
+  board.
+- The support page still said iOS 13; the floor has been 14 since the plugin.
+- The App Store Connect half — four boards and attaching them to the version,
+  without which they stay *Not Live* — is written out in `store/APP_STORE.md`.

@@ -50,7 +50,7 @@ no web browsing, no ads, no data collection.
 Four environments, five blast modifiers and shapes that break into real shards. Every round asks one question: how long do you dare hold the charge before you let go?
 ```
 
-### Description (4000) — 3 546 chars
+### Description (4000) — 3 584 chars
 
 ```
 Hold. Drag. Release.
@@ -87,13 +87,13 @@ You score for every shape a blast actually moves, plus a bonus for each one that
 MADE TO BE PICKED UP
 • One finger, no tutorial to sit through, a run starts a second after launch.
 • Six neon palettes — Cyberpunk, Vaporwave, Acid, Mono, Ember, Arctic — switchable mid-run.
-• A separate local best score for every environment, so all four are worth going back to.
+• A best score and a Game Center leaderboard for every environment, so all four are worth going back to.
 • Three quality levels for the bloom pipeline, so older devices stay smooth.
 • Haptics scaled to the size of the blast, plus synthesized sound; both switchable.
 • iPhone and iPad, portrait or landscape.
 
 NO STRINGS
-No account, no sign-up, no ads, no in-app purchases, no subscriptions, no tracking, no analytics — and no network code at all. Puff runs in airplane mode, and your scores never leave your device.
+No sign-up, no ads, no in-app purchases, no subscriptions, no tracking, no analytics. Puff plays fully in airplane mode; the only thing it ever sends is your score to Game Center, and only when you are signed in to it.
 
 Built with Flutter, Flame and Forge2D (Box2D v3), drawn with custom fragment shaders on Impeller. The source is public on GitHub.
 ```
@@ -125,7 +125,7 @@ https://lioilsources.github.io/puff/
 ### Version
 
 ```
-1.0.2
+1.0.4
 ```
 
 ### Copyright (200)
@@ -138,13 +138,14 @@ ASCII fallback if the form complains: `2026 Oldrich Vorechovsky`.
 
 ### What's New in This Version
 
-Not shown for a first release — leave it empty for 1.0. Text for the next
-update:
+For 1.0.4:
 
 ```
-• Vacuum, air and water now have backgrounds worth looking at: nebula bands and meteors, drifting haze, surface caustics and light shafts.
-• Water retuned. Shapes used to stall before they ever reached the core; blasts now carry through the viscosity instead of dying on the spot.
+• Game Center leaderboards, one for each environment. Every finished run is posted; tap LEADERBOARD on the menu or after a run to see where you stand.
+• Blasts in water now leave expanding ripples that bend the light and rock the shapes they pass.
 ```
+
+Drop the ripple line if 1.0.3 already went live with its own notes.
 
 ---
 
@@ -157,11 +158,13 @@ update:
 **Notes to Review**
 
 ```
-Puff is a single-player offline physics game. There is no account, no login, no in-app purchase, no advertising and no network access at all — the app can be reviewed in airplane mode.
+Puff is a single-player physics game. It has no account of its own, no login, no in-app purchase and no advertising, and it is fully playable in airplane mode.
+
+Game Center: when the device is signed in to Game Center, Puff authenticates silently at launch and posts the score of every finished run to the leaderboard of the current environment (four boards: Vacuum, Air, Water, Plasma). A LEADERBOARD button then appears on the main menu and on the game-over screen and opens that board. Without a Game Center account the button is hidden and nothing else changes.
 
 How to play: touch and hold anywhere on the playfield. A pressure cloud grows under your finger; drag it to move it. Release to detonate. Hold too long and the cloud goes into overpressure (the rim flickers) — the release then fizzles and costs points. Geometry drifts in from the edges toward the core in the middle of the screen; the run ends when a shape reaches the core.
 
-Environment (Vacuum / Air / Water / Plasma), blast modifier, colour palette, render quality, sound and haptics are all on the main menu and in Settings. High scores are stored locally per environment (NSUserDefaults) and are never transmitted.
+Environment (Vacuum / Air / Water / Plasma), blast modifier, colour palette, render quality, sound and haptics are all on the main menu and in Settings. High scores are stored locally per environment (NSUserDefaults); the only data that leaves the device is the score sent to Game Center.
 ```
 
 **Attachment:** none needed.
@@ -172,10 +175,14 @@ Environment (Vacuum / Air / Water / Plasma), blast modifier, colour palette, ren
 
 Answer: **Data Not Collected.**
 
-Puff has no networking code, no analytics or ad SDK, and no third-party
-services. `shared_preferences` (NSUserDefaults) holds settings and the local
-high scores; nothing leaves the device. There is no tracking, so no
-App Tracking Transparency prompt and no `NSUserTrackingUsageDescription`.
+Puff has no analytics or ad SDK and no server of its own.
+`shared_preferences` (NSUserDefaults) holds settings and the local high scores.
+The one thing that leaves the device is a score handed to GameKit when the
+player is signed in to Game Center. Apple runs that service under its own
+privacy policy and Puff receives no player data back (it only opens the system
+leaderboard UI), so it is not data the developer collects. There is no
+tracking, so no App Tracking Transparency prompt and no
+`NSUserTrackingUsageDescription`.
 
 ## Export compliance
 
@@ -187,9 +194,39 @@ so App Store Connect will not ask again. The app uses no encryption.
 - **Third-Party Content:** No.
 - **Sign in with Apple:** not used.
 - **Made for Kids / Kids Category:** No (the app is 4+ but not in the Kids category).
-- **Game Center:** not used (scores are local).
+- **Game Center:** on since 1.0.4 — see below.
 - **Pricing:** Free, no IAP.
 - **Availability:** all territories.
+
+---
+
+## Game Center (new in 1.0.4)
+
+**1. Create the leaderboards** — App Store Connect → Puff → Game Center →
+Leaderboards → **+** → **Classic Leaderboard**, four times (if asked, a single
+game, not a group). The IDs must match `GameCenter.leaderboardId` exactly: a
+misspelled board never receives a score and nothing reports an error.
+
+| Reference name | Leaderboard ID | Display name (English U.S.) |
+|---|---|---|
+| Vacuum | `puff.vacuum` | Vacuum |
+| Air | `puff.air` | Air |
+| Water | `puff.water` | Water |
+| Plasma | `puff.plasma` | Plasma |
+
+Same settings on all four:
+
+- Score format type: **Integer**
+- Submit scores: **Best Score**
+- Sort order: **High to Low**
+- Score range: leave empty
+- Localization English (U.S.): the display name above, score format
+  **Integer**, no suffix; the image is optional.
+
+**2. Attach them to the version** — on the 1.0.4 version page, section
+**Game Center**: switch it on and add all four leaderboards. Boards that are not
+part of a submitted version stay *Not Live* — they work in the sandbox, players
+never see them.
 
 ---
 
