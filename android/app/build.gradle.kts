@@ -64,3 +64,9 @@ kotlin {
 flutter {
     source = "../.."
 }
+
+dependencies {
+    // Same artifact and version games_services links; needed here as well
+    // because PuffApplication calls PlayGamesSdk.initialize itself.
+    implementation("com.google.android.gms:play-services-games-v2:21.0.0")
+}

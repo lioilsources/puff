@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Play Console → Play Games Services → Configuration → Project ID
+         (digits only). Empty until the project exists; PuffApplication then
+         leaves the Play Games SDK alone and the game has no leaderboards. -->
+    <string name="game_services_project_id" translatable="false"></string>
+</resources>

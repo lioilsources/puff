@@ -99,7 +99,7 @@ class MainMenuOverlay extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 12),
-              if (gameCenter.available)
+              if (gameCenter.offered)
                 NeonButton(
                   label: 'LEADERBOARD',
                   color: p.accent,
@@ -267,7 +267,7 @@ class GameOverOverlay extends StatelessWidget {
               game.backToMenu();
             },
           ),
-          if (gameCenter.available)
+          if (gameCenter.offered)
             NeonButton(
               label: 'LEADERBOARD',
               color: p.glow.withValues(alpha: 0.8),
