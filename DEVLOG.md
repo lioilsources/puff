@@ -362,3 +362,33 @@ The leaderboards above, released. The code needed nothing more; the words did.
 - The support page still said iOS 13; the floor has been 14 since the plugin.
 - The App Store Connect half — four boards and attaching them to the version,
   without which they stay *Not Live* — is written out in `store/APP_STORE.md`.
+
+## 1.0.5 — Google Play (2026-10-12)
+
+1.0.4 went to Play as it was; this is the paperwork around it and the Android
+half of the leaderboards, wired but switched off.
+
+- **Play listing in `store/GOOGLE_PLAY.md`**, next to the App Store one: texts
+  against Play's limits, the App content declarations, the release order. The
+  description is the App Store text minus Game Center and iPhone/iPad — Play
+  rejects a listing that names another platform.
+- **Screenshots had to be reshot.** Play refuses anything taller than 2:1 and
+  the "Android" set was iPhone frames, Dynamic Island included; a 9:16 crop
+  cut the HUD in half. `tool/gen_screenshots_android.sh` overrides the
+  emulator display to 1080x1920 so the game renders at 9:16 natively.
+- Palettes are stored by display name (`Vaporwave`), not enum name. The iOS
+  screenshot driver still passes them lower-case, so every one of its runs
+  comes out Cyberpunk.
+- **Play Games leaderboards are in, and inert.** `GameCenter` supports Android
+  once all four board IDs are filled in; until then the build has no
+  leaderboards, exactly like 1.0.4. `games_services` does not initialise Play
+  Games v2, so `PuffApplication` does — and skips it while `games-ids.xml` is
+  empty.
+- Android never raises the sign-in dialog on its own. Play Games tries
+  silently at launch and the player stream reports the outcome; an explicit
+  `signIn()` there is a dialog, and a player who declined once would get it on
+  every launch. The LEADERBOARD button is the sign-in instead.
+- Verified on the emulator with made-up IDs: the SDK initialises, the button
+  appears, sign-in fails and nothing else happens. The signed-in half needs
+  the real Play Games project, which needs the SHA-1 of the app signing key,
+  which exists only after the first upload.
