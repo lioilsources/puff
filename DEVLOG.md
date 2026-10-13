@@ -459,7 +459,7 @@ Not verified, because it cannot be from here:
   cases where Puff leaves the foreground, not a picture-in-picture player
   starting on top of it.
 
-## Heat — runs escalate (2026-10-13, not released)
+## 1.2.0 — Heat: runs escalate (2026-10-13)
 
 A run got busier and never bigger: only the spawn interval moved. Spec in
 `Prompts/PUFF_HEAT_PLAN.md`; phases 1–3 are in, phase 4 (tuning by hand,
