@@ -59,7 +59,9 @@ class DebugOverlay extends PositionComponent with HasGameReference<PuffGame> {
           'fall ${Tuning.blast.falloffPower}  break ${Tuning.breakThreshold}',
       'cloud r ${Tuning.cloudRMin}-${Tuning.cloudRMax} tOP ${Tuning.tOverpressure} '
           'drain ${Tuning.drainRate} lag ${Tuning.lagBase}+${Tuning.lagPerRadius}r',
-      'spawn ${game.spawner.interval.toStringAsFixed(2)}s  t ${game.elapsed.toStringAsFixed(0)}s',
+      'spawn ${game.spawner.interval.toStringAsFixed(2)}s  t ${game.elapsed.toStringAsFixed(0)}s  '
+          'heat ${game.heat.toStringAsFixed(2)} tier ${game.tier}  '
+          'kolos ${game.spawner.kolosIn.toStringAsFixed(0)}s',
     ].join('\n');
   }
 

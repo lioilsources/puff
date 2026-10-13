@@ -5,6 +5,7 @@ import 'package:flame/text.dart';
 import 'package:flutter/painting.dart' show TextStyle, FontWeight;
 
 import '../puff_game.dart';
+import '../sim/heat.dart';
 import '../tuning.dart';
 
 /// Minimal neon HUD in viewport (screen) coordinates.
@@ -21,6 +22,10 @@ class Hud extends PositionComponent with HasGameReference<PuffGame> {
   final _bar = Paint()..style = PaintingStyle.fill;
 
   final Map<int, TextPaint> _paintCache = {};
+
+  /// The heat tier last announced, and how long its name stays up.
+  int _tier = 0;
+  double _tierToast = 0;
 
   /// Text renderers are cached per (color, size) so palette switches work
   /// without allocating a TextPaint every frame.
@@ -108,7 +113,19 @@ class Hud extends PositionComponent with HasGameReference<PuffGame> {
     final alpha = (jukebox.toastOpacity * 6).round() / 6;
     _track.text = alpha > 0 ? jukebox.toastText : '';
     _track.textRenderer = _paint(p.secondary.withValues(alpha: alpha), 12);
-    _center.text = '';
+    // Announce a new heat tier; the first one arrives quietly.
+    final tier = game.isPlaying ? game.tier : 0;
+    if (tier > _tier && tier > 1) {
+      _tierToast = Tuning.tierToastSeconds;
+    }
+    _tier = tier;
+    _tierToast = game.isPlaying ? (_tierToast - dt).clamp(0.0, double.infinity) : 0;
+    final tierAlpha = ((_tierToast / 0.4).clamp(0.0, 1.0) * 6).round() / 6;
+    _center.text = tierAlpha > 0 ? HeatCurve.tierNames[tier] : '';
+    _center.textRenderer = _paint(
+      (tier >= 4 ? p.hazard : p.glow).withValues(alpha: tierAlpha),
+      22,
+    );
   }
 
   @override

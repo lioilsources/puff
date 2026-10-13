@@ -8,11 +8,13 @@ import '../puff_game.dart';
 import '../sim/environment.dart';
 import '../sim/explosion_event.dart';
 import '../sim/fx_event.dart';
+import '../tuning.dart';
 
 /// All SFX are synthesized placeholders (see tool/gen_sfx.dart).
 ///
 /// - Charge: five pre-baked seamless loops, switched as energy rises.
 /// - Release: low/mid/high layered thump+crack+tail; water uses muffled takes.
+///   A sub boom joins the big ones once the run has heated up.
 /// - Fracture: three glass ticks picked at random for pitch variety.
 class AudioSystem extends Component with HasGameReference<PuffGame> {
   AudioSystem(this.random);
@@ -51,6 +53,7 @@ class AudioSystem extends Component with HasGameReference<PuffGame> {
     'core_hit.wav',
     'ui_click.wav',
     'game_over.wav',
+    'release_boom.wav',
   ];
 
   @override
@@ -125,6 +128,11 @@ class AudioSystem extends Component with HasGameReference<PuffGame> {
         ? 'mid'
         : 'high';
     _play(water ? 'release_water_$tier.wav' : 'release_$tier.wav', 0.45 + 0.55 * energy);
+    // Late in a run a big release gets a low boom under it.
+    final heat = game.heat;
+    if (energy * (1 + heat) > Tuning.boomThreshold) {
+      _play('release_boom.wav', 0.5 + 0.5 * heat.clamp(0.0, 1.0));
+    }
   }
 
   void onFracture(FractureEvent f) {

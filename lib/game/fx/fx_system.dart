@@ -7,6 +7,7 @@ import '../puff_game.dart';
 import '../sim/environment.dart';
 import '../sim/explosion_event.dart';
 import '../sim/fx_event.dart';
+import '../sim/heat.dart';
 import '../sim/shapes.dart';
 import '../tuning.dart';
 import 'arcs.dart';
@@ -41,7 +42,11 @@ class FxSystem extends Component with HasGameReference<PuffGame> {
     super.onRemove();
   }
 
+  /// Second shockwave rings waiting for their delay: position, energy, scale.
+  final List<(double, Vector2, double, double)> _echoes = [];
+
   void reset() {
+    _echoes.clear();
     particles.clear();
     arcs.clear();
     shake.trauma = 0;
@@ -68,10 +73,16 @@ class FxSystem extends Component with HasGameReference<PuffGame> {
     final energy = e.energy;
     final fizzle = e.kind == ExplosionKind.fizzle;
     final role = _roleFor(e.kind);
+    // The same blast is a bigger event late in a run.
+    final heat = game.heat;
+    final hot = heat.clamp(0.0, 1.0);
+    final more = heatLerp(heat, 1, Tuning.fxParticlesHot, Tuning.fxParticlesOver);
     particles.emit(
       position: e.position,
-      count: fizzle ? 14 : (18 + 70 * energy).round(),
-      speed: fizzle ? 1.5 : 2.5 + 7 * energy,
+      count: fizzle ? 14 : ((18 + 70 * energy) * more).round(),
+      speed: fizzle
+          ? 1.5
+          : (2.5 + 7 * energy) * heatLerp(heat, 1, Tuning.fxParticleSpeedHot),
       life: fizzle ? 0.5 : 0.45 + 0.6 * energy,
       size: 0.05 + 0.05 * energy,
       role: role,
@@ -89,14 +100,24 @@ class FxSystem extends Component with HasGameReference<PuffGame> {
         jitter: e.radius * 1.4,
       );
     }
-    shake.addTrauma(fizzle ? 0.15 : 0.22 + 0.55 * energy);
-    if (!fizzle && energy > 0.55) {
-      shake.addZoomPulse(0.025 + 0.07 * (energy - 0.55));
+    shake.addTrauma(
+      fizzle ? 0.15 : (0.22 + 0.55 * energy) * heatLerp(heat, 1, Tuning.fxShakeHot),
+    );
+    final zoomFrom = 0.55 - Tuning.fxThresholdDrop * hot;
+    if (!fizzle && energy > zoomFrom) {
+      shake.addZoomPulse(0.025 + 0.07 * (energy - zoomFrom));
     }
     final post = game.postProcess;
     if (post != null && !fizzle && energy > 0.12) {
-      post.addShockwave(e.position, energy);
-      post.addFlash(0.05 + 0.18 * energy, role);
+      final scale = heatLerp(heat, 1, Tuning.fxShockwaveHot);
+      post.addShockwave(e.position, energy, scale: scale);
+      if (energy * heat > Tuning.fxEchoThreshold) {
+        _echoes.add((Tuning.fxEchoDelay, e.position.clone(), energy * 0.7, scale));
+      }
+      post.addFlash(
+        (0.05 + 0.18 * energy) * heatLerp(heat, 1, Tuning.fxFlashHot),
+        role,
+      );
     }
     if (game.environment.kind == EnvironmentKind.water && energy > 0.08) {
       game.ripples.add(
@@ -157,6 +178,31 @@ class FxSystem extends Component with HasGameReference<PuffGame> {
   @override
   void update(double dt) {
     shake.update(dt);
+    final post = game.postProcess;
+    if (post != null) {
+      final heat = game.heat;
+      post.bloomIntensity = heatLerp(
+        heat,
+        Tuning.bloomIntensity,
+        Tuning.bloomIntensityHot,
+        Tuning.bloomIntensityOver,
+      );
+      post.aberration = heatLerp(
+        heat,
+        Tuning.aberration,
+        Tuning.aberrationHot,
+        Tuning.aberrationOver,
+      );
+    }
+    for (var i = _echoes.length - 1; i >= 0; i--) {
+      final (left, position, energy, scale) = _echoes[i];
+      if (left - dt > 0) {
+        _echoes[i] = (left - dt, position, energy, scale);
+        continue;
+      }
+      _echoes.removeAt(i);
+      post?.addShockwave(position, energy, scale: scale);
+    }
     // Spark trails on fast bodies; round-robin so cost stays bounded.
     final list = game.liveShapes;
     if (list.isNotEmpty) {

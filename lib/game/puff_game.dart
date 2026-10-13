@@ -82,6 +82,17 @@ class PuffGame extends Forge2DGame {
   /// Force the debug overlay on: `--dart-define=PUFF_DEBUG=true`.
   static const bool debugForced = bool.fromEnvironment('PUFF_DEBUG');
 
+  /// Pin the heat for screenshots and tuning: `--dart-define=PUFF_HEAT=1.2`.
+  static final double? heatForced = double.tryParse(
+    const String.fromEnvironment('PUFF_HEAT'),
+  );
+
+  /// How far this run has escalated, 0..1.5. Derived from [elapsed] alone, so
+  /// a seeded run escalates the same way every time.
+  double get heat => heatForced ?? Tuning.heat.at(elapsed);
+
+  int get tier => Tuning.heat.tierOf(heat);
+
   late final ShapeFactory shapeFactory = ShapeFactory(
     random,
     baseBreakThreshold: Tuning.breakThreshold,

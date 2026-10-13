@@ -44,10 +44,15 @@ class FractureSystem extends Component with HasGameReference<PuffGame> {
     final body = shape.body;
     final angle = body.angle;
     final localImpulse = rotateVector(worldImpulse, -angle);
+    // Deep fractures only while there is room for the pieces.
+    final depth = game.shapes.length < Tuning.deepFractureBodies
+        ? shape.fractureDepth
+        : math.min(shape.fractureDepth, Tuning.fractureMaxDepth);
     final result = rules.fracture(
       spec: shape.spec,
       generation: shape.generation,
       localImpulse: localImpulse,
+      maxDepth: depth,
     );
     if (result.isEmpty) {
       return;
@@ -86,6 +91,7 @@ class FractureSystem extends Component with HasGameReference<PuffGame> {
           angularVelocity:
               angularVelocity + (random.nextDouble() - 0.5) * Tuning.fractureSpin,
           generation: shape.generation + 1,
+          fractureDepth: shape.fractureDepth,
         ),
       );
     }

@@ -43,7 +43,11 @@ class Detonator {
     double impulseMultiplier = 1,
     bool Function(ShapeBody)? filter,
   }) {
-    final radius = radiusOverride ?? Tuning.blast.radiusOfEffect(energy);
+    final heat = game.heat;
+    final radius =
+        radiusOverride ??
+        Tuning.blast.radiusOfEffect(energy) * Tuning.blastRadiusScale(heat);
+    final impulseScale = impulseMultiplier * Tuning.blastImpulseScale(heat);
     final env = game.environment;
     var hit = 0;
     var total = 0.0;
@@ -56,7 +60,7 @@ class Detonator {
         origin: position,
         bodyPos: target.blastPosition,
         energy: energy,
-        blastMultiplier: env.blastMultiplier * impulseMultiplier,
+        blastMultiplier: env.blastMultiplier * impulseScale,
         randomSign: random.nextBool() ? 1 : -1,
         radiusOverride: radius,
         directionSign: directionSign,

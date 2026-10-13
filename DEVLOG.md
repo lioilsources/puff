@@ -458,3 +458,58 @@ Not verified, because it cannot be from here:
   player does not stop the music by itself; the lifecycle pause covers the
   cases where Puff leaves the foreground, not a picture-in-picture player
   starting on top of it.
+
+## Heat — runs escalate (2026-10-13, not released)
+
+A run got busier and never bigger: only the spawn interval moved. Spec in
+`Prompts/PUFF_HEAT_PLAN.md`; phases 1–3 are in, phase 4 (tuning by hand,
+store texts, version) is not.
+
+- **One number, `PuffGame.heat`.** `sim/heat.dart`: 0 for the first 20 s, 1.0
+  at 150 s, 1.5 from 240 s. It depends on elapsed time alone, so a seeded run
+  escalates identically. Every knob is `heatLerp(heat, cold, hot, over)` and
+  all of them sit in one block of `Tuning`.
+- **What it scales.** Shape size (0.5 → 0.8 m at the top end), metal share,
+  spawn speed; blast radius ×1.24 and impulse ×1.27, cloud radius; particles,
+  shake, shockwave radius plus a second ring, flash, bloom, aberration; the
+  thresholds for the zoom pulse and the heavy haptic; a new sub boom
+  (`release_boom.wav`) under big releases. The HUD names the tier when it
+  changes — HEAT II, HEAT III, OVERDRIVE; the first one arrives unannounced.
+- **Kolos.** From heat 0.6, every 40 s (25 in overdrive): a 7–8-sided polygon
+  1.1–1.4 m across. About fifteen times the mass of a normal shape, so a
+  blast barely moves it; it has to be cracked. Its family splits one
+  generation deeper than anything else (8 → 24 → 72 pieces), only while
+  fewer than 140 bodies are alive.
+- **Volleys** from tier III: three to five shapes from one edge, 0.12 s
+  apart.
+- **The spawn interval keeps its own linear ramp.** The plan put it on heat;
+  heat is a smoothstep with a warm-up, which would have made the first
+  minute slower than it is today. Heat only takes it from 0.45 to 0.4 s in
+  overdrive.
+- **A Kolos' break threshold follows the environment's blast multiplier.**
+  The plan accepted a Kolos that never cracks in Water (blasts ×0.6) as a
+  first pass; the arithmetic said never, not rarely. It now takes the same
+  charge everywhere and still flies differently.
+- **A Kolos stopped outside the screen in Water.** A damped body coasts
+  speed / damping meters, and it starts 1.5 m out. Found on the first
+  simulator run: twenty seconds after spawning it was a sliver at the left
+  edge. Its spawn speed is now at least what carries it 2.5 m inside.
+- **Four shockwave rings, not six.** The shader takes four; the second ring
+  shares the cap.
+- `--dart-define=PUFF_HEAT=1.3` pins the heat, for tuning and screenshots.
+  The debug overlay shows heat, tier and the seconds to the next Kolos.
+
+Verified: 50 tests (curve, lerp, a rim blast cracks a Kolos at the heat it
+first appears, the fracture family fits the body budget); iPhone 17
+simulator, demo driver in Water at heat 1.3 for two minutes, 56–60 fps in a
+debug build at 20–40 bodies, a Kolos on screen, no exceptions.
+
+Not verified:
+
+- **Nobody has played it.** The timeline and every multiplier are a first
+  guess. Whether minute three feels heavier or just harder is phase 4.
+- **A Kolos cracking, and overdrive under load.** The demo driver never hit
+  one squarely in the runs watched, so 72 fragments plus overdrive particles
+  have not been on screen together. Nothing has been profiled on a phone.
+- **The boom** has not been heard.
+- **Scores inflate** with heat; the leaderboards are unchanged.
