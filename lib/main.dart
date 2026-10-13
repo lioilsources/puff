@@ -1,4 +1,6 @@
 import 'package:flame/game.dart';
+import 'package:flame_audio/flame_audio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -13,8 +15,25 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+  await _configureAudioSession();
   final settings = await PuffSettings.load();
   runApp(PuffApp(settings: settings));
+}
+
+/// iOS: sound effects and music follow the silent switch, like any casual
+/// game. `audioplayers` defaults to the playback category, which ignores it;
+/// SoLoud leaves the session alone and inherits whatever is set here.
+Future<void> _configureAudioSession() async {
+  if (defaultTargetPlatform != TargetPlatform.iOS) {
+    return;
+  }
+  try {
+    await AudioPlayer.global.setAudioContext(
+      AudioContext(iOS: AudioContextIOS(category: AVAudioSessionCategory.soloAmbient)),
+    );
+  } catch (error) {
+    debugPrint('Puff: audio session not configured: $error');
+  }
 }
 
 class PuffApp extends StatefulWidget {
@@ -29,10 +48,24 @@ class PuffApp extends StatefulWidget {
 class _PuffAppState extends State<PuffApp> {
   late final PuffGame game;
   final gameCenter = GameCenter();
+  late final AppLifecycleListener _lifecycle;
 
   @override
   void initState() {
     super.initState();
+    // Flame stops the game loop in the background, the audio thread does not.
+    _lifecycle = AppLifecycleListener(
+      onStateChange: (state) {
+        if (!game.isLoaded) {
+          return;
+        }
+        if (state == AppLifecycleState.resumed) {
+          game.jukebox.resume();
+        } else {
+          game.jukebox.suspend();
+        }
+      },
+    );
     final s = widget.settings;
     game = PuffGame(
       palette: s.palette,
@@ -41,6 +74,8 @@ class _PuffAppState extends State<PuffApp> {
       quality: s.quality,
       hapticsEnabled: s.haptics,
       soundEnabled: s.sound,
+      // Scripted screenshot runs stay silent and keep the title off the HUD.
+      musicEnabled: s.music && !PuffGame.demoMode,
       debugOverlayEnabled: s.debugOverlay,
       onRunFinished: (game, score) {
         gameCenter.submit(game.environment.kind, score);
@@ -52,6 +87,7 @@ class _PuffAppState extends State<PuffApp> {
 
   @override
   void dispose() {
+    _lifecycle.dispose();
     gameCenter.dispose();
     super.dispose();
   }

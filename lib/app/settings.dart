@@ -15,6 +15,7 @@ class PuffSettings extends ChangeNotifier {
   PostProcessQuality quality = PostProcessQuality.med;
   bool haptics = true;
   bool sound = true;
+  bool music = true;
   bool debugOverlay = false;
   String paletteName = Palette.cyberpunk.name;
   EnvironmentKind environment = EnvironmentKind.vacuum;
@@ -32,6 +33,7 @@ class PuffSettings extends ChangeNotifier {
     );
     s.haptics = prefs.getBool('haptics') ?? true;
     s.sound = prefs.getBool('sound') ?? true;
+    s.music = prefs.getBool('music') ?? true;
     s.debugOverlay = prefs.getBool('debugOverlay') ?? false;
     s.paletteName = prefs.getString('palette') ?? Palette.cyberpunk.name;
     s.environment = EnvironmentKind.values.byNameOr(
@@ -52,6 +54,7 @@ class PuffSettings extends ChangeNotifier {
     await _prefs.setString('quality', quality.name);
     await _prefs.setBool('haptics', haptics);
     await _prefs.setBool('sound', sound);
+    await _prefs.setBool('music', music);
     await _prefs.setBool('debugOverlay', debugOverlay);
     await _prefs.setString('palette', paletteName);
     await _prefs.setString('environment', environment.name);

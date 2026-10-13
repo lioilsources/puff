@@ -40,7 +40,7 @@ Hold, drag, release. A one-finger neon physics game where shapes shatter.
 Alternates: `Charge a pressure cloud, let go, and watch neon shapes shatter.` (63)
 · `One finger. Hold to charge, release to blast neon geometry apart.` (64)
 
-**Full description** (4000) — 3 433 chars
+**Full description** (4000) — 3 595 chars
 
 ```
 Hold. Drag. Release.
@@ -79,7 +79,8 @@ MADE TO BE PICKED UP
 • Six neon palettes — Cyberpunk, Vaporwave, Acid, Mono, Ember, Arctic — switchable mid-run.
 • A best score for every environment, so all four are worth going back to.
 • Three quality levels for the bloom pipeline, so older devices stay smooth.
-• Haptics scaled to the size of the blast, plus synthesized sound; both switchable.
+• An original synthwave soundtrack: a theme of its own for every environment, and a button to skip to the next track.
+• Haptics scaled to the size of the blast, plus synthesized sound effects. Music, sound and haptics each have their own switch.
 
 NO STRINGS
 No sign-up, no ads, no in-app purchases, no subscriptions, no tracking, no analytics. Puff plays fully offline and sends nothing anywhere.
@@ -212,7 +213,19 @@ produces `+1` and Play will refuse it.
 1.0.4
 ```
 
-**Release notes** (500, en-US)
+**Release notes for 1.1.0** (500, en-US) — 328 chars
+
+```
+<en-US>
+Music! Every environment now has its own synthwave theme, and so does the menu.
+• The title of a track shows for a moment when it starts.
+• NEXT TRACK on the pause screen skips to the other one.
+• MUSIC has its own switch in Settings, separate from SOUND.
+Thanks to the first reviewer on Google Play, who asked for exactly this.
+</en-US>
+```
+
+**Release notes for 1.0.4** (500, en-US)
 
 ```
 <en-US>

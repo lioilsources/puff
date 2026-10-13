@@ -50,7 +50,7 @@ no web browsing, no ads, no data collection.
 Four environments, five blast modifiers and shapes that break into real shards. Every round asks one question: how long do you dare hold the charge before you let go?
 ```
 
-### Description (4000) — 3 584 chars
+### Description (4000) — 3 746 chars
 
 ```
 Hold. Drag. Release.
@@ -89,7 +89,8 @@ MADE TO BE PICKED UP
 • Six neon palettes — Cyberpunk, Vaporwave, Acid, Mono, Ember, Arctic — switchable mid-run.
 • A best score and a Game Center leaderboard for every environment, so all four are worth going back to.
 • Three quality levels for the bloom pipeline, so older devices stay smooth.
-• Haptics scaled to the size of the blast, plus synthesized sound; both switchable.
+• An original synthwave soundtrack: a theme of its own for every environment, and a button to skip to the next track.
+• Haptics scaled to the size of the blast, plus synthesized sound effects. Music, sound and haptics each have their own switch.
 • iPhone and iPad, portrait or landscape.
 
 NO STRINGS
@@ -137,6 +138,14 @@ https://lioilsources.github.io/puff/
 ASCII fallback if the form complains: `2026 Oldrich Vorechovsky`.
 
 ### What's New in This Version
+
+For 1.1.0:
+
+```
+• Music. Every environment now has its own synthwave theme, the menu has one too, and a run ends on a short sting. The title of a track shows for a moment when it starts; NEXT TRACK on the pause screen skips to the other one.
+• MUSIC has its own switch in Settings, separate from SOUND.
+• Sound and music now follow the silent switch.
+```
 
 For 1.0.4:
 

@@ -392,3 +392,69 @@ half of the leaderboards, wired but switched off.
   appears, sign-in fails and nothing else happens. The signed-in half needs
   the real Play Games project, which needs the SHA-1 of the app signing key,
   which exists only after the first upload.
+
+## 1.1.0 — Jukebox (2026-10-13)
+
+The first Play review asked for one thing: music, "something like Shatter".
+ROADMAP §3.3 had it as the missing brand element anyway. Spec in
+`Prompts/PUFF_JUKEBOX_PLAN.md`. Ten tracks generated on SPARK (ACE-Step 1.5
+turbo, about 33 s each once the model is loaded), 24 MB of OGG.
+
+- **A theme per environment, not one loop.** Two tracks each for Vacuum, Air,
+  Water and Plasma, one for the menu, a sting when a run ends: ten files.
+  `Track` in `sim/jukebox.dart` lists them; `Jukebox` holds the one rule — an
+  environment never repeats the track of its previous visit.
+- **A retry keeps the track playing.** Runs last half a minute; restarting the
+  theme on every AGAIN would loop its first bars. Only a new environment or
+  NEXT TRACK on the pause screen changes it.
+- **Music is on SoLoud, SFX stay on `flame_audio`.** `audioplayers` cannot
+  loop a compressed file without a gap, nor fade one player into another.
+  `flutter_soloud` does both, streams OGG from disk (ten decoded loops would
+  be a few hundred MB), and on iOS it never touches the audio session, so the
+  two engines have nothing to fight over. Spike on the Android emulator and
+  the iPhone simulator, by reading the engine back every two seconds: the mix
+  position keeps advancing through SFX, a pause, a skip, game over and three
+  loop wraps; the voice count returns to one after every crossfade.
+- **The engine is looked up inside a try.** The first Android run had no
+  native library (see below) and `SoLoud.instance` in a field initialiser
+  took the whole game down with it. Music that cannot load is now silence,
+  never a white screen.
+- **`dart pub get --offline` does not register a new plugin.** It resolves
+  the lock file and leaves `.flutter-plugins-dependencies` alone, so with
+  `--no-pub` the APK is built without the plugin's `.so`. After adding a
+  plugin: `flutter pub get --offline`, once.
+- **Android keeps playing in the background.** Flame stops the game loop, the
+  audio thread does not care. `AppLifecycleListener` in `main.dart` pauses the
+  voice; measured, the position moved 1.2 s across 13 s away.
+- **iOS now follows the silent switch.** `audioplayers` defaults to the
+  playback category, which ignores it, and that was fine for a few blips. A
+  game that plays music over a muted phone is not. The session is set to
+  solo-ambient once at start; SoLoud inherits it. This changes the SFX too.
+- **MUSIC is its own switch**, under SOUND. The HUD shows `♪ TITLE` for three
+  seconds when a track starts; the menu carries it in small print. Scripted
+  screenshot runs (`PUFF_DEMO`) start with music off, or the title would land
+  in the store shots.
+- **`tool/gen_music.py` + `tool/music_manifest.json`.** Standard library only.
+  Prompt, BPM and key go in; seed, sha256, length and loudness come back and
+  are saved after every track. The manifest is JSON, not the YAML the plan
+  named: there is no YAML parser in the standard library, and it lives in
+  `tool/` so it is not bundled into the app. Between tracks the script reads
+  SPARK's thermal log and waits while the machine is hot.
+- `test/music_manifest_test.dart` ties the manifest, the `Track` enum and the
+  files on disk together.
+
+Not verified, because it cannot be from here:
+
+- **The mix in the game.** The tracks were listened to on their own and
+  accepted; the game has only reported on itself. Whether music sits under
+  the blasts at 0.55 and whether the 1.5 s crossfade is right needs ears on
+  a device. `game_over.wav` no longer plays over the sting: with music on,
+  the sting alone ends the run.
+- **A real iPhone.** `audioplayers` deactivates the audio session whenever
+  none of its own players is playing. On the simulator SoLoud plays on; on a
+  device that call is expected to fail as "busy" and change nothing, but that
+  is an expectation.
+- **Android audio focus.** SoLoud does not request it, so a call or another
+  player does not stop the music by itself; the lifecycle pause covers the
+  cases where Puff leaves the foreground, not a picture-in-picture player
+  starting on top of it.

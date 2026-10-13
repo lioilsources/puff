@@ -14,6 +14,7 @@ class Hud extends PositionComponent with HasGameReference<PuffGame> {
   late final TextComponent _score;
   late final TextComponent _multiplier;
   late final TextComponent _status;
+  late final TextComponent _track;
   late final TextComponent _center;
 
   final _barBg = Paint()..style = PaintingStyle.fill;
@@ -62,7 +63,12 @@ class Hud extends PositionComponent with HasGameReference<PuffGame> {
       textRenderer: _paint(p.glow, 22),
       anchor: Anchor.center,
     );
-    addAll([_score, _multiplier, _status, _center]);
+    _track = TextComponent(
+      text: '',
+      textRenderer: _paint(p.secondary, 12),
+      anchor: Anchor.topCenter,
+    );
+    addAll([_score, _multiplier, _status, _track, _center]);
     _layout(game.size);
   }
 
@@ -79,6 +85,7 @@ class Hud extends PositionComponent with HasGameReference<PuffGame> {
     _score.position = Vector2(size.x / 2, top);
     _multiplier.position = Vector2(size.x / 2, top + 38);
     _status.position = Vector2(16, top);
+    _track.position = Vector2(size.x / 2, top + 62);
     _center.position = Vector2(size.x / 2, size.y * 0.42);
   }
 
@@ -96,6 +103,11 @@ class Hud extends PositionComponent with HasGameReference<PuffGame> {
         ? game.environment.name.toUpperCase()
         : '${game.environment.name.toUpperCase()}  escaped ${game.escapes}/${Tuning.maxEscapes}';
     _status.textRenderer = _paint(p.secondary, 13);
+    // Opacity in a few steps, so the fade does not fill the paint cache.
+    final jukebox = game.jukebox;
+    final alpha = (jukebox.toastOpacity * 6).round() / 6;
+    _track.text = alpha > 0 ? jukebox.toastText : '';
+    _track.textRenderer = _paint(p.secondary.withValues(alpha: alpha), 12);
     _center.text = '';
   }
 

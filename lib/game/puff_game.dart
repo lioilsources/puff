@@ -15,6 +15,7 @@ import 'components/touch_layer.dart';
 import 'fx/audio.dart';
 import 'fx/fx_system.dart';
 import 'fx/haptics.dart';
+import 'fx/jukebox.dart';
 import 'fx/post_process.dart';
 import 'fx/shaders.dart';
 import 'input/demo_driver.dart';
@@ -44,6 +45,7 @@ class PuffGame extends Forge2DGame {
     this.startInMenu = true,
     this.hapticsEnabled = true,
     this.soundEnabled = true,
+    this.musicEnabled = true,
     this.debugOverlayEnabled = false,
     this.onRunFinished,
     int? seed,
@@ -60,6 +62,7 @@ class PuffGame extends Forge2DGame {
   final bool startInMenu;
   final bool hapticsEnabled;
   final bool soundEnabled;
+  final bool musicEnabled;
   final bool debugOverlayEnabled;
 
   /// Called with the final score when a run ends; returns true if it was a
@@ -103,6 +106,7 @@ class PuffGame extends Forge2DGame {
   final WaterRipples ripples = WaterRipples();
   late final FxSystem fx;
   late final AudioSystem audio;
+  late final JukeboxSystem jukebox;
   late final HapticsSystem haptics;
   DebugOverlay? _debugOverlay;
   Shaders? shaders;
@@ -171,6 +175,8 @@ class PuffGame extends Forge2DGame {
     forces = EnvironmentForces(random);
     fx = FxSystem(random);
     audio = AudioSystem(random)..enabled = soundEnabled;
+    // Its own generator: music must not shift the seeded gameplay sequence.
+    jukebox = JukeboxSystem(math.Random())..enabled = musicEnabled;
     haptics = HapticsSystem()..enabled = hapticsEnabled;
 
     background = BackgroundLayer();
@@ -180,7 +186,7 @@ class PuffGame extends Forge2DGame {
       world.add(core!);
     }
     camera.viewport.addAll([TouchLayer(), hud]);
-    await addAll([spawner, fractureSystem, modifiers, forces, fx, audio, haptics]);
+    await addAll([spawner, fractureSystem, modifiers, forces, fx, audio, jukebox, haptics]);
     if (demoMode) {
       add(DemoDriver(random));
     }

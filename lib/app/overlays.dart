@@ -4,6 +4,7 @@ import '../game/fx/post_process.dart';
 import '../game/palette.dart';
 import '../game/puff_game.dart';
 import '../game/sim/environment.dart';
+import '../game/sim/jukebox.dart';
 import '../game/sim/modifier.dart';
 import 'game_center.dart';
 import 'settings.dart';
@@ -116,6 +117,15 @@ class MainMenuOverlay extends StatelessWidget {
                   game.overlays.add(PuffGame.settingsOverlay);
                 },
               ),
+              ValueListenableBuilder<Track?>(
+                valueListenable: game.jukebox.nowPlaying,
+                builder: (context, track, _) => NeonText(
+                  track == null ? '' : '♪ ${track.title.toLowerCase()}',
+                  color: p.secondary.withValues(alpha: 0.7),
+                  size: 11,
+                  glow: false,
+                ),
+              ),
             ],
           ),
         );
@@ -161,6 +171,11 @@ class PauseOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // MUSIC is switched in the settings that open on top of this screen.
+    return ListenableBuilder(listenable: settings, builder: (context, _) => _menu());
+  }
+
+  Widget _menu() {
     final p = settings.palette;
     return OverlayScrim(
       palette: p,
@@ -186,6 +201,15 @@ class PauseOverlay extends StatelessWidget {
               game.startGame();
             },
           ),
+          if (settings.music)
+            NeonButton(
+              label: '♪ NEXT TRACK',
+              color: p.secondary,
+              onTap: () {
+                game.audio.click();
+                game.jukebox.skip();
+              },
+            ),
           NeonButton(
             label: 'SETTINGS',
             color: p.secondary,
@@ -333,6 +357,16 @@ class SettingsOverlay extends StatelessWidget {
                   settings.update((s) => s.sound = v);
                   game.audio.enabled = v;
                   game.audio.click();
+                },
+              ),
+              NeonToggle(
+                label: 'MUSIC',
+                value: settings.music,
+                color: p.accent,
+                onChanged: (v) {
+                  game.audio.click();
+                  settings.update((s) => s.music = v);
+                  game.jukebox.enabled = v;
                 },
               ),
               NeonToggle(

@@ -150,7 +150,8 @@ jeden člověk art pipeline na úrovni Kingu nepostaví. Co se udělat má:
   („Sorbet“, „Paper“, „Dawn“), ať hra nevypadá na screenshotech jen jako
   černá obrazovka. Paleta je 7 barev, hodina práce, a v store screenshotech
   udělá víc než cokoli jiného.
-- **Hudba.** Puff ji nemá. Candy Crush má znělku, kterou pozná každý.
+- **Hudba.** *Hotovo v 1.1.0 (`Prompts/PUFF_JUKEBOX_PLAN.md`): téma
+  per prostředí ve stylu Shatter, generované na SPARKu.* Puff ji neměl. Candy Crush má znělku, kterou pozná každý.
   Ambientní vrstva per prostředí — vakuum tichý drone, vzduch pad, voda
   filtrovaný pulz, plazma šum s tóny. `tool/gen_sfx.dart` už syntetizuje
   SFX; hudbu jde generovat stejně, nebo koupit CC0/licenci. Vypínatelná.

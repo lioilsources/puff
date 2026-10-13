@@ -139,7 +139,8 @@ class AudioSystem extends Component with HasGameReference<PuffGame> {
   void onCoreHit() => _play('core_hit.wav', 0.9);
 
   void onPhase(GamePhase phase) {
-    if (phase == GamePhase.gameOver) {
+    // With music on, the jukebox's sting ends the run instead.
+    if (phase == GamePhase.gameOver && !game.jukebox.playsSting) {
       _play('game_over.wav', 0.8);
     }
     if (phase != GamePhase.playing) {

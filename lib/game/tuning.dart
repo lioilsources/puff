@@ -124,4 +124,22 @@ abstract final class Tuning {
   /// Shape-shape contacts slower than this (m/s, relative) don't count.
   static const double comboHitSpeed = 2.0;
   static const int fractureBonus = 25;
+
+  // ---- Music ---------------------------------------------------------------
+  /// Music level against SFX at 1.0: it sits under the blasts, never on top.
+  static const double musicVolume = 0.55;
+
+  /// Volume factor while the pause or game-over screen is up (about -6 dB).
+  static const double musicDuck = 0.5;
+
+  /// Fade times in seconds: between two tracks, on a skip, into and out of a
+  /// duck, and when music is switched off.
+  static const double musicCrossfade = 1.5;
+  static const double musicSkipFade = 0.8;
+  static const double musicDuckFade = 0.3;
+  static const double musicOffFade = 0.5;
+
+  /// How long the HUD shows the title of a new track, and its fade-out.
+  static const double musicToastSeconds = 3;
+  static const double musicToastFade = 0.6;
 }
