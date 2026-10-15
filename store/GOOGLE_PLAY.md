@@ -1,7 +1,8 @@
 # Google Play Console — Puff (English U.S.)
 
 Everything below is ready to paste into Play Console. Character counts are
-against Google's limits; recount after any edit. The iOS counterpart is
+against Google's limits; `python3 tool/check_play_listing.py` recounts every
+block and fails on drift, so run it after any edit. The iOS counterpart is
 `APP_STORE.md`; the description here is the same text with the Game Center and
 iPhone/iPad lines taken out, because Play rejects listings that mention other
 platforms or features the Android build does not have.
@@ -40,7 +41,7 @@ Hold, drag, release. A one-finger neon physics game where shapes shatter.
 Alternates: `Charge a pressure cloud, let go, and watch neon shapes shatter.` (63)
 · `One finger. Hold to charge, release to blast neon geometry apart.` (64)
 
-**Full description** (4000) — 3 595 chars
+**Full description** (4000) — 3 976 chars
 
 ```
 Hold. Drag. Release.
@@ -63,6 +64,9 @@ The same finger does something different in each of them.
 
 THINGS ACTUALLY SHATTER
 Shapes do not fall apart into pre-baked pieces. Each one splits into convex shards around the exact point the blast landed, so no two breaks look alike, and those shards can be shattered again. Whatever comes out too small is left behind as glowing dust. Triangles, squares, polygons and circles arrive in two materials, neon and metal — and metal only listens to some of your blasts.
+
+IT GETS HEAVIER
+The longer a run lasts, the hotter it gets: bigger shapes, faster, more metal, then volleys from one edge. Your blasts grow to match, with a wider cloud, a harder hit and a second shockwave ring. Now and then a giant polygon drifts in that a blast barely moves; crack it, and it bursts into dozens of shards. The HUD calls each step: HEAT II, HEAT III, OVERDRIVE.
 
 FIVE MODIFIERS THAT BEND THE RULES
 • Pressure — a plain outward blast.
@@ -90,6 +94,78 @@ Built with Flutter, Flame and Forge2D (Box2D v3), drawn with custom fragment sha
 
 When Play Games leaderboards are switched on (section below), put the
 leaderboard bullet back and reword the last sentence of NO STRINGS.
+The English text is at 3 976 of 4 000 since 1.2.0, so something has to be
+trimmed to make room.
+
+### Czech – cs-CZ (translation)
+
+Console: *Main store listing → Manage translations → Add your own
+translations → Czech – cs-CZ*. The in-game UI stays English, so the
+environment, modifier and palette names and the HUD calls (HEAT II,
+OVERDRIVE) are left in English here too — they are what the player sees.
+
+**App name** (30) — 27 chars
+
+```
+Puff: Relaxační neonová hra
+```
+
+**Short description** (80) — 77 chars
+
+```
+Podrž, táhni, pusť. Neonová fyzikální hra na jeden prst, kde se tvary tříští.
+```
+
+**Full description** (4000) — 3 824 chars
+
+```
+Podrž. Táhni. Pusť.
+
+Puff je minimalistická neonová fyzikální hra. Přitiskni prst kamkoli a pod ním začne růst tlakový mrak. Přetáhni ho tam, kde je potřeba. Pusť – a tlak rozmetá geometrii, která se z okrajů sune k jádru uprostřed obrazovky. Když k jádru dorazí jediný tvar, hra končí.
+
+Všechno se točí kolem jedné otázky: kdy pustit?
+
+NABÍT, PŘETLAKOVAT, LITOVAT
+Čím déle držíš, tím je mrak větší a tím silněji udeří. Když přetáhneš hranici přetlaku, mrak vyšumí – žádná rázová vlna, žádné body a navíc penalizace. Okraj mraku bliká během poslední čtvrtiny nabíjení, takže přetlak je vždycky tvoje rozhodnutí, nikdy překvapení. Tvary, které do mraku vplují, zatímco ještě držíš, z něj náboj zase vysávají. Každé dlouhé podržení je tak sázka: větší výbuch, nebo vůbec nic.
+
+Nic neběží na čas kromě tebe. Žádné nabíjení, žádná munice, žádné menu mezi tebou a dalším výbuchem.
+
+ČTYŘI PROSTŘEDÍ, JEDNO OVLÁDÁNÍ
+Stejný prst dělá v každém z nich něco jiného.
+• Vacuum – nic netlumí pohyb, takže každý výbuch je prak a úlomek si drží rychlost, jakou jsi mu dal. Pásy mlhovin, tři vrstvy hvězd v paralaxe, sem tam meteor.
+• Air – slabá gravitace a vítr, který se mění napříč obrazovkou a nenápadně ohýbá všechno, co vypálíš. Opar, pruhy větru, poletující prach.
+• Water – výbuchy se mění v krátká postrčení, všechno pomalu klesá a začneš plánovat o dva výbuchy dopředu. Odlesky hladiny, paprsky světla, stoupající bubliny.
+• Plasma – mezi blízkými tvary samy přeskakují výboje, ať střílíš, nebo ne.
+
+TVARY SE OPRAVDU TŘÍŠTÍ
+Tvary se nerozpadají na předem připravené kousky. Každý se rozštípne na konvexní střepy kolem přesného místa, kam výbuch dopadl, takže žádné dva lomy nevypadají stejně – a střepy jdou rozbít znovu. Co vyjde příliš malé, zůstane jako zářící prach. Trojúhelníky, čtverce, mnohoúhelníky a kruhy přicházejí ve dvou materiálech, neon a kov – a kov poslouchá jen některé výbuchy.
+
+ČÍM DÉLE, TÍM TĚŽŠÍ
+Čím déle hra trvá, tím víc se rozpálí: větší a rychlejší tvary, víc kovu, pak salvy z jednoho okraje. Výbuchy rostou s nimi – širší mrak, silnější úder a druhý prstenec rázové vlny. Občas připluje obří mnohoúhelník, kterým výbuch skoro nepohne; rozbij ho a rozletí se na desítky střepů. HUD ohlásí každý stupeň: HEAT II, HEAT III, OVERDRIVE.
+
+PĚT MODIFIKÁTORŮ, KTERÉ OHÝBAJÍ PRAVIDLA
+• Pressure – obyčejný výbuch směrem ven.
+• Implosion – vtáhne všechno dovnitř, pak malé prásknutí.
+• Magnet – reagují jen kovové tvary, zato pořádně.
+• Gravity well – zanechá slábnoucí přitažlivé pole, které působí i po zhasnutí záblesku.
+• Chain spark – výboje přeskakují z tvaru na tvar k nejbližším sousedům.
+
+BODUJ ZA ŘETĚZOVKU
+Body dostáváš za každý tvar, kterým výbuch skutečně pohne, a bonus za každý, který se rozbije. Tvary, které pak narážejí do sebe, drží kombo naživu: každá srážka prodlouží okno a zvedne násobič až na čtyřnásobek, takže dobře mířený výbuch vydělává ještě dlouho po záblesku. Dobře umístit mrak se vyplatí víc než ho nabít po okraj.
+
+STAČÍ VZÍT DO RUKY
+• Jeden prst, žádný tutoriál, hra začne vteřinu po spuštění.
+• Šest neonových palet – Cyberpunk, Vaporwave, Acid, Mono, Ember, Arctic – přepínatelných i během hry.
+• Nejlepší skóre pro každé prostředí, takže stojí za to vracet se do všech čtyř.
+• Tři úrovně kvality bloomu, aby i starší zařízení běžela plynule.
+• Původní synthwave soundtrack: vlastní téma pro každé prostředí a tlačítko pro přeskočení na další skladbu.
+• Vibrace podle velikosti výbuchu a syntetizované zvukové efekty. Hudba, zvuky i vibrace mají každý svůj vypínač.
+
+BEZ HÁČKŮ
+Žádná registrace, žádné reklamy, žádné nákupy v aplikaci, žádné předplatné, žádné sledování, žádná analytika. Puff funguje zcela offline a nikam nic neposílá.
+
+Postaveno na Flutteru, Flame a Forge2D (Box2D v3), vykresleno vlastními fragment shadery na Impelleru. Zdrojový kód je veřejně na GitHubu.
+```
 
 ### Graphics
 
@@ -100,6 +176,7 @@ All in `store/play/`, all without alpha, all inside Play's limits.
 | App icon | `icon_512.png` | 512×512 |
 | Feature graphic | `feature_graphic_1024x500.png` | 1024×500 |
 | Phone screenshots | `screenshots/puff_1_blast.png` … `puff_6_air.png` | 1080×1920 (9:16) |
+| 7" and 10" tablet screenshots | `tablet/puff_1_blast.png` … `puff_6_air.png` (same set in both slots) | 1600×2560 (10:16) |
 
 Upload order: blast → plasma → water → arctic → menu → air.
 
@@ -107,8 +184,16 @@ The screenshots are native Android frames, not resized iOS ones: Play refuses
 anything taller than 2:1, and an iPhone frame carries the Dynamic Island.
 `tool/gen_screenshots_android.sh` reshoots them from an emulator.
 
-Tablet screenshots (7" and 10") are optional and left empty; the game is
-portrait-only and the phone set is shown on tablets too.
+Tablet screenshots are optional. Puff is portrait-only and draws the same
+scene at any width, so `tool/play_tablet_shots.py` puts each phone frame on a
+10:16 canvas whose margins are the same frame blurred and darkened. They are
+the phone shots, honestly framed, not tablet captures: good enough to fill the
+slots, not enough for a "designed for tablets" claim. For native frames, run
+`gen_screenshots_android.sh` with `wm size 1600x2560` on a tablet AVD.
+
+The phone shots predate 1.2.0 (no HEAT tier or giant polygon on screen). They
+are still accurate; a reshoot with `--dart-define=PUFF_HEAT=1.3` would show
+off the new escalation.
 
 **Video** — none.
 
@@ -169,11 +254,15 @@ children?" answer **No**.
 
 Puff has no analytics or ad SDK and no server of its own. `shared_preferences`
 keeps settings and local high scores on the device; that is not "collection"
-in Play's sense because nothing leaves it. The Android build never calls the
-network: with no Play Games IDs filled in, `games_services` is linked but
-idle. Its Play Services dependency may still merge the
-`INTERNET` permission into the release manifest; that does not change the
-answer, the form is about data, not permissions.
+in Play's sense because nothing leaves it. With no Play Games IDs filled in,
+`games_services` is linked but idle.
+
+Re-checked against the 1.2.0 release APK (versionCode 11) on 2026-10-15 with
+`aapt2 dump badging`: the merged manifest requests **no permissions at all**
+apart from AndroidX's own `DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION` — not
+even `INTERNET`. The only SDK added since 1.0.4 is `flutter_soloud` (native
+audio: SoLoud, Ogg/Vorbis/Opus/FLAC), which plays bundled files and has no
+network or data path. No IAP, no ads. The "no data collected" answer stands.
 
 Revisit this form the day Play Games Services, telemetry or IAP ship.
 
@@ -191,9 +280,102 @@ app, but it still costs days.
 
 `versionCode` is the workflow run number (`1.0.4` → 9), so it only ever goes
 up as long as every upload comes from CI. A local `flutter build appbundle`
-produces `+1` and Play will refuse it.
+produces `+1` (pubspec says `1.2.0+1`) and Play will refuse it.
 
-**Order that wastes no time**
+| Tag | versionCode (run #) | On Play |
+|---|---|---|
+| v1.0.4 | 9 | production — the build live since the first release |
+| v1.0.5 | 10 | not uploaded (paperwork + inert leaderboards only) |
+| v1.1.0 | — | **never tagged**, so no AAB exists; Jukebox ships inside 1.2.0 |
+| v1.2.0 | 11 | **next production release** — AAB on the GitHub Release |
+
+Confirm under *Test and release → App bundle explorer* that production holds
+9 (or at most 10); 11 is then accepted. The only commit after v1.2.0 is the
+iOS deployment target, so the v1.2.0 AAB is current for Android: no new tag
+is needed. Checked on the release APK: `com.ol1n.puff`, versionName 1.2.0,
+versionCode 11, minSdk 24, targetSdk 36, signed by `CN=Puff, OU=Mobile,
+O=lioilsources` (SHA-256 `b438c162…a7b6`). Play App Signing re-signs it; the
+upload key must be the one the console lists under *App integrity → Upload
+key certificate* — same CI secret as 1.0.4, so it should match.
+
+AAB is 82 MB (the 1.1.0 soundtrack is 24 MB of OGG), well under Play's
+200 MB base-module limit; per-device downloads are smaller.
+
+**Shipping 1.2.0 (an update, not a first release)**
+
+1. `gh release download v1.2.0 -p app-release.aab` (or the Release page).
+2. *Test and release → Testing → Internal testing → Create new release* →
+   upload the AAB → release name `1.2.0` → paste the notes below (en-US and
+   cs-CZ) → *Save and publish*. No review on internal.
+3. Install from the internal track on a real phone and play to OVERDRIVE at
+   least once (≈4 min) — 1.2.0's heat tuning has never been played on a
+   device, and a giant polygon cracking into 72 shards under overdrive
+   particles has not been profiled. Listen for the music under the blasts.
+4. Check the pre-launch report for crashes/ANRs (`flutter_soloud` is new
+   native code on every ABI).
+5. *Production → Create new release → Add from library* → pick versionCode
+   11 → same name and notes → staged rollout 20 % is the cheap safety net
+   (raise to 100 % after a day without crashes in *Android vitals*) → *Send
+   for review*.
+6. Listing (independent of the binary, can go in the same review): paste the
+   updated EN full description (new IT GETS HEAVIER section), add the cs-CZ
+   translation, upload the tablet set. *Publishing overview* sends listing
+   and release together.
+
+**Release name**
+
+```
+1.2.0
+```
+
+**Release notes for 1.2.0** (500 per language). Production has 1.0.4, so
+these cover the Jukebox from 1.1.0 as well.
+
+en-US — 392 chars
+
+```
+<en-US>
+Runs now escalate. The longer you last, the hotter it gets: bigger shapes, more metal, volleys from one edge, and blasts that hit harder to match. HEAT II, HEAT III, then OVERDRIVE. Watch for the giant polygon that has to be cracked, not pushed.
+Music too: a synthwave theme for every environment, NEXT TRACK on the pause screen and its own MUSIC switch in Settings. Thanks for asking for it!
+</en-US>
+```
+
+cs-CZ — 383 chars
+
+```
+<cs-CZ>
+Hra teď graduje. Čím déle vydržíte, tím víc se rozpálí: větší tvary, víc kovu, salvy z jednoho okraje a výbuchy, které udeří silněji. HEAT II, HEAT III a nakonec OVERDRIVE. Pozor na obří mnohoúhelník – ten se musí rozbít, odfouknout nejde.
+Nově i hudba: vlastní synthwave téma pro každé prostředí, NEXT TRACK v pauze a samostatný přepínač MUSIC v nastavení. Díky, že jste o ni psali!
+</cs-CZ>
+```
+
+**Release notes for 1.1.0** — never shipped (no v1.1.0 tag), superseded by
+1.2.0 above; kept for the record. (500, en-US) — 328 chars
+
+```
+<en-US>
+Music! Every environment now has its own synthwave theme, and so does the menu.
+• The title of a track shows for a moment when it starts.
+• NEXT TRACK on the pause screen skips to the other one.
+• MUSIC has its own switch in Settings, separate from SOUND.
+Thanks to the first reviewer on Google Play, who asked for exactly this.
+</en-US>
+```
+
+**Release notes for 1.0.4** — release name `1.0.4`, the first production
+release (500, en-US)
+
+```
+<en-US>
+First release on Google Play.
+• Four environments — Vacuum, Air, Water, Plasma — each with its own physics.
+• Five blast modifiers and six neon palettes.
+• Shapes shatter into real shards around the point of impact.
+• No ads, no purchases, no tracking. Plays fully offline.
+</en-US>
+```
+
+**Order used for the first release (1.0.4), for reference**
 
 1. Internal testing: testers list with your own address, upload the AAB,
    publish. No review; installable within minutes.
@@ -206,36 +388,6 @@ produces `+1` and Play will refuse it.
 5. *Production → Create new release → Add from library* (reuse the same AAB),
    choose countries (all), send for review. First review usually takes a few
    days.
-
-**Release name**
-
-```
-1.0.4
-```
-
-**Release notes for 1.1.0** (500, en-US) — 328 chars
-
-```
-<en-US>
-Music! Every environment now has its own synthwave theme, and so does the menu.
-• The title of a track shows for a moment when it starts.
-• NEXT TRACK on the pause screen skips to the other one.
-• MUSIC has its own switch in Settings, separate from SOUND.
-Thanks to the first reviewer on Google Play, who asked for exactly this.
-</en-US>
-```
-
-**Release notes for 1.0.4** (500, en-US)
-
-```
-<en-US>
-First release on Google Play.
-• Four environments — Vacuum, Air, Water, Plasma — each with its own physics.
-• Five blast modifiers and six neon palettes.
-• Shapes shatter into real shards around the point of impact.
-• No ads, no purchases, no tracking. Plays fully offline.
-</en-US>
-```
 
 **Pricing** — Free. A free app can never be turned into a paid one on Play, so
 this is final; IAP can still be added later.
