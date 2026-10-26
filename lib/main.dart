@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'app/game_center.dart';
 import 'app/overlays.dart';
 import 'app/settings.dart';
+import 'l10n/app_localizations.dart';
 import 'game/puff_game.dart';
 import 'game/sim/environment.dart';
 import 'game/sim/modifier.dart';
@@ -97,6 +98,8 @@ class _PuffAppState extends State<PuffApp> {
     final s = widget.settings;
     return MaterialApp(
       title: 'Puff',
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(useMaterial3: true),
       home: Scaffold(
@@ -106,6 +109,8 @@ class _PuffAppState extends State<PuffApp> {
             final padding = MediaQuery.paddingOf(context);
             game.safeTop = padding.top;
             game.safeBottom = padding.bottom;
+            game.l10n = AppLocalizations.of(context);
+            game.textDirection = Directionality.of(context);
             return GameWidget<PuffGame>(
               game: game,
               overlayBuilderMap: {

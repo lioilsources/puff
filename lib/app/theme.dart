@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../game/palette.dart';
+import '../l10n/app_localizations.dart';
 
 /// Neon UI primitives built from the active palette. No literal colors.
 class NeonText extends StatelessWidget {
@@ -204,6 +205,7 @@ class NeonToggle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return InkWell(
       onTap: () => onChanged(!value),
       child: Padding(
@@ -213,10 +215,10 @@ class NeonToggle extends StatelessWidget {
           children: [
             SizedBox(
               width: 140,
-              child: NeonText(label, color: color, size: 13, glow: false, align: TextAlign.left),
+              child: NeonText(label, color: color, size: 13, glow: false, align: TextAlign.start),
             ),
             const SizedBox(width: 16),
-            _Chip(label: value ? 'ON' : 'OFF', color: color, selected: value, onTap: () => onChanged(!value)),
+            _Chip(label: value ? l10n.on : l10n.off, color: color, selected: value, onTap: () => onChanged(!value)),
           ],
         ),
       ),

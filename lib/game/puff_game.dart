@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
 
+import '../l10n/app_localizations.dart';
 import 'components/background.dart';
 import 'components/cloud.dart';
 import 'components/core.dart';
@@ -138,6 +139,11 @@ class PuffGame extends Forge2DGame {
   /// Safe-area insets in logical pixels, set by the widget layer.
   double safeTop = 0;
   double safeBottom = 0;
+
+  /// UI strings and reading direction for the Flame HUD, set by the widget
+  /// layer from the app locale.
+  AppLocalizations l10n = lookupAppLocalizations(const Locale('en'));
+  TextDirection textDirection = TextDirection.ltr;
 
   /// Visible world size in meters. Width is fixed, height follows the screen.
   Vector2 worldSize = Vector2(Tuning.worldWidth, Tuning.worldWidth);

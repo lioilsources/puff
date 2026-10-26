@@ -1,0 +1,132 @@
+{
+  "@@locale": "en",
+  "tagline": "hold · drag · release",
+  "@tagline": {
+    "description": "Main menu subtitle: the three gestures of the game."
+  },
+  "play": "PLAY",
+  "bestScore": "best · {score}",
+  "@bestScore": {
+    "description": "Best score for the selected environment.",
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "environmentTitle": "ENVIRONMENT",
+  "modifierTitle": "MODIFIER",
+  "paletteTitle": "PALETTE",
+  "leaderboard": "LEADERBOARD",
+  "settings": "SETTINGS",
+  "paused": "PAUSED",
+  "resume": "RESUME",
+  "restart": "RESTART",
+  "nextTrack": "♪ NEXT TRACK",
+  "menu": "MENU",
+  "gameOver": "GAME OVER",
+  "newBest": "NEW BEST",
+  "@newBest": {
+    "description": "Game over: this run set a new best score."
+  },
+  "gameOverStats": "combo x{combo}   displaced {displaced}   broken {broken}",
+  "@gameOverStats": {
+    "description": "Game over stats: best combo, shapes pushed away, shapes broken.",
+    "placeholders": {
+      "combo": {
+        "type": "int"
+      },
+      "displaced": {
+        "type": "int"
+      },
+      "broken": {
+        "type": "int"
+      }
+    }
+  },
+  "gameOverRun": "{environment} · {modifier} · {seconds}s",
+  "@gameOverRun": {
+    "description": "Game over: environment, modifier and run length in seconds.",
+    "placeholders": {
+      "environment": {
+        "type": "String"
+      },
+      "modifier": {
+        "type": "String"
+      },
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "again": "AGAIN",
+  "quality": "QUALITY",
+  "qualityLow": "LOW",
+  "qualityMed": "MED",
+  "@qualityMed": {
+    "description": "Graphics quality: medium. Keep short."
+  },
+  "qualityHigh": "HIGH",
+  "haptics": "HAPTICS",
+  "sound": "SOUND",
+  "music": "MUSIC",
+  "debugOverlay": "DEBUG OVERLAY",
+  "back": "BACK",
+  "on": "ON",
+  "@on": {
+    "description": "Toggle chip, keep very short."
+  },
+  "off": "OFF",
+  "@off": {
+    "description": "Toggle chip, keep very short."
+  },
+  "envVacuum": "Vacuum",
+  "envAir": "Air",
+  "envWater": "Water",
+  "envPlasma": "Plasma",
+  "modPressure": "Pressure",
+  "modImplosion": "Implosion",
+  "modMagnet": "Magnet",
+  "modGravityWell": "Gravity well",
+  "modChainSpark": "Chain spark",
+  "paletteCyberpunk": "Cyberpunk",
+  "paletteVaporwave": "Vaporwave",
+  "paletteAcid": "Acid",
+  "paletteMono": "Mono",
+  "paletteEmber": "Ember",
+  "paletteArctic": "Arctic",
+  "heatTier1": "HEAT I",
+  "heatTier2": "HEAT II",
+  "heatTier3": "HEAT III",
+  "heatTierOverdrive": "OVERDRIVE",
+  "@heatTierOverdrive": {
+    "description": "Highest heat tier announced in the middle of the screen."
+  },
+  "hudCombo": "x{multiplier}  combo {combo}",
+  "@hudCombo": {
+    "description": "HUD: current score multiplier and combo count.",
+    "placeholders": {
+      "multiplier": {
+        "type": "String"
+      },
+      "combo": {
+        "type": "int"
+      }
+    }
+  },
+  "hudEscaped": "{environment}  escaped {escaped}/{max}",
+  "@hudEscaped": {
+    "description": "HUD: environment name (upper case) and how many shapes escaped of the allowed maximum.",
+    "placeholders": {
+      "environment": {
+        "type": "String"
+      },
+      "escaped": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  }
+}
