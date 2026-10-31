@@ -539,8 +539,12 @@ paste-ready texts and the release order in `store/APP_STORE.md` → *ASO*.
 - **App preview.** `tool/gen_app_preview.sh` records the demo driver and
   cuts 25 s at 886x1920 that start on a blast, with the vacuum theme as the
   audio track.
-- Subtitle `Satisfying stress relief game`, new keywords. `popping` and
-  `bubble` from the handoff are left out: Puff pops no bubbles.
+- **Subtitle and keywords were already done** in 1.2.0 (waiting for review):
+  `Satisfying Physics Stress Toy`, asmr/calm/fidget/… The repo did not
+  know; App Store Connect, read through the API, did. 1.2.2 keeps them.
+- **Promo text on live 1.0.4** changed through the API (App Manager key).
+  The first PATCH mentioned the soundtrack, which 1.0.4 does not have;
+  corrected a minute later.
 
 Not verified:
 

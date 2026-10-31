@@ -4,7 +4,7 @@ Vlož celé do Claude v Chrome (v okně, kde je App Store Connect přihlášený
 
 ---
 
-Pracuješ v App Store Connect na aplikaci **Puff: Pressure Blast** (bundle
+Pracuješ v App Store Connect na aplikaci **Puff: Squishy Relaxing Game** (bundle
 `com.ol1n.puff`, Apple ID 6808586613). Cíl: zlepšit poměr zobrazení →
 návštěva stránky v USA z 0,6 % na ≥ 3 %. Všechny texty jsou v repu
 `~/Dev/GitHub/puff` v `store/APP_STORE.md`, sekce **ASO — 1.2.2**. Kopíruj je
@@ -13,22 +13,19 @@ přesně odtud, nic nepřepisuj.
 Před každým odesláním (Save u textů, Submit for Review, Start Test) mi napiš,
 co přesně odešleš, a počkej na moje „ano“.
 
-## Krok 1 — Promo text (hned, bez nové verze)
+## Krok 1 — Promo text
 
-*App Store → aktuální živá verze → English (U.S.) → Promotional Text* →
-vlož promo text ze sekce *Promotional Text (170)*. Ulož.
+Hotovo přes API 2026-10-31 (živá 1.0.4). Přeskoč.
 
 ## Krok 2 — Verze 1.2.2 (až bude build 1.2.2 zpracovaný)
 
-Podmínka: v *TestFlight* je build verze **1.2.2** ve stavu Ready. Pokud
+Podmínka: 1.2.0 už není v review a v *TestFlight* je build verze **1.2.2** ve stavu Ready. Pokud
 není, skonči a napiš mi to.
 
 1. *App Store → + Version* → `1.2.2`.
 2. *Build* → vyber build 1.2.2.
 3. English (U.S.):
-   - **Subtitle** a **Keywords** ze sekcí *Subtitle (30)* a *Keywords (100)*.
-     Subtitle a Keywords se nastavují u verze/App Information podle toho, kde
-     je ASC zrovna má; zkontroluj počty znaků po vložení.
+   - **Subtitle** a **Keywords** nech, jak je ASC převezme z 1.2.0.
    - **What's New** ze sekce *What's New (1.2.2)*.
    - **Screenshots, iPhone 6.9"**: nahraj tři soubory z
      `build/store_shots/en-US/` (`1_blast.png`, `2_combo.png`,

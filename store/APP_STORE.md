@@ -3,7 +3,7 @@
 Everything below is ready to paste into App Store Connect. Character counts are
 against Apple's limits; recount after any edit.
 
-Bundle id `com.ol1n.puff` · listing name **Puff: Pressure Blast** (the plain
+Bundle id `com.ol1n.puff` · listing name **Puff: Squishy Relaxing Game** (was "Puff: Pressure Blast"; the plain
 name "Puff" is taken; `CFBundleDisplayName` stays "Puff" on the home screen).
 
 ---
@@ -22,38 +22,47 @@ What changes, and where it comes from:
 | Icon | 3 alternates in the build for a Product Page Optimization test; primary unchanged | `tool/gen_alt_icons.py` → `AppIcon-{Blast,Cloud,Shatter}` |
 | Screenshots 1–3 | captioned: blast / combo / calm, 10 locales | `tool/gen_store_shots.py`, `store/appstore/captions.json` |
 | App preview | 25 s, opens on a blast, no intro | `tool/gen_app_preview.sh` |
-| Subtitle + keywords | below | this file |
+| Subtitle + keywords | already in 1.2.0, kept | below |
 
 The primary icon (pineapple and banana on cream) has nothing to do with a
 neon physics game, and it is the one thing every impression sees. The test
 answers whether that costs taps; if any neon variant wins, make it primary
 in the next build (`assets/icon/icon.png` + `dart run flutter_launcher_icons`).
 
-### Subtitle (30) — 29 chars
+### Name, subtitle, keywords — already in 1.2.0
+
+Read back from App Store Connect on 2026-10-31. The name changed in
+App Store Connect after this file was written; the section *App
+Information* below is the 1.0 history.
+
+| | Live (1.0.4) | 1.2.0 (waiting for review) |
+|---|---|---|
+| Name | `Puff: Squishy Relaxing Game` | same |
+| Subtitle | `Hold, drag, release, shatter` | `Satisfying Physics Stress Toy` |
+| Keywords | `physics,blast,neon,explosion,shatter` | `asmr,calm,fidget,anxiety,relief,chill,neon,shatter,explosion,blast,smash,break,destroy,offline,zen` |
+
+1.2.0 already carries what the handoff asked for (satisfying, stress,
+fidget, asmr, calm), so 1.2.2 keeps its subtitle and keywords. Do not
+add `relaxing`, `squishy` or `game`: they are in the name and already
+indexed. The handoff also suggested `popping` and `bubble`: left out,
+Puff pops no bubbles, and a search that lands on the wrong game lowers
+conversion instead of raising it. Search popularity was not measured
+(that needs Apple Search Ads); after 14 days, check *Analytics → Sources →
+App Store Search* and swap the weakest.
+
+### Promotional Text (170)
+
+Live on 1.0.4 since 2026-10-31 (141 chars). 1.0.4 has no music, so no word
+about the soundtrack:
 
 ```
-Satisfying stress relief game
+Hold, drag, release, and watch neon shapes shatter. A calm, satisfying physics toy for one-minute breaks. No ads, no tracking, fully offline.
 ```
 
-### Keywords (100) — 99 chars
+1.2.0 has its own, set before review; keep it:
 
 ```
-fidget,antistress,asmr,calm,relaxing,physics,neon,explosion,shatter,offline,arcade,casual,smash,zen
-```
-
-No word repeats the name or the subtitle (puff, pressure, blast,
-satisfying, stress, relief, game — those are indexed already). The handoff
-also suggested `popping` and `bubble`: left out, Puff pops no bubbles, and a
-search that lands on the wrong game lowers conversion instead of raising it.
-Search popularity was not measured (that needs Apple Search Ads); after 14
-days, check *Analytics → Sources → App Store Search* and swap the weakest.
-
-### Promotional Text (170) — 158 chars
-
-Changes without a new version; can go in today.
-
-```
-Hold, drag, release, and watch neon shapes shatter. A calm, satisfying physics toy with a synthwave soundtrack of its own. No ads, no tracking, fully offline.
+Hold, drag, release, shatter. A neon physics toy for one-minute stress relief — how long do you dare to hold the charge?
 ```
 
 ### What's New (1.2.2)
@@ -86,10 +95,11 @@ re-cut with `CUT_ONLY=1 START=<seconds>`. Upload
 
 ### Release order
 
-1. Promotional text: now, no version needed.
+1. Promotional text: done on 1.0.4 (2026-10-31).
 2. Tag `v1.2.2` → CI uploads the build with the alternate icons.
-3. New version 1.2.2 in App Store Connect: that build, subtitle, keywords,
-   screenshots, preview, What's New → submit.
+3. New version 1.2.2 in App Store Connect (after 1.2.0 is out of review):
+   that build, screenshots, preview, What's New → submit. Subtitle and
+   keywords carry over from 1.2.0.
 4. Once 1.2.2 is live: *Product Page Optimization → Create test* →
    treatments Blast, Cloud, Shatter (icon) and the captioned set
    (screenshots), 100 % of traffic, all localizations. Run it at least
