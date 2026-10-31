@@ -1,0 +1,20 @@
+{
+  "_comment": "Captions for the first three App Store screenshots, rendered by tool/gen_store_shots.py. At most four words. Text after '|' is drawn in the shot's accent colour. A locale given as {\"copy\": \"xx\"} reuses another locale's captions.",
+  "shots": [
+    {"raw": "1_blast.png", "accent": "yellow"},
+    {"raw": "2_combo.png", "accent": "cyan"},
+    {"raw": "3_calm.png", "accent": "magenta"}
+  ],
+  "locales": {
+    "en-US": ["Inflate. Aim. |BLAST.", "Chain huge |combos", "Calm, neon, |satisfying"],
+    "en-GB": {"copy": "en-US"},
+    "en-CA": {"copy": "en-US"},
+    "en-AU": {"copy": "en-US"},
+    "de-DE": ["Aufblasen. Zielen. |BOOM.", "Riesige |Kombos", "Neon zum |Entspannen"],
+    "fr-FR": ["Gonfle. Vise. |BOUM !", "Des combos |énormes", "Du néon qui |apaise"],
+    "es-MX": ["Infla. Apunta. |¡BUM!", "Combos |gigantes", "Neón que |relaja"],
+    "pt-BR": ["Infle. Mire. |EXPLODA!", "Combos |gigantes", "Neon que |relaxa"],
+    "ja": ["ためて、狙って、|ドカン！", "大連鎖|コンボ", "ネオンで|癒される"],
+    "ko": ["모으고, 조준하고, |펑!", "거대한 |콤보", "힐링되는 |네온"]
+  }
+}
