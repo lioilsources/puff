@@ -513,3 +513,40 @@ Not verified:
   have not been on screen together. Nothing has been profiled on a phone.
 - **The boom** has not been heard.
 - **Scores inflate** with heat; the leaderboards are unchanged.
+
+## 1.2.2 — App Store page (2026-10-31)
+
+3 205 impressions a year, 30 page views: 0.9 % of the people who see Puff in
+search open it (USA 0.6 %). Handoff in `Prompts/PUFF_ASO_PLAN.md`, the
+paste-ready texts and the release order in `store/APP_STORE.md` → *ASO*.
+
+- **The icon is a pineapple and a banana on cream.** It has nothing to do
+  with the game and it is what every impression sees. It stays primary for
+  now so the test has a control: three alternates ship in the build
+  (`AppIcon-Blast`, `-Cloud`, `-Shatter`) for Product Page Optimization,
+  which can only test icons that are in the binary. `tool/gen_alt_icons.py`
+  draws them: one neon object on near-black, checked at 60x60.
+- **Alternate icons are build settings, not Info.plist.** 
+  `ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES` plus
+  `INCLUDE_ALL_APPICON_ASSETS`; actool writes `CFBundleAlternateIcons` for
+  iPhone and iPad itself. Each set is a single 1024 image.
+- **Captioned screenshots, ten locales.** `tool/gen_store_shots.py` puts a
+  caption of at most four words over the blast, the combo and the calm
+  frame, on a blurred copy of the frame. Captions in
+  `store/appstore/captions.json`; output in `build/store_shots/<locale>/`,
+  the folder layout `fastlane deliver` reads. The three raw frames are now
+  in `store/appstore/raw/` instead of only in ol1n.now.
+- **App preview.** `tool/gen_app_preview.sh` records the demo driver and
+  cuts 25 s at 886x1920 that start on a blast, with the vacuum theme as the
+  audio track.
+- Subtitle `Satisfying stress relief game`, new keywords. `popping` and
+  `bubble` from the handoff are left out: Puff pops no bubbles.
+
+Not verified:
+
+- **The iOS build with the new settings.** The simulator build does not pass
+  inside the agent sandbox (Flutter's lipo check of `Flutter.framework`
+  comes back empty), so only `actool` on the catalog was run: the partial
+  Info.plist lists all three alternates. CI on the tag is the real check.
+- **The preview** has not been recorded yet, for the same reason.
+- **Search popularity** of the keywords: no Apple Search Ads account.
