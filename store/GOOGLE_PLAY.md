@@ -284,15 +284,21 @@ produces `+1` (pubspec says `1.2.0+1`) and Play will refuse it.
 
 | Tag | versionCode (run #) | On Play |
 |---|---|---|
-| v1.0.4 | 9 | production — the build live since the first release |
+| v1.0.4 | 9 | production 2026-10-12 → 2026-10-27, replaced by 1.2.1 |
 | v1.0.5 | 10 | not uploaded (paperwork + inert leaderboards only) |
 | v1.1.0 | — | **never tagged**, so no AAB exists; Jukebox ships inside 1.2.0 |
-| v1.2.0 | 11 | **next production release** — AAB on the GitHub Release |
+| v1.2.0 | 11 | never reached production; superseded by 1.2.1 |
+| v1.2.1 | 12 | **production since 2026-10-27** — Jukebox, Heat, UI localization |
 
-Confirm under *Test and release → App bundle explorer* that production holds
-9 (or at most 10); 11 is then accepted. The only commit after v1.2.0 is the
-iOS deployment target, so the v1.2.0 AAB is current for Android: no new tag
-is needed. Checked on the release APK: `com.ol1n.puff`, versionName 1.2.0,
+Until 2026-10-27 Play still served 1.0.4 while the App Store already had the Jukebox, which
+is why Android players had no music. The next AAB must come from CI with a
+versionCode above 12.
+
+1.2.1 (tagged on `eaeadba`, the UI localization merge) checked on the
+release APK: `com.ol1n.puff`, versionName 1.2.1, versionCode 12; the AAB
+carries all ten OGG tracks and `libflutter_soloud_plugin.so` for arm64-v8a,
+armeabi-v7a and x86_64. Play Console reports 178 countries and 19 420
+supported devices. The 1.2.0 APK, for reference: versionName 1.2.0,
 versionCode 11, minSdk 24, targetSdk 36, signed by `CN=Puff, OU=Mobile,
 O=lioilsources` (SHA-256 `b438c162…a7b6`). Play App Signing re-signs it; the
 upload key must be the one the console lists under *App integrity → Upload
