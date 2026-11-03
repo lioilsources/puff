@@ -47,6 +47,21 @@ class PuffSettings extends ChangeNotifier {
     for (final env in EnvironmentKind.values) {
       s.highScores[env] = prefs.getInt('highScore_${env.name}') ?? 0;
     }
+    // Scripted preview recordings pick the scene at build time:
+    // `--dart-define=PUFF_ENV=water --dart-define=PUFF_PALETTE=Vaporwave
+    // --dart-define=PUFF_MODIFIER=gravityWell`. Nothing is saved.
+    const env = String.fromEnvironment('PUFF_ENV');
+    const palette = String.fromEnvironment('PUFF_PALETTE');
+    const modifier = String.fromEnvironment('PUFF_MODIFIER');
+    if (env.isNotEmpty) {
+      s.environment = EnvironmentKind.values.byNameOr(env, s.environment);
+    }
+    if (palette.isNotEmpty) {
+      s.paletteName = palette;
+    }
+    if (modifier.isNotEmpty) {
+      s.modifier = ModifierKind.values.byNameOr(modifier, s.modifier);
+    }
     return s;
   }
 
