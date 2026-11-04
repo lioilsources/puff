@@ -83,6 +83,10 @@ class PuffGame extends Forge2DGame {
   /// Force the debug overlay on: `--dart-define=PUFF_DEBUG=true`.
   static const bool debugForced = bool.fromEnvironment('PUFF_DEBUG');
 
+  /// Runs that never end, so a recording can wait for the heat to climb:
+  /// `--dart-define=PUFF_ENDLESS=true`. The core keeps its last hit point.
+  static const bool endless = bool.fromEnvironment('PUFF_ENDLESS');
+
   /// Pin the heat for screenshots and tuning: `--dart-define=PUFF_HEAT=1.2`.
   static final double? heatForced = double.tryParse(
     const String.fromEnvironment('PUFF_HEAT'),
@@ -371,7 +375,7 @@ class PuffGame extends Forge2DGame {
       return;
     }
     shape.removeFromParent();
-    coreHp -= 1;
+    coreHp = endless ? math.max(coreHp - 1, 1) : coreHp - 1;
     fx.shake.addTrauma(0.35);
     postProcess?.addFlash(0.25, PaletteRole.hazard);
     audio.onCoreHit();
@@ -383,7 +387,7 @@ class PuffGame extends Forge2DGame {
 
   void onShapeLeftBottom(ShapeBody shape) {
     if (Tuning.loseRule == LoseRule.bottomEscape && isPlaying) {
-      escapes += 1;
+      escapes = endless ? math.min(escapes + 1, Tuning.maxEscapes - 1) : escapes + 1;
       if (escapes >= Tuning.maxEscapes) {
         gameOver();
       }
