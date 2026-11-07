@@ -49,5 +49,14 @@
   "heatTier3": "ЖАР III",
   "heatTierOverdrive": "ПЕРЕГРУЗКА",
   "hudCombo": "x{multiplier}  комбо {combo}",
-  "hudEscaped": "{environment}  сбежало {escaped}/{max}"
+  "hudEscaped": "{environment}  сбежало {escaped}/{max}",
+  "weekly": "ИСПЫТАНИЕ НЕДЕЛИ",
+  "weeklyDaysLeft": "{days, plural, =0{последний день} one{остался {days} день} few{осталось {days} дня} other{осталось {days} дней}}",
+  "weeklyBest": "рекорд недели · {score}",
+  "achievements": "ДОСТИЖЕНИЯ",
+  "challenges": "ВЫЗОВЫ",
+  "share": "ПОДЕЛИТЬСЯ",
+  "shareText": "Мой новый рекорд в Puff: {score}. Сможешь побить? {link}",
+  "reducedFlashes": "МЕНЬШЕ ВСПЫШЕК",
+  "paletteHoliday": "Праздники"
 }

@@ -373,3 +373,143 @@ open them.
 The App Store links in `index.html` are placeholders
 (`apps.apple.com/app/puff-pressure-blast`); replace them with the real
 product URL once the app is live.
+
+---
+
+## 1.3.0 — App Store Connect checklist
+
+Everything here is typed into App Store Connect by hand; the build only
+reports to these IDs. A misspelled ID fails silently, exactly as with the
+leaderboards above. Nothing goes to review until Ol1n says so.
+
+### Achievements (Game Center → Achievements → +)
+
+IDs must match `AchievementId` in `lib/game/sim/achievements.dart`. All are
+**not hidden**, **not achievable more than once**. 735 points of the 1 000
+allowed, so later ones still fit. English (U.S.) texts below; the image
+(512×512) is required by ASC; any neon icon will do.
+
+| Achievement ID | Title | Points | Pre-earned description | Earned description |
+|---|---|---|---|---|
+| `puff.ach.first_run` | First Puff | 10 | Finish your first run. | You finished your first run. |
+| `puff.ach.combo_x4` | Maxed Out | 50 | Push the combo multiplier to x4. | You pushed the multiplier to x4. |
+| `puff.ach.combo_40` | Chain Reaction | 100 | Reach a 40-hit combo. | You chained 40 hits. |
+| `puff.ach.perfect_release` | Perfect Pressure | 25 | Release a fully charged cloud without overcharging it. | Full charge, no overpressure. |
+| `puff.ach.heat_3` | Heat III | 50 | Last until HEAT III. | You lasted until HEAT III. |
+| `puff.ach.overdrive` | Overdrive | 100 | Last until OVERDRIVE. | You reached OVERDRIVE. |
+| `puff.ach.untouchable` | Untouchable | 75 | Keep the core untouched for the first 60 seconds. | 60 seconds without a scratch. |
+| `puff.ach.shatter_50` | Shatterer | 50 | Break 50 shapes in one run. | 50 shapes broken in one run. |
+| `puff.ach.all_environments` | World Tour | 50 | Finish a run in Vacuum, Air, Water and Plasma. | You played all four environments. |
+| `puff.ach.all_modifiers` | Toolkit | 50 | Finish a run with every modifier. | You used every modifier. |
+| `puff.ach.all_palettes` | Color Theory | 25 | Finish runs in six different palettes. | Six palettes played. |
+| `puff.ach.runs_10` | Regular | 25 | Finish 10 runs. | 10 runs finished. |
+| `puff.ach.runs_50` | Devoted | 75 | Finish 50 runs. | 50 runs finished. |
+| `puff.ach.weekly` | Weekly Contender | 50 | Finish a weekly challenge run. | You took on the weekly challenge. |
+
+Achievements are evaluated when a run ends. Unlocks earned while signed out
+are kept on the device and reported at the next sign-in.
+
+### Weekly leaderboard (Leaderboards → + → Recurring Leaderboard)
+
+| Field | Value |
+|---|---|
+| Reference name | Weekly |
+| Leaderboard ID | `puff.weekly` |
+| Start | **23 Nov 2026, 00:00 UTC** (Monday; `WeeklyChallenge.launch`) |
+| Duration / restarts every | 1 week |
+| Score format, submit, sort | Integer, Best Score, High to Low |
+| Display name (en-US) | Weekly Challenge |
+
+The week's environment, modifier and spawn seed follow from the date alone;
+no build or config is needed per week. Before the start date the menu hides
+the challenge (TestFlight builds can show it early with
+`--dart-define=PUFF_WEEKLY=true`). The remote config can switch it off
+(`"weekly": false`).
+
+### Challenges (Game Center → Challenges, iOS 26+)
+
+Challenges sit on top of existing leaderboards; the scores the game already
+submits count, the app only shows a **CHALLENGES** button once ASC has at
+least one definition. Suggested definitions, each **repeatable**, durations
+1 day / 3 days / 1 week:
+
+| Challenge ID | Leaderboard | Title |
+|---|---|---|
+| `puff.challenge.vacuum` | `puff.vacuum` | Vacuum Showdown |
+| `puff.challenge.plasma` | `puff.plasma` | Plasma Showdown |
+| `puff.challenge.weekly` | `puff.weekly` | Weekly Showdown |
+
+Then attach the leaderboards, achievements and challenges to the 1.3.0
+version (section Game Center), as with 1.0.4.
+
+### Game activities (optional, iOS 26+)
+
+A game activity opens Puff from the Games app or from an In-App Event
+straight into a run. The app reads the activity's properties:
+
+| Property | Values | Effect |
+|---|---|---|
+| `mode` | `weekly` | plays this week's challenge |
+| `environment` | `vacuum`, `air`, `water`, `plasma` | free run in that environment |
+| `modifier` | `pressure`, `implosion`, `magnet`, `gravityWell`, `chainSpark` | and with that modifier |
+
+The run's score is reported back on the activity when it ends.
+
+### In-App Events — deep links
+
+| Link | What it does |
+|---|---|
+| `puff://event/weekly` | starts this week's challenge (menu if none) |
+| `puff://play` | starts a run with the player's setup |
+| `puff://palette/holiday` | selects a palette (if in season) and opens the menu |
+| `puff://event/<anything>` | opens the menu |
+
+### Product Page Optimization — icon test
+
+1.3.0 carries eight alternate icons, picked in the icon picker on 7 Nov
+2026, in Ol1n's order of priority (drawings in `tool/icon_designs.html`,
+rendered by `tool/gen_picked_icons.sh`):
+
+| # | Pick | Icon set | Drawing |
+|---|---|---|---|
+| 1 | B4 | `AppIcon-Flash` | white-yellow starburst flash |
+| 2 | C4 | `AppIcon-Halves` | circle split into magenta and cyan halves |
+| 3 | D4 | `AppIcon-Well` | cyan gravity-well spiral, yellow core |
+| 4 | E3 | `AppIcon-Wordmark` | "puff" in neon |
+| 5 | G3 | `AppIcon-Orbit` | four shapes orbiting a core |
+| 6 | H3 | `AppIcon-Charged` | magenta ring with arcs |
+| 7 | F4 | `AppIcon-Pulse` | dashed yellow pulse rings |
+| 8 | A3 | `AppIcon-Waves` | cyan pressure waves |
+
+Product Page Optimization → Create Test → Icon: original plus up to three
+treatments. First round: Flash, Halves, Well. The winner plays the next
+round against 4–6. Blast, Cloud and Shatter from 1.2.2 are gone, so start the
+test on 1.3.0, not on 1.2.3. Play experiments take the 512 px copies in
+`store/play/icon_tests/`.
+
+### Accessibility labels (App Information → Accessibility)
+
+| Feature | Claim | Why |
+|---|---|---|
+| Dark Interface | **Yes** | The whole game is dark; there is no light screen. |
+| Reduced Motion | **Yes** | With the system's Reduce Motion (or Settings → REDUCED FLASHES) flashes, shake and aberration drop to 30 % and zoom pulses are off. |
+| Sufficient Contrast | Check first | Neon on near-black; claim it only after measuring the dimmer menu text (11–12 pt captions at 70–80 % alpha) in every palette. |
+| VoiceOver, Voice Control | No | The playfield is a canvas without accessible elements. |
+| Larger Text | No | The menus use fixed sizes. |
+| Differentiate Without Color Alone | No | Not claimed: palettes are told apart by colour. |
+| Captions, Audio Descriptions | No | No dialogue or video content. |
+
+### Share links
+
+The share text links to
+`https://apps.apple.com/app/id6808586613?ct=share&pt=<token>`. Fill in
+`ShareLinks.providerToken` in `lib/app/share_card.dart` (App Analytics →
+Campaigns shows the provider token); until then the link goes without `pt`
+and campaign attribution does not work.
+
+### Remote config
+
+`store/remote_config.json` goes to `https://olin.now/apps/puff/config.json`
+(the `RemoteConfig.url` constant). Optional: without it the built-in dates
+apply (Holiday palette 1 Dec – 6 Jan). It can switch the weekly challenge or
+a season off and add dated palettes without a build.

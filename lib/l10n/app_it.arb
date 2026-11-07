@@ -49,5 +49,14 @@
   "heatTier3": "CALORE III",
   "heatTierOverdrive": "SOVRACCARICO",
   "hudCombo": "x{multiplier}  combo {combo}",
-  "hudEscaped": "{environment}  fuggiti {escaped}/{max}"
+  "hudEscaped": "{environment}  fuggiti {escaped}/{max}",
+  "weekly": "SFIDA SETTIMANALE",
+  "weeklyDaysLeft": "{days, plural, =0{ultimo giorno} =1{manca 1 giorno} other{mancano {days} giorni}}",
+  "weeklyBest": "record della settimana · {score}",
+  "achievements": "OBIETTIVI",
+  "challenges": "SFIDE",
+  "share": "CONDIVIDI",
+  "shareText": "Il mio nuovo record in Puff: {score}. Riesci a batterlo? {link}",
+  "reducedFlashes": "MENO LAMPI",
+  "paletteHoliday": "Feste"
 }

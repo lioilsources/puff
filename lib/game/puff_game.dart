@@ -26,13 +26,16 @@ import 'physics/explosion.dart';
 import 'physics/force_fields.dart';
 import 'physics/fracture.dart';
 import 'physics/modifiers.dart';
+import 'sim/achievements.dart';
 import 'sim/environment.dart';
 import 'sim/explosion_event.dart';
 import 'sim/fx_event.dart';
 import 'sim/modifier.dart';
 import 'sim/ripples.dart';
 import 'sim/score.dart';
+import 'sim/seeded_random.dart';
 import 'sim/shapes.dart';
+import 'sim/weekly.dart';
 import 'tuning.dart';
 
 enum GamePhase { menu, playing, paused, gameOver }
@@ -53,7 +56,8 @@ class PuffGame extends Forge2DGame {
   }) : palette = palette ?? Palette.cyberpunk,
        environment = environment ?? Environment.vacuum,
        _initialModifier = modifier ?? ModifierSpec.pressure,
-       random = math.Random(seed),
+       random = SeededRandom(seed),
+       spawnRandom = SeededRandom(seed),
        super(gravity: (environment ?? Environment.vacuum).gravity());
 
   Palette palette;
@@ -69,7 +73,13 @@ class PuffGame extends Forge2DGame {
   /// Called with the final score when a run ends; returns true if it was a
   /// new best (shown on the game-over screen).
   final Future<bool> Function(PuffGame game, int score)? onRunFinished;
-  final math.Random random;
+  /// Physics, fracture and effects.
+  final SeededRandom random;
+
+  /// What is spawned and when. Kept apart from [random] so that a seeded run
+  /// throws the same shapes at every player, however differently their
+  /// blasts and fractures consume random numbers.
+  final SeededRandom spawnRandom;
 
   static const menuOverlay = 'menu';
   static const hudOverlay = 'hud';
@@ -99,7 +109,7 @@ class PuffGame extends Forge2DGame {
   int get tier => Tuning.heat.tierOf(heat);
 
   late final ShapeFactory shapeFactory = ShapeFactory(
-    random,
+    spawnRandom,
     baseBreakThreshold: Tuning.breakThreshold,
     metalChance: Tuning.metalChance,
   );
@@ -139,6 +149,21 @@ class PuffGame extends Forge2DGame {
   int escapes = 0;
   double elapsed = 0;
   bool lastRunWasBest = false;
+
+  /// The weekly challenge this run belongs to; null for a free run.
+  WeeklyChallenge? weekly;
+
+  /// Run facts for achievements, reset with the run.
+  int maxTier = 0;
+  double? firstCoreHitAt;
+  int perfectReleases = 0;
+
+  /// Reduced flashes: settings switch or the system's reduce motion. Damps
+  /// flashes, shake, zoom pulses and aberration; leaves the gameplay alone.
+  bool calm = false;
+
+  /// Multiplier for every screen-wide flash and shake.
+  double get intensity => calm ? Tuning.calmIntensity : 1;
 
   /// Safe-area insets in logical pixels, set by the widget layer.
   double safeTop = 0;
@@ -189,7 +214,7 @@ class PuffGame extends Forge2DGame {
       onUp: _release,
       onCancel: _release,
     );
-    spawner = Spawner(random);
+    spawner = Spawner(spawnRandom);
     hud = Hud();
     fractureSystem = FractureSystem(random);
     modifiers = ModifierSystem(random)..spec = _initialModifier;
@@ -257,6 +282,7 @@ class PuffGame extends Forge2DGame {
     if (isPlaying) {
       elapsed += clamped;
       score.update(clamped);
+      maxTier = math.max(maxTier, tier);
     }
     final shake = fx.shake;
     camera.viewfinder.position = shake.offset;
@@ -315,6 +341,10 @@ class PuffGame extends Forge2DGame {
   void _detonateCloud(Cloud c) {
     cloud = null;
     c.removeFromParent();
+    if (isPlaying &&
+        AchievementRules.isPerfect(c.charge.energy, overpressured: c.charge.overpressured)) {
+      perfectReleases++;
+    }
     modifiers.release(
       c.position,
       c.charge.releaseEnergy(),
@@ -375,9 +405,10 @@ class PuffGame extends Forge2DGame {
       return;
     }
     shape.removeFromParent();
+    firstCoreHitAt ??= elapsed;
     coreHp = endless ? math.max(coreHp - 1, 1) : coreHp - 1;
-    fx.shake.addTrauma(0.35);
-    postProcess?.addFlash(0.25, PaletteRole.hazard);
+    fx.shake.addTrauma(0.35 * intensity);
+    postProcess?.addFlash(0.25 * intensity, PaletteRole.hazard);
     audio.onCoreHit();
     haptics.onCoreHit();
     if (coreHp <= 0) {
@@ -423,10 +454,54 @@ class PuffGame extends Forge2DGame {
     }
   }
 
-  void startGame() {
+  /// The player's own environment and modifier while a weekly run borrows
+  /// the week's; put back when they return to free play.
+  (Environment, ModifierSpec)? _freeSetup;
+
+  /// Starts a run. With [challenge] it is the week's run: its environment,
+  /// its modifier and its spawn seed.
+  void startGame({WeeklyChallenge? challenge}) {
+    if (challenge != null) {
+      _freeSetup ??= (environment, modifiers.spec);
+      setEnvironment(Environment.byKind(challenge.environment));
+      setModifier(ModifierSpec.byKind(challenge.modifier));
+      spawnRandom.reseed(challenge.seed);
+    } else {
+      _restoreFreeSetup();
+      spawnRandom.shuffle();
+    }
+    weekly = challenge;
     _clearRun();
     _setPhase(GamePhase.playing);
   }
+
+  void _restoreFreeSetup() {
+    final free = _freeSetup;
+    if (free == null) {
+      return;
+    }
+    _freeSetup = null;
+    setEnvironment(free.$1);
+    setModifier(free.$2);
+  }
+
+  /// Plays the same kind of run again: the same week if this was one.
+  void restartRun() => startGame(challenge: weekly);
+
+  /// What this run did, for achievements.
+  RunRecord runRecord() => RunRecord(
+    environment: environment.kind,
+    modifier: modifiers.spec.kind,
+    palette: palette.name,
+    score: score.score,
+    bestCombo: score.bestCombo,
+    maxTier: maxTier,
+    seconds: elapsed,
+    fractures: score.fractures,
+    perfectReleases: perfectReleases,
+    firstCoreHitAt: firstCoreHitAt,
+    weekly: weekly != null,
+  );
 
   void pause() {
     if (!isPlaying) {
@@ -464,6 +539,8 @@ class PuffGame extends Forge2DGame {
   }
 
   void backToMenu() {
+    weekly = null;
+    _restoreFreeSetup();
     _clearRun();
     _setPhase(GamePhase.menu);
   }
@@ -479,6 +556,9 @@ class PuffGame extends Forge2DGame {
     coreHp = Tuning.coreHp;
     escapes = 0;
     elapsed = 0;
+    maxTier = 0;
+    firstCoreHitAt = null;
+    perfectReleases = 0;
     spawner.reset();
     modifiers.reset();
     forces.reset();

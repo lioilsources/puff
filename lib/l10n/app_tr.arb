@@ -49,5 +49,14 @@
   "heatTier3": "ISI III",
   "heatTierOverdrive": "AŞIRI YÜK",
   "hudCombo": "x{multiplier}  kombo {combo}",
-  "hudEscaped": "{environment}  kaçan {escaped}/{max}"
+  "hudEscaped": "{environment}  kaçan {escaped}/{max}",
+  "weekly": "HAFTALIK MEYDAN OKUMA",
+  "weeklyDaysLeft": "{days, plural, =0{son gün} other{{days} gün kaldı}}",
+  "weeklyBest": "haftanın en iyisi · {score}",
+  "achievements": "BAŞARIMLAR",
+  "challenges": "MEYDAN OKUMALAR",
+  "share": "PAYLAŞ",
+  "shareText": "Puff'ta yeni rekorum: {score}. Geçebilir misin? {link}",
+  "reducedFlashes": "AZ PARLAMA",
+  "paletteHoliday": "Yılbaşı"
 }

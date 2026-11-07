@@ -49,5 +49,14 @@
   "heatTier3": "ŽÁR III",
   "heatTierOverdrive": "PŘETÍŽENÍ",
   "hudCombo": "x{multiplier}  kombo {combo}",
-  "hudEscaped": "{environment}  uniklo {escaped}/{max}"
+  "hudEscaped": "{environment}  uniklo {escaped}/{max}",
+  "weekly": "TÝDENNÍ VÝZVA",
+  "weeklyDaysLeft": "{days, plural, =0{poslední den} =1{zbývá 1 den} few{zbývají {days} dny} other{zbývá {days} dní}}",
+  "weeklyBest": "nejlepší v týdnu · {score}",
+  "achievements": "ÚSPĚCHY",
+  "challenges": "VÝZVY",
+  "share": "SDÍLET",
+  "shareText": "Můj nový rekord v Puffu: {score}. Překonáš ho? {link}",
+  "reducedFlashes": "MÉNĚ ZÁBLESKŮ",
+  "paletteHoliday": "Svátky"
 }

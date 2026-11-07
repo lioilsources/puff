@@ -422,6 +422,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{environment}  escaped {escaped}/{max}'**
   String hudEscaped(String environment, int escaped, int max);
+
+  /// Main menu button and game over label for the weekly challenge: the same run for every player this week.
+  ///
+  /// In en, this message translates to:
+  /// **'WEEKLY CHALLENGE'**
+  String get weekly;
+
+  /// Weekly challenge: whole days until the week ends.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, =0{last day} =1{1 day left} other{{days} days left}}'**
+  String weeklyDaysLeft(int days);
+
+  /// Best score in this week's challenge.
+  ///
+  /// In en, this message translates to:
+  /// **'week best · {score}'**
+  String weeklyBest(int score);
+
+  /// Button that opens Game Center achievements.
+  ///
+  /// In en, this message translates to:
+  /// **'ACHIEVEMENTS'**
+  String get achievements;
+
+  /// Button that opens Game Center challenges (iOS 26+).
+  ///
+  /// In en, this message translates to:
+  /// **'CHALLENGES'**
+  String get challenges;
+
+  /// Game over: share the new best score.
+  ///
+  /// In en, this message translates to:
+  /// **'SHARE'**
+  String get share;
+
+  /// Text shared with the score card. {link} is the store link.
+  ///
+  /// In en, this message translates to:
+  /// **'My new best in Puff: {score}. Can you beat it? {link}'**
+  String shareText(int score, String link);
+
+  /// Settings toggle: weaker flashes and screen shake (accessibility).
+  ///
+  /// In en, this message translates to:
+  /// **'REDUCED FLASHES'**
+  String get reducedFlashes;
+
+  /// Seasonal palette offered in December.
+  ///
+  /// In en, this message translates to:
+  /// **'Holiday'**
+  String get paletteHoliday;
 }
 
 class _AppLocalizationsDelegate

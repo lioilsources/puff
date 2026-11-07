@@ -199,6 +199,10 @@ abstract final class Tuning {
   static const double bloomIntensityHot = 1.6;
   static const double bloomIntensityOver = 1.7;
   static const double aberration = 0.006;
+
+  /// Reduced flashes (settings or system reduce motion): flashes, shake and
+  /// aberration at this fraction, zoom pulses off.
+  static const double calmIntensity = 0.3;
   static const double aberrationHot = 0.010;
   static const double aberrationOver = 0.012;
 

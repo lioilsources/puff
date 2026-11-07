@@ -49,5 +49,14 @@
   "heatTier3": "حرارة III",
   "heatTierOverdrive": "حمل زائد",
   "hudCombo": "x{multiplier}  كومبو {combo}",
-  "hudEscaped": "{environment}  هرب {escaped}/{max}"
+  "hudEscaped": "{environment}  هرب {escaped}/{max}",
+  "weekly": "تحدي الأسبوع",
+  "weeklyDaysLeft": "{days, plural, =0{اليوم الأخير} =1{بقي يوم واحد} =2{بقي يومان} few{بقيت {days} أيام} other{بقي {days} يومًا}}",
+  "weeklyBest": "أفضل نتيجة هذا الأسبوع · {score}",
+  "achievements": "الإنجازات",
+  "challenges": "التحديات",
+  "share": "مشاركة",
+  "shareText": "رقمي القياسي الجديد في Puff: {score}. هل يمكنك تجاوزه؟ {link}",
+  "reducedFlashes": "ومضات أقل",
+  "paletteHoliday": "الأعياد"
 }

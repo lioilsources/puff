@@ -167,4 +167,45 @@ class AppLocalizationsCs extends AppLocalizations {
   String hudEscaped(String environment, int escaped, int max) {
     return '$environment  uniklo $escaped/$max';
   }
+
+  @override
+  String get weekly => 'TÝDENNÍ VÝZVA';
+
+  @override
+  String weeklyDaysLeft(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'zbývá $days dní',
+      few: 'zbývají $days dny',
+      one: 'zbývá 1 den',
+      zero: 'poslední den',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String weeklyBest(int score) {
+    return 'nejlepší v týdnu · $score';
+  }
+
+  @override
+  String get achievements => 'ÚSPĚCHY';
+
+  @override
+  String get challenges => 'VÝZVY';
+
+  @override
+  String get share => 'SDÍLET';
+
+  @override
+  String shareText(int score, String link) {
+    return 'Můj nový rekord v Puffu: $score. Překonáš ho? $link';
+  }
+
+  @override
+  String get reducedFlashes => 'MÉNĚ ZÁBLESKŮ';
+
+  @override
+  String get paletteHoliday => 'Svátky';
 }

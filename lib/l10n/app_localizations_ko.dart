@@ -167,4 +167,43 @@ class AppLocalizationsKo extends AppLocalizations {
   String hudEscaped(String environment, int escaped, int max) {
     return '$environment  탈출 $escaped/$max';
   }
+
+  @override
+  String get weekly => '주간 챌린지';
+
+  @override
+  String weeklyDaysLeft(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days일 남음',
+      zero: '마지막 날',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String weeklyBest(int score) {
+    return '이번 주 최고 · $score';
+  }
+
+  @override
+  String get achievements => '업적';
+
+  @override
+  String get challenges => '챌린지';
+
+  @override
+  String get share => '공유';
+
+  @override
+  String shareText(int score, String link) {
+    return 'Puff 새 최고 기록: $score. 넘을 수 있어? $link';
+  }
+
+  @override
+  String get reducedFlashes => '번쩍임 줄이기';
+
+  @override
+  String get paletteHoliday => '홀리데이';
 }

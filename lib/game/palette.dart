@@ -143,8 +143,28 @@ class Palette {
     glow: Color(0xFFC8F6FF),
   );
 
+  /// December: pine night, ornament red, tinsel gold, snow.
+  static const holiday = Palette(
+    name: 'Holiday',
+    bg: Color(0xFF03100A),
+    bgAlt: Color(0xFF0A2216),
+    primary: Color(0xFFFF2E4D),
+    secondary: Color(0xFF3DFF8F),
+    accent: Color(0xFFFFD45C),
+    hazard: Color(0xFFFF6A00),
+    glow: Color(0xFFF2FFF8),
+  );
+
   static const builtIns = [cyberpunk, vaporwave, acid, mono, ember, arctic];
 
+  /// Seasonal palettes in season right now; set at startup from the date and
+  /// the remote config (see `sim/season.dart`). Offered after [builtIns].
+  static List<Palette> inSeason = const [];
+
+  /// What the palette picker shows.
+  static List<Palette> get available => [...builtIns, ...inSeason];
+
+  /// A palette that is out of season falls back to [cyberpunk].
   static Palette byName(String name) =>
-      builtIns.firstWhere((p) => p.name == name, orElse: () => cyberpunk);
+      available.firstWhere((p) => p.name == name, orElse: () => cyberpunk);
 }
