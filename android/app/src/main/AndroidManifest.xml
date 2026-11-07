@@ -1,4 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Remote config (seasonal palettes, weekly switch) from olin.now.
+         Debug and profile builds get this from their own manifests; release
+         builds need it here. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="Puff"
         android:name=".PuffApplication"
