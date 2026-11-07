@@ -406,6 +406,14 @@ allowed, so later ones still fit. English (U.S.) texts below; the image
 | `puff.ach.runs_50` | Devoted | 75 | Finish 50 runs. | 50 runs finished. |
 | `puff.ach.weekly` | Weekly Contender | 50 | Finish a weekly challenge run. | You took on the weekly challenge. |
 
+**Done 7 Nov 2026 through the API** (key YBT496SW43): all 14 with en-US and
+cs texts from `store/gamecenter/achievements.json` and images from
+`tool/gen_achievement_badges.sh`, plus `puff.weekly` below
+(`recurrenceDuration` `PT168H`, `recurrenceRule` `FREQ=DAILY;INTERVAL=7`;
+the API rejects `P7D` and `FREQ=WEEKLY`). They went to review in the same
+submission as 1.3.0, as `gameCenterAchievementVersion` and
+`gameCenterLeaderboardVersion` review submission items.
+
 Achievements are evaluated when a run ends. Unlocks earned while signed out
 are kept on the device and reported at the next sign-in.
 

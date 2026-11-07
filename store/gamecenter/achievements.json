@@ -1,0 +1,198 @@
+[
+ {
+  "id": "first_run",
+  "points": 10,
+  "en": [
+   "First Puff",
+   "Finish your first run.",
+   "You finished your first run."
+  ],
+  "cs": [
+   "První puff",
+   "Dokonči svou první hru.",
+   "První hra dokončena."
+  ]
+ },
+ {
+  "id": "combo_x4",
+  "points": 50,
+  "en": [
+   "Maxed Out",
+   "Push the combo multiplier to x4.",
+   "You pushed the multiplier to x4."
+  ],
+  "cs": [
+   "Na maximum",
+   "Vyžeň násobič komba na ×4.",
+   "Násobič vyhnán na ×4."
+  ]
+ },
+ {
+  "id": "combo_40",
+  "points": 100,
+  "en": [
+   "Chain Reaction",
+   "Reach a 40-hit combo.",
+   "You chained 40 hits."
+  ],
+  "cs": [
+   "Řetězová reakce",
+   "Dosáhni komba 40 zásahů.",
+   "40 zásahů v řadě."
+  ]
+ },
+ {
+  "id": "perfect_release",
+  "points": 25,
+  "en": [
+   "Perfect Pressure",
+   "Release a fully charged cloud without overcharging it.",
+   "Full charge, no overpressure."
+  ],
+  "cs": [
+   "Dokonalý tlak",
+   "Uvolni plně nabitý oblak bez přetlaku.",
+   "Plné nabití bez přetlaku."
+  ]
+ },
+ {
+  "id": "heat_3",
+  "points": 50,
+  "en": [
+   "Heat III",
+   "Last until HEAT III.",
+   "You lasted until HEAT III."
+  ],
+  "cs": [
+   "Žár III",
+   "Vydrž až do ŽÁRU III.",
+   "Vydrženo až do ŽÁRU III."
+  ]
+ },
+ {
+  "id": "overdrive",
+  "points": 100,
+  "en": [
+   "Overdrive",
+   "Last until OVERDRIVE.",
+   "You reached OVERDRIVE."
+  ],
+  "cs": [
+   "Přetížení",
+   "Vydrž až do PŘETÍŽENÍ.",
+   "PŘETÍŽENÍ dosaženo."
+  ]
+ },
+ {
+  "id": "untouchable",
+  "points": 75,
+  "en": [
+   "Untouchable",
+   "Keep the core untouched for the first 60 seconds.",
+   "60 seconds without a scratch."
+  ],
+  "cs": [
+   "Nedotknutelné jádro",
+   "Udrž jádro prvních 60 sekund bez zásahu.",
+   "60 sekund bez škrábnutí."
+  ]
+ },
+ {
+  "id": "shatter_50",
+  "points": 50,
+  "en": [
+   "Shatterer",
+   "Break 50 shapes in one run.",
+   "50 shapes broken in one run."
+  ],
+  "cs": [
+   "Drtič",
+   "Rozbij 50 tvarů v jedné hře.",
+   "50 tvarů rozbito v jedné hře."
+  ]
+ },
+ {
+  "id": "all_environments",
+  "points": 50,
+  "en": [
+   "World Tour",
+   "Finish a run in Vacuum, Air, Water and Plasma.",
+   "You played all four environments."
+  ],
+  "cs": [
+   "Na cestách",
+   "Dohraj hru ve Vakuu, Vzduchu, Vodě i Plazmatu.",
+   "Všechna čtyři prostředí odehrána."
+  ]
+ },
+ {
+  "id": "all_modifiers",
+  "points": 50,
+  "en": [
+   "Toolkit",
+   "Finish a run with every modifier.",
+   "You used every modifier."
+  ],
+  "cs": [
+   "Celá výbava",
+   "Dohraj hru s každým modifikátorem.",
+   "Všechny modifikátory vyzkoušeny."
+  ]
+ },
+ {
+  "id": "all_palettes",
+  "points": 25,
+  "en": [
+   "Color Theory",
+   "Finish runs in six different palettes.",
+   "Six palettes played."
+  ],
+  "cs": [
+   "Teorie barev",
+   "Dohraj hry v šesti různých paletách.",
+   "Šest palet odehráno."
+  ]
+ },
+ {
+  "id": "runs_10",
+  "points": 25,
+  "en": [
+   "Regular",
+   "Finish 10 runs.",
+   "10 runs finished."
+  ],
+  "cs": [
+   "Štamgast",
+   "Dokonči 10 her.",
+   "10 her dokončeno."
+  ]
+ },
+ {
+  "id": "runs_50",
+  "points": 75,
+  "en": [
+   "Devoted",
+   "Finish 50 runs.",
+   "50 runs finished."
+  ],
+  "cs": [
+   "Věrnost",
+   "Dokonči 50 her.",
+   "50 her dokončeno."
+  ]
+ },
+ {
+  "id": "weekly",
+  "points": 50,
+  "en": [
+   "Weekly Contender",
+   "Finish a weekly challenge run.",
+   "You took on the weekly challenge."
+  ],
+  "cs": [
+   "Týdenní vyzyvatel",
+   "Dohraj hru týdenní výzvy.",
+   "Týdenní výzva přijata."
+  ]
+ }
+]

@@ -1,0 +1,73 @@
+<!doctype html>
+<!-- Game Center achievement images, in the style of the app icons (same
+     helpers as icon_designs.html). Opened by tool/gen_achievement_badges.sh
+     as achievement_badges.html#first_run in headless Chrome at 512x512. -->
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Audiowide&display=block">
+<style>html,body{margin:0;background:#000;overflow:hidden}#icon svg{display:block;width:100vw;height:100vh}</style>
+<svg id="defs" style="position:absolute;width:0;height:0" aria-hidden="true">
+  <defs>
+    <filter id="glow" filterUnits="userSpaceOnUse" x="-50" y="-50" width="200" height="200" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="0.7" result="b1"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="2.4" result="b2"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="6.5" result="b3"/>
+      <feMerge><feMergeNode in="b3"/><feMergeNode in="b2"/><feMergeNode in="b2"/><feMergeNode in="b1"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="bgV" cx="50%" cy="50%" r="72%"><stop offset="0" stop-color="#1a143a"/><stop offset="1" stop-color="#060510"/></radialGradient>
+    <radialGradient id="bgM" cx="50%" cy="50%" r="72%"><stop offset="0" stop-color="#3a0f33"/><stop offset="1" stop-color="#0a0410"/></radialGradient>
+    <radialGradient id="bgT" cx="50%" cy="50%" r="72%"><stop offset="0" stop-color="#06303a"/><stop offset="1" stop-color="#020a0e"/></radialGradient>
+    <radialGradient id="orb" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ffffff"/><stop offset=".35" stop-color="#f4f000"/><stop offset=".75" stop-color="#ff2d7a" stop-opacity=".55"/><stop offset="1" stop-color="#ff2d7a" stop-opacity="0"/></radialGradient>
+  </defs>
+</svg>
+<div id="icon"></div>
+<script>
+const C = { cyan: '#22e6ff', mag: '#ff2d7a', yel: '#f4f000', wht: '#f0fcff' };
+const R = n => +n.toFixed(2);
+const el = (tag, a) => `<${tag} ${Object.entries(a).map(([k, v]) => `${k}="${v}"`).join(' ')}/>`;
+const P = (cx, cy, r, deg) => [R(cx + r * Math.cos(deg * Math.PI / 180)), R(cy + r * Math.sin(deg * Math.PI / 180))];
+
+// A neon stroke: coloured tube plus a hot white core, both bloomed.
+function neon(tag, a, col, w, extra = {}) {
+  const base = { fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', ...a };
+  return `<g filter="url(#glow)">${el(tag, { ...base, stroke: col, 'stroke-width': w, ...extra })}${el(tag, { ...base, stroke: '#fff', 'stroke-width': R(w * 0.36), 'stroke-opacity': 0.6, ...extra })}</g>`;
+}
+const circ = (cx, cy, r, col, w, x) => neon('circle', { cx, cy, r }, col, w, x);
+const path = (d, col, w, x) => neon('path', { d }, col, w, x);
+const poly = (pts, col, w, x) => neon('polygon', { points: pts.map(p => p.join(',')).join(' ') }, col, w, x);
+const line = (a, b, col, w, x) => neon('line', { x1: a[0], y1: a[1], x2: b[0], y2: b[1] }, col, w, x);
+const dot = (cx, cy, r, col, op = 1) => `<g filter="url(#glow)">${el('circle', { cx, cy, r, fill: col, 'fill-opacity': op })}</g>`;
+const regular = (cx, cy, r, n, rot = -90) => Array.from({ length: n }, (_, i) => P(cx, cy, r, rot + i * 360 / n));
+const arc = (cx, cy, r, a0, a1) => { const s = P(cx, cy, r, a0), e = P(cx, cy, r, a1); return `M${s} A${r} ${r} 0 ${((a1 - a0) % 360 + 360) % 360 > 180 ? 1 : 0} 1 ${e}`; };
+const move = (pts, dx, dy) => pts.map(([x, y]) => [R(x + dx), R(y + dy)]);
+const rot = (pts, deg, cx = 50, cy = 50) => pts.map(([x, y]) => { const a = deg * Math.PI / 180, dx = x - cx, dy = y - cy; return [R(cx + dx * Math.cos(a) - dy * Math.sin(a)), R(cy + dx * Math.sin(a) + dy * Math.cos(a))]; });
+function rng(seed) { return () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }; }
+const pStem = 'M36 22 V78', pBowl = 'M36 22 H53 A14.5 14.5 0 0 1 53 51 H36';
+const Pletter = (col, w) => path(`${pStem} ${pBowl}`, col, w);
+
+
+const txt = (s, size, col, y = 50, x = 50) => `<g filter="url(#glow)"><text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="central" font-family="Audiowide" font-size="${size}" fill="none" stroke="${col}" stroke-width="1.6" stroke-linejoin="round">${s}</text><text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="central" font-family="Audiowide" font-size="${size}" fill="#fff" fill-opacity=".75">${s}</text></g>`;
+const ring = (col) => circ(50, 50, 42, col, 2.2, { 'stroke-opacity': .55 });
+const shards = (seed, n, r0, r1, col) => { const r = rng(seed); let s = ''; for (let i = 0; i < n; i++) { const a = i * 360 / n + r() * 14, d = r0 + r() * (r1 - r0); s += poly(regular(...P(50, 50, d, a), 3 + r() * 2.5, 3 + Math.floor(r() * 3), r() * 360), i % 2 ? C.cyan : C.mag, 2.2); } return s; };
+const BADGES = {
+  first_run: ['bgV', () => ring(C.cyan) + dot(50, 50, 22, C.cyan, .14) + circ(50, 50, 22, C.cyan, 4.5) + circ(50, 50, 5, C.yel, 3)],
+  combo_x4: ['bgM', () => ring(C.mag) + txt('×4', 34, C.yel, 52)],
+  combo_40: ['bgM', () => ring(C.mag) + path(arc(50, 50, 31, 140, 400), C.cyan, 3.5) + txt('40', 28, C.yel, 52)],
+  perfect_release: ['bgV', () => ring(C.cyan) + circ(50, 50, 18, C.cyan, 4) + path(arc(50, 50, 29, -90, 269.5), C.yel, 4.5) + dot(50, 50, 5, C.wht)],
+  heat_3: ['bgM', () => ring(C.mag) + poly([[50, 18], [64, 46], [58, 46], [50, 32], [42, 46], [36, 46]], C.yel, 2.6) + txt('III', 26, C.mag, 64)],
+  overdrive: ['bgM', () => ring(C.mag) + [26, 42, 58].map((x, i) => path(`M${x} 32 L${x + 14} 50 L${x} 68`, [C.cyan, C.mag, C.yel][i], 4.5)).join('')],
+  untouchable: ['bgT', () => ring(C.cyan) + circ(50, 50, 30, C.cyan, 2.4, { 'stroke-dasharray': '6 5' }) + poly(regular(50, 50, 15, 6), C.wht, 3.5) + dot(50, 50, 4.5, C.yel)],
+  shatter_50: ['bgV', () => ring(C.mag) + shards(11, 12, 26, 36, C.cyan) + txt('50', 22, C.yel, 52)],
+  all_environments: ['bgT', () => ring(C.cyan) + [[36, 36, C.wht], [64, 36, C.cyan], [36, 64, '#3d8bff'], [64, 64, C.mag]].map(([x, y, c]) => circ(x, y, 9, c, 3.5)).join('')],
+  all_modifiers: ['bgV', () => ring(C.cyan) + regular(50, 50, 24, 5).map(([x, y], i) => circ(x, y, 6, [C.cyan, C.mag, C.yel, C.wht, '#3dff8f'][i], 3)).join('') + dot(50, 50, 4, C.wht)],
+  all_palettes: ['bgV', () => ring(C.wht) + regular(50, 50, 22, 6).map(([x, y], i) => dot(x, y, 7, ['#22e6ff', '#ff2d7a', '#b6ff00', '#f0fcff', '#ff7a1a', '#7fd8ff'][i], .9)).join('')],
+  runs_10: ['bgV', () => ring(C.cyan) + path(arc(50, 50, 31, 200, 340), C.mag, 3.5) + txt('10', 28, C.cyan, 54)],
+  runs_50: ['bgM', () => ring(C.yel) + path(arc(50, 50, 31, 200, 340), C.mag, 3.5) + path(arc(50, 50, 31, 20, 160), C.mag, 3.5) + txt('50', 28, C.yel, 52)],
+  weekly: ['bgT', () => ring(C.cyan) + Array.from({ length: 7 }, (_, i) => line([26 + i * 8, 64], [26 + i * 8, 64 - [10, 16, 12, 22, 18, 28, 14][i]], i === 5 ? C.yel : C.cyan, 3.6)).join('') + line([22, 70], [78, 70], C.mag, 2.5)],
+};
+function render() {
+  const id = location.hash.slice(1);
+  const b = BADGES[id];
+  document.getElementById('icon').innerHTML = b ? `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="url(#${b[0]})"/>${b[1]()}</svg>` : `<pre style="color:#fff">${Object.keys(BADGES).join('\n')}</pre>`;
+}
+document.fonts.load('20px Audiowide').then(render, render);
+</script>
