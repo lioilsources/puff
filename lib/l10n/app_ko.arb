@@ -58,5 +58,13 @@
   "share": "공유",
   "shareText": "Puff 새 최고 기록: {score}. 넘을 수 있어? {link}",
   "reducedFlashes": "번쩍임 줄이기",
-  "paletteHoliday": "홀리데이"
+  "paletteHoliday": "홀리데이",
+  "supporter": "후원자",
+  "tipJar": "팁",
+  "tipJarInfo": "Puff는 무료이며 광고가 없습니다. 팁으로 잠금 해제되는 것은 없으며, 감사의 뜻으로 메뉴에 후원자 배지가 표시됩니다.",
+  "tipSmall": "작은 팁",
+  "tipMedium": "중간 팁",
+  "tipLarge": "큰 팁",
+  "tipThanks": "감사합니다!",
+  "tipFailed": "구매가 완료되지 않았습니다"
 }

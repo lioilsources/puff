@@ -207,4 +207,29 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get paletteHoliday => 'Fiestas';
+
+  @override
+  String get supporter => 'MECENAS';
+
+  @override
+  String get tipJar => 'PROPINA';
+
+  @override
+  String get tipJarInfo =>
+      'Puff sigue siendo gratis y sin anuncios. Una propina no desbloquea nada: solo da las gracias y añade una insignia de mecenas al menú.';
+
+  @override
+  String get tipSmall => 'PROPINA PEQUEÑA';
+
+  @override
+  String get tipMedium => 'PROPINA MEDIANA';
+
+  @override
+  String get tipLarge => 'PROPINA GRANDE';
+
+  @override
+  String get tipThanks => '¡GRACIAS!';
+
+  @override
+  String get tipFailed => 'LA COMPRA NO SE COMPLETÓ';
 }

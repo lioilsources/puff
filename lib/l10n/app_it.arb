@@ -58,5 +58,13 @@
   "share": "CONDIVIDI",
   "shareText": "Il mio nuovo record in Puff: {score}. Riesci a batterlo? {link}",
   "reducedFlashes": "MENO LAMPI",
-  "paletteHoliday": "Feste"
+  "paletteHoliday": "Feste",
+  "supporter": "SOSTENITORE",
+  "tipJar": "MANCIA",
+  "tipJarInfo": "Puff resta gratuito e senza pubblicità. Una mancia non sblocca nulla: dice solo grazie e aggiunge un badge da sostenitore al menu.",
+  "tipSmall": "MANCIA PICCOLA",
+  "tipMedium": "MANCIA MEDIA",
+  "tipLarge": "MANCIA GRANDE",
+  "tipThanks": "GRAZIE!",
+  "tipFailed": "ACQUISTO NON RIUSCITO"
 }

@@ -206,6 +206,30 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get paletteHoliday => '节日';
+
+  @override
+  String get supporter => '支持者';
+
+  @override
+  String get tipJar => '打赏';
+
+  @override
+  String get tipJarInfo => 'Puff 始终免费且无广告。打赏不会解锁任何内容，只是表达感谢，并在菜单中显示支持者徽章。';
+
+  @override
+  String get tipSmall => '小额打赏';
+
+  @override
+  String get tipMedium => '中额打赏';
+
+  @override
+  String get tipLarge => '大额打赏';
+
+  @override
+  String get tipThanks => '谢谢！';
+
+  @override
+  String get tipFailed => '购买未完成';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -410,4 +434,28 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get paletteHoliday => '節日';
+
+  @override
+  String get supporter => '支持者';
+
+  @override
+  String get tipJar => '打賞';
+
+  @override
+  String get tipJarInfo => 'Puff 始終免費且無廣告。打賞不會解鎖任何內容，只是表達感謝，並在選單中顯示支持者徽章。';
+
+  @override
+  String get tipSmall => '小額打賞';
+
+  @override
+  String get tipMedium => '中額打賞';
+
+  @override
+  String get tipLarge => '大額打賞';
+
+  @override
+  String get tipThanks => '謝謝！';
+
+  @override
+  String get tipFailed => '購買未完成';
 }

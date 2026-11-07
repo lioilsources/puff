@@ -207,4 +207,29 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get paletteHoliday => 'Feste';
+
+  @override
+  String get supporter => 'SOSTENITORE';
+
+  @override
+  String get tipJar => 'MANCIA';
+
+  @override
+  String get tipJarInfo =>
+      'Puff resta gratuito e senza pubblicità. Una mancia non sblocca nulla: dice solo grazie e aggiunge un badge da sostenitore al menu.';
+
+  @override
+  String get tipSmall => 'MANCIA PICCOLA';
+
+  @override
+  String get tipMedium => 'MANCIA MEDIA';
+
+  @override
+  String get tipLarge => 'MANCIA GRANDE';
+
+  @override
+  String get tipThanks => 'GRAZIE!';
+
+  @override
+  String get tipFailed => 'ACQUISTO NON RIUSCITO';
 }

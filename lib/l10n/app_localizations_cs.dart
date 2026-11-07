@@ -208,4 +208,29 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get paletteHoliday => 'Svátky';
+
+  @override
+  String get supporter => 'PODPOROVATEL';
+
+  @override
+  String get tipJar => 'SPROPITNÉ';
+
+  @override
+  String get tipJarInfo =>
+      'Puff zůstává zdarma a bez reklam. Spropitné nic neodemyká — jen poděkuje a přidá do menu odznak podporovatele.';
+
+  @override
+  String get tipSmall => 'MALÉ SPROPITNÉ';
+
+  @override
+  String get tipMedium => 'STŘEDNÍ SPROPITNÉ';
+
+  @override
+  String get tipLarge => 'VELKÉ SPROPITNÉ';
+
+  @override
+  String get tipThanks => 'DĚKUJEME!';
+
+  @override
+  String get tipFailed => 'NÁKUP NEPROŠEL';
 }

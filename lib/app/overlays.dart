@@ -13,6 +13,7 @@ import 'game_center.dart';
 import 'settings.dart';
 import 'share_card.dart';
 import 'theme.dart';
+import 'tip_jar.dart';
 
 class MainMenuOverlay extends StatelessWidget {
   const MainMenuOverlay({
@@ -21,11 +22,13 @@ class MainMenuOverlay extends StatelessWidget {
     required this.settings,
     required this.gameCenter,
     required this.weekly,
+    required this.tipJar,
   });
 
   final PuffGame game;
   final PuffSettings settings;
   final GameCenter gameCenter;
+  final TipJar tipJar;
 
   /// The week's challenge, or null while there is none.
   final WeeklyChallenge? Function() weekly;
@@ -35,7 +38,7 @@ class MainMenuOverlay extends StatelessWidget {
     final week = weekly();
     return AnimatedBuilder(
       // Game Center signs in after the menu is already up.
-      animation: Listenable.merge([settings, gameCenter]),
+      animation: Listenable.merge([settings, gameCenter, tipJar]),
       builder: (context, _) {
         final p = settings.palette;
         final l10n = AppLocalizations.of(context);
@@ -54,6 +57,10 @@ class MainMenuOverlay extends StatelessWidget {
                 glow: false,
                 spacing: 4,
               ),
+              if (settings.supporter) ...[
+                const SizedBox(height: 6),
+                NeonText('♥ ${l10n.supporter}', color: p.accent, size: 12, spacing: 3),
+              ],
               const SizedBox(height: 22),
               NeonButton(
                 label: l10n.play,
@@ -161,6 +168,16 @@ class MainMenuOverlay extends StatelessWidget {
                   onTap: () {
                     game.audio.click();
                     gameCenter.showChallenges();
+                  },
+                ),
+              // Kept out of scripted store screenshots.
+              if (tipJar.offered && !PuffGame.demoMode)
+                NeonButton(
+                  label: l10n.tipJar,
+                  color: p.secondary,
+                  onTap: () {
+                    game.audio.click();
+                    game.overlays.add(PuffGame.tipJarOverlay);
                   },
                 ),
               NeonButton(
@@ -483,6 +500,91 @@ class SettingsOverlay extends StatelessWidget {
                 onTap: () {
                   game.audio.click();
                   game.overlays.remove(PuffGame.settingsOverlay);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class TipJarOverlay extends StatelessWidget {
+  const TipJarOverlay({
+    super.key,
+    required this.game,
+    required this.settings,
+    required this.tipJar,
+  });
+
+  final PuffGame game;
+  final PuffSettings settings;
+  final TipJar tipJar;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: Listenable.merge([settings, tipJar]),
+      builder: (context, _) {
+        final p = settings.palette;
+        final l10n = AppLocalizations.of(context);
+        String label(Tip t) => switch (t) {
+          Tip.small => l10n.tipSmall,
+          Tip.medium => l10n.tipMedium,
+          Tip.large => l10n.tipLarge,
+        };
+        return OverlayScrim(
+          palette: p,
+          opacity: 0.9,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              NeonText(l10n.tipJar, color: p.primary, size: 28, spacing: 8),
+              const SizedBox(height: 12),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 300),
+                child: NeonText(
+                  l10n.tipJarInfo,
+                  color: p.glow.withValues(alpha: 0.85),
+                  size: 13,
+                  glow: false,
+                ),
+              ),
+              const SizedBox(height: 16),
+              for (final t in Tip.values)
+                if (tipJar.products[t] case final product?)
+                  NeonButton(
+                    label: '${label(t)} · ${product.price}',
+                    color: t == Tip.medium ? p.accent : p.secondary,
+                    primary: t == Tip.medium,
+                    onTap: () {
+                      if (tipJar.busy) {
+                        return;
+                      }
+                      game.audio.click();
+                      tipJar.buy(t);
+                    },
+                  ),
+              const SizedBox(height: 8),
+              NeonText(
+                switch (tipJar.outcome) {
+                  TipOutcome.thanks => l10n.tipThanks,
+                  TipOutcome.failed => l10n.tipFailed,
+                  null => tipJar.busy ? '…' : '',
+                },
+                color: tipJar.outcome == TipOutcome.failed ? p.hazard : p.accent,
+                size: 14,
+                spacing: 3,
+              ),
+              const SizedBox(height: 12),
+              NeonButton(
+                label: l10n.back,
+                color: p.primary,
+                onTap: () {
+                  game.audio.click();
+                  tipJar.dismiss();
+                  game.overlays.remove(PuffGame.tipJarOverlay);
                 },
               ),
             ],

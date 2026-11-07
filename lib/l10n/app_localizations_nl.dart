@@ -207,4 +207,29 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get paletteHoliday => 'Feestdagen';
+
+  @override
+  String get supporter => 'SUPPORTER';
+
+  @override
+  String get tipJar => 'FOOI';
+
+  @override
+  String get tipJarInfo =>
+      'Puff blijft gratis en zonder advertenties. Een fooi ontgrendelt niets — het is gewoon een bedankje, met een supportersbadge in het menu.';
+
+  @override
+  String get tipSmall => 'KLEINE FOOI';
+
+  @override
+  String get tipMedium => 'MIDDELGROTE FOOI';
+
+  @override
+  String get tipLarge => 'GROTE FOOI';
+
+  @override
+  String get tipThanks => 'BEDANKT!';
+
+  @override
+  String get tipFailed => 'AANKOOP IS NIET GELUKT';
 }

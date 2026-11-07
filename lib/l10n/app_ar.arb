@@ -58,5 +58,13 @@
   "share": "مشاركة",
   "shareText": "رقمي القياسي الجديد في Puff: {score}. هل يمكنك تجاوزه؟ {link}",
   "reducedFlashes": "ومضات أقل",
-  "paletteHoliday": "الأعياد"
+  "paletteHoliday": "الأعياد",
+  "supporter": "داعم",
+  "tipJar": "إكرامية",
+  "tipJarInfo": "يبقى Puff مجانيًا وبلا إعلانات. الإكرامية لا تفتح أي شيء، إنها مجرد شكر وتضيف شارة داعم إلى القائمة.",
+  "tipSmall": "إكرامية صغيرة",
+  "tipMedium": "إكرامية متوسطة",
+  "tipLarge": "إكرامية كبيرة",
+  "tipThanks": "شكرًا لك!",
+  "tipFailed": "لم تكتمل عملية الشراء"
 }

@@ -521,3 +521,61 @@ and nothing else.
 (the `RemoteConfig.url` constant). Optional: without it the built-in dates
 apply (Holiday palette 1 Dec – 6 Jan). It can switch the weekly challenge or
 a season off and add dated palettes without a build.
+
+## 1.3.1 — Tip jar
+
+Three consumable in-app purchases that unlock nothing but a supporter badge
+under the title in the menu. The game, the leaderboards and the
+achievements stay the same for everyone. The menu shows TIP JAR only once
+the store returns all three products, so a build without them in App Store
+Connect just hides the button.
+
+### Before anything else
+
+- **Agreements, Tax, and Banking**: the Paid Apps agreement has to be
+  active, with bank and tax forms filled in. Until then StoreKit returns no
+  products.
+- The first in-app purchases go to review **together with an app version**
+  (1.3.1): add them on the version page under *In-App Purchases and
+  Subscriptions* before submitting.
+
+### Products (Monetization → In-App Purchases → +, type Consumable)
+
+| Product ID | Reference name | Price | Display name (en) | Description (en) |
+|---|---|---|---|---|
+| `puff.tip.small` | Tip small | $0.99 | Small Tip | A small thank-you. Unlocks nothing. |
+| `puff.tip.medium` | Tip medium | $2.99 | Medium Tip | A bigger thank-you. Unlocks nothing. |
+| `puff.tip.large` | Tip large | $4.99 | Large Tip | A big thank-you. Unlocks nothing. |
+
+Czech: Malé spropitné / Střední spropitné / Velké spropitné, „Malé (větší,
+velké) poděkování. Nic neodemyká.“ The in-app labels come from the app's own
+strings; the store display names show on the payment sheet.
+
+The product IDs are constants in `lib/app/tip_jar.dart` (`Tip.productId`)
+and must match exactly.
+
+**Review information** for each product: a screenshot of the TIP JAR screen
+(from a TestFlight build once the products exist), and the note: *"Optional
+tip. It unlocks no content or feature; after purchase the menu shows a
+supporter badge. Consumable, so there is nothing to restore."*
+
+### Texts that change
+
+The store promise was "no ads, no in-app purchases". With a tip jar the
+store page shows "In-App Purchases" anyway, so the texts must not deny it:
+
+- Description, *NO STRINGS*: "No sign-up, no ads, no in-app purchases, no
+  subscriptions, no tracking, no analytics." → for example "No sign-up, no
+  ads, no subscriptions, no tracking, no analytics. An optional tip jar
+  unlocks nothing; everything in the game is there from the first launch."
+- Every localization of the description, in the same step.
+- What's New 1.3.1: mention the tip jar.
+
+Ol1n chooses the final wording; nothing goes to review without Ol1n's go-ahead.
+
+### App Privacy
+
+Still **Data Not Collected**: StoreKit handles the payment, Puff sends
+nothing anywhere and keeps only a local count of tips. Puff has no server
+that sees purchase history, so the "Purchases" data type does not apply;
+re-read Apple's definition when answering, in case it has changed.

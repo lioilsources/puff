@@ -58,5 +58,13 @@
   "share": "分享",
   "shareText": "我在 Puff 的新纪录：{score}。你能超过吗？{link}",
   "reducedFlashes": "减少闪烁",
-  "paletteHoliday": "节日"
+  "paletteHoliday": "节日",
+  "supporter": "支持者",
+  "tipJar": "打赏",
+  "tipJarInfo": "Puff 始终免费且无广告。打赏不会解锁任何内容，只是表达感谢，并在菜单中显示支持者徽章。",
+  "tipSmall": "小额打赏",
+  "tipMedium": "中额打赏",
+  "tipLarge": "大额打赏",
+  "tipThanks": "谢谢！",
+  "tipFailed": "购买未完成"
 }

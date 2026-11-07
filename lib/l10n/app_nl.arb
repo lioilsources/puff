@@ -58,5 +58,13 @@
   "share": "DELEN",
   "shareText": "Mijn nieuwe record in Puff: {score}. Kun jij het verbeteren? {link}",
   "reducedFlashes": "MINDER FLITSEN",
-  "paletteHoliday": "Feestdagen"
+  "paletteHoliday": "Feestdagen",
+  "supporter": "SUPPORTER",
+  "tipJar": "FOOI",
+  "tipJarInfo": "Puff blijft gratis en zonder advertenties. Een fooi ontgrendelt niets — het is gewoon een bedankje, met een supportersbadge in het menu.",
+  "tipSmall": "KLEINE FOOI",
+  "tipMedium": "MIDDELGROTE FOOI",
+  "tipLarge": "GROTE FOOI",
+  "tipThanks": "BEDANKT!",
+  "tipFailed": "AANKOOP IS NIET GELUKT"
 }

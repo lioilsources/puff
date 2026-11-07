@@ -58,5 +58,13 @@
   "share": "COMPARTIR",
   "shareText": "Mi nuevo récord en Puff: {score}. ¿Lo superas? {link}",
   "reducedFlashes": "MENOS DESTELLOS",
-  "paletteHoliday": "Fiestas"
+  "paletteHoliday": "Fiestas",
+  "supporter": "MECENAS",
+  "tipJar": "PROPINA",
+  "tipJarInfo": "Puff sigue siendo gratis y sin anuncios. Una propina no desbloquea nada: solo da las gracias y añade una insignia de mecenas al menú.",
+  "tipSmall": "PROPINA PEQUEÑA",
+  "tipMedium": "PROPINA MEDIANA",
+  "tipLarge": "PROPINA GRANDE",
+  "tipThanks": "¡GRACIAS!",
+  "tipFailed": "LA COMPRA NO SE COMPLETÓ"
 }

@@ -207,4 +207,29 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get paletteHoliday => 'Holiday';
+
+  @override
+  String get supporter => 'SUPPORTER';
+
+  @override
+  String get tipJar => 'TIP JAR';
+
+  @override
+  String get tipJarInfo =>
+      'Puff stays free, with no ads. A tip unlocks nothing — it just says thanks and adds a supporter badge to the menu.';
+
+  @override
+  String get tipSmall => 'SMALL TIP';
+
+  @override
+  String get tipMedium => 'MEDIUM TIP';
+
+  @override
+  String get tipLarge => 'LARGE TIP';
+
+  @override
+  String get tipThanks => 'THANK YOU!';
+
+  @override
+  String get tipFailed => 'PURCHASE DIDN\'T GO THROUGH';
 }

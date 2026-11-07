@@ -206,4 +206,29 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get paletteHoliday => 'Yılbaşı';
+
+  @override
+  String get supporter => 'DESTEKÇİ';
+
+  @override
+  String get tipJar => 'BAHŞİŞ';
+
+  @override
+  String get tipJarInfo =>
+      'Puff ücretsiz ve reklamsız kalır. Bahşiş hiçbir şeyin kilidini açmaz; yalnızca teşekkür eder ve menüye bir destekçi rozeti ekler.';
+
+  @override
+  String get tipSmall => 'KÜÇÜK BAHŞİŞ';
+
+  @override
+  String get tipMedium => 'ORTA BAHŞİŞ';
+
+  @override
+  String get tipLarge => 'BÜYÜK BAHŞİŞ';
+
+  @override
+  String get tipThanks => 'TEŞEKKÜRLER!';
+
+  @override
+  String get tipFailed => 'SATIN ALMA TAMAMLANAMADI';
 }

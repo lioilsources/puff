@@ -41,6 +41,11 @@ class PuffSettings extends ChangeNotifier {
 
   late final AchievementProgress achievements;
 
+  /// Tips bought on this device. Any tip makes the player a [supporter].
+  int tips = 0;
+
+  bool get supporter => tips > 0;
+
   /// Achievement IDs Game Center has accepted. Unlocks earned while signed
   /// out wait here until the next sign-in.
   final Set<String> reportedAchievements = {};
@@ -62,6 +67,7 @@ class PuffSettings extends ChangeNotifier {
     s.session = (prefs.getInt('session') ?? 0) + 1;
     await prefs.setInt('session', s.session);
     s.lastReviewVersion = prefs.getString('lastReviewVersion');
+    s.tips = prefs.getInt('tips') ?? 0;
     final weekly = prefs.getString('weeklyBest');
     if (weekly != null) {
       // Only the current week matters; one entry is kept.
@@ -155,6 +161,12 @@ class PuffSettings extends ChangeNotifier {
   Future<void> markReported(Iterable<String> ids) async {
     reportedAchievements.addAll(ids);
     await _prefs.setStringList('reportedAchievements', reportedAchievements.toList());
+  }
+
+  Future<void> addTip() async {
+    tips++;
+    await _prefs.setInt('tips', tips);
+    notifyListeners();
   }
 
   Future<void> markReviewAsked(String version) async {

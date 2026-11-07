@@ -476,6 +476,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Holiday'**
   String get paletteHoliday;
+
+  /// Badge under the title in the menu after any tip.
+  ///
+  /// In en, this message translates to:
+  /// **'SUPPORTER'**
+  String get supporter;
+
+  /// Menu button and title of the tip jar screen (optional in-app tips).
+  ///
+  /// In en, this message translates to:
+  /// **'TIP JAR'**
+  String get tipJar;
+
+  /// Tip jar screen: tips are voluntary and unlock nothing.
+  ///
+  /// In en, this message translates to:
+  /// **'Puff stays free, with no ads. A tip unlocks nothing — it just says thanks and adds a supporter badge to the menu.'**
+  String get tipJarInfo;
+
+  /// Smallest tip; the store price follows after a dot.
+  ///
+  /// In en, this message translates to:
+  /// **'SMALL TIP'**
+  String get tipSmall;
+
+  /// Middle tip; the store price follows after a dot.
+  ///
+  /// In en, this message translates to:
+  /// **'MEDIUM TIP'**
+  String get tipMedium;
+
+  /// Largest tip; the store price follows after a dot.
+  ///
+  /// In en, this message translates to:
+  /// **'LARGE TIP'**
+  String get tipLarge;
+
+  /// Shown after a tip went through.
+  ///
+  /// In en, this message translates to:
+  /// **'THANK YOU!'**
+  String get tipThanks;
+
+  /// Shown when the store reports the tip purchase failed.
+  ///
+  /// In en, this message translates to:
+  /// **'PURCHASE DIDN\'T GO THROUGH'**
+  String get tipFailed;
 }
 
 class _AppLocalizationsDelegate

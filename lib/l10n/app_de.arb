@@ -58,5 +58,13 @@
   "share": "TEILEN",
   "shareText": "Mein neuer Rekord in Puff: {score}. Schaffst du mehr? {link}",
   "reducedFlashes": "WENIGER BLITZE",
-  "paletteHoliday": "Festtage"
+  "paletteHoliday": "Festtage",
+  "supporter": "UNTERSTÜTZER",
+  "tipJar": "TRINKGELD",
+  "tipJarInfo": "Puff bleibt kostenlos und ohne Werbung. Ein Trinkgeld schaltet nichts frei — es sagt nur Danke und zeigt ein Unterstützer-Abzeichen im Menü.",
+  "tipSmall": "KLEINES TRINKGELD",
+  "tipMedium": "MITTLERES TRINKGELD",
+  "tipLarge": "GROSSES TRINKGELD",
+  "tipThanks": "DANKE!",
+  "tipFailed": "KAUF FEHLGESCHLAGEN"
 }

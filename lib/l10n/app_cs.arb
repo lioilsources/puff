@@ -58,5 +58,13 @@
   "share": "SDÍLET",
   "shareText": "Můj nový rekord v Puffu: {score}. Překonáš ho? {link}",
   "reducedFlashes": "MÉNĚ ZÁBLESKŮ",
-  "paletteHoliday": "Svátky"
+  "paletteHoliday": "Svátky",
+  "supporter": "PODPOROVATEL",
+  "tipJar": "SPROPITNÉ",
+  "tipJarInfo": "Puff zůstává zdarma a bez reklam. Spropitné nic neodemyká — jen poděkuje a přidá do menu odznak podporovatele.",
+  "tipSmall": "MALÉ SPROPITNÉ",
+  "tipMedium": "STŘEDNÍ SPROPITNÉ",
+  "tipLarge": "VELKÉ SPROPITNÉ",
+  "tipThanks": "DĚKUJEME!",
+  "tipFailed": "NÁKUP NEPROŠEL"
 }

@@ -58,5 +58,13 @@
   "share": "PARTAGER",
   "shareText": "Mon nouveau record dans Puff : {score}. Tu fais mieux ? {link}",
   "reducedFlashes": "MOINS DE FLASHS",
-  "paletteHoliday": "Fêtes"
+  "paletteHoliday": "Fêtes",
+  "supporter": "SOUTIEN",
+  "tipJar": "POURBOIRE",
+  "tipJarInfo": "Puff reste gratuit et sans publicité. Un pourboire ne débloque rien : il dit simplement merci et ajoute un badge de soutien au menu.",
+  "tipSmall": "PETIT POURBOIRE",
+  "tipMedium": "POURBOIRE MOYEN",
+  "tipLarge": "GROS POURBOIRE",
+  "tipThanks": "MERCI !",
+  "tipFailed": "L'ACHAT N'A PAS ABOUTI"
 }

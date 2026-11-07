@@ -206,4 +206,29 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get paletteHoliday => 'ホリデー';
+
+  @override
+  String get supporter => 'サポーター';
+
+  @override
+  String get tipJar => 'チップ';
+
+  @override
+  String get tipJarInfo =>
+      'Puffは無料で広告もありません。チップで何かが解放されることはありません。感謝の気持ちとして、メニューにサポーターバッジが付きます。';
+
+  @override
+  String get tipSmall => '小さなチップ';
+
+  @override
+  String get tipMedium => '中くらいのチップ';
+
+  @override
+  String get tipLarge => '大きなチップ';
+
+  @override
+  String get tipThanks => 'ありがとう！';
+
+  @override
+  String get tipFailed => '購入できませんでした';
 }

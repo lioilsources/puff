@@ -514,6 +514,19 @@ Not verified:
 - **The boom** has not been heard.
 - **Scores inflate** with heat; the leaderboards are unchanged.
 
+## 1.3.1 — Tip jar (2026-11-07)
+
+- **Tip jar**: three consumables, `puff.tip.small/medium/large`, through
+  in_app_purchase 3.3.1 (StoreKit and Play Billing, both via SPM/Gradle, no
+  native code of ours). `TipJar` listens to the purchase stream before it
+  asks for products, so a payment interrupted last time is delivered and
+  completed at the next launch. The menu shows TIP JAR only when all three
+  products came back, and never in `PUFF_DEMO` screenshot builds.
+- A tip unlocks nothing; `PuffSettings.tips` counts them and any tip shows a
+  ♥ SUPPORTER line under the title.
+- Store checklist: `store/APP_STORE.md` and `store/GOOGLE_PLAY.md` → *1.3.1*.
+  The "no in-app purchases" lines in the listings have to go before review.
+
 ## 1.3.0 — Game Center, weekly challenge, store hooks (2026-11-07)
 
 Plan: `Prompts/PUFF_STORE_PLAN.md`; what to type into App Store Connect:

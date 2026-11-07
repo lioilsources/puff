@@ -207,4 +207,29 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get paletteHoliday => 'Festtage';
+
+  @override
+  String get supporter => 'UNTERSTÜTZER';
+
+  @override
+  String get tipJar => 'TRINKGELD';
+
+  @override
+  String get tipJarInfo =>
+      'Puff bleibt kostenlos und ohne Werbung. Ein Trinkgeld schaltet nichts frei — es sagt nur Danke und zeigt ein Unterstützer-Abzeichen im Menü.';
+
+  @override
+  String get tipSmall => 'KLEINES TRINKGELD';
+
+  @override
+  String get tipMedium => 'MITTLERES TRINKGELD';
+
+  @override
+  String get tipLarge => 'GROSSES TRINKGELD';
+
+  @override
+  String get tipThanks => 'DANKE!';
+
+  @override
+  String get tipFailed => 'KAUF FEHLGESCHLAGEN';
 }

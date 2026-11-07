@@ -467,3 +467,29 @@ once, then opens the board. Scores are posted only while signed in.
   iOS each render their own platform face. Cosmetic.
 - **Target API.** Flutter 3.44.4 builds against `targetSdk` 36, which meets
   Play's current requirement.
+
+## 1.3.1 — Tip jar
+
+Same three products as on iOS (`store/APP_STORE.md` → *1.3.1*):
+`puff.tip.small` $0.99, `puff.tip.medium` $2.99, `puff.tip.large` $4.99.
+
+- **Payments profile**: Play Console → Setup → Payments profile must be
+  linked (merchant account) before products can be created.
+- **Monetize → Products → In-app products → Create product**, one per tier,
+  product ID exactly as above, then *Activate*. They are one-time products;
+  the app consumes them after purchase (`buyConsumable`), so each can be
+  bought again.
+- Products can only be created after an AAB that requests
+  `com.android.vending.BILLING` is uploaded to some track (internal testing
+  is enough). 1.3.1 is the first such build.
+- **Permissions** in 1.3.1 (merged release manifest): `INTERNET` (remote
+  config, added in 1.3.0), `ACCESS_NETWORK_STATE` and `BILLING` (Play
+  Billing). The note under *App content* that the app requests no
+  permissions no longer holds.
+- **Data safety**: still no data collected or shared. Google Play handles
+  the payment; Puff keeps only a local tip count. Check the answer once more
+  when submitting, since the form changes with IAP.
+- **Listing texts**: "no in-app purchases" in the full description and
+  "No ads, no purchases, no tracking" in release notes have to change in
+  every language at once. The listing will also show "In-app purchases".
+  Changes go to Google review, so send them in one batch after asking Ol1n.

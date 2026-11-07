@@ -58,5 +58,13 @@
   "share": "PAYLAŞ",
   "shareText": "Puff'ta yeni rekorum: {score}. Geçebilir misin? {link}",
   "reducedFlashes": "AZ PARLAMA",
-  "paletteHoliday": "Yılbaşı"
+  "paletteHoliday": "Yılbaşı",
+  "supporter": "DESTEKÇİ",
+  "tipJar": "BAHŞİŞ",
+  "tipJarInfo": "Puff ücretsiz ve reklamsız kalır. Bahşiş hiçbir şeyin kilidini açmaz; yalnızca teşekkür eder ve menüye bir destekçi rozeti ekler.",
+  "tipSmall": "KÜÇÜK BAHŞİŞ",
+  "tipMedium": "ORTA BAHŞİŞ",
+  "tipLarge": "BÜYÜK BAHŞİŞ",
+  "tipThanks": "TEŞEKKÜRLER!",
+  "tipFailed": "SATIN ALMA TAMAMLANAMADI"
 }

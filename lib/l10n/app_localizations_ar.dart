@@ -209,4 +209,29 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get paletteHoliday => 'الأعياد';
+
+  @override
+  String get supporter => 'داعم';
+
+  @override
+  String get tipJar => 'إكرامية';
+
+  @override
+  String get tipJarInfo =>
+      'يبقى Puff مجانيًا وبلا إعلانات. الإكرامية لا تفتح أي شيء، إنها مجرد شكر وتضيف شارة داعم إلى القائمة.';
+
+  @override
+  String get tipSmall => 'إكرامية صغيرة';
+
+  @override
+  String get tipMedium => 'إكرامية متوسطة';
+
+  @override
+  String get tipLarge => 'إكرامية كبيرة';
+
+  @override
+  String get tipThanks => 'شكرًا لك!';
+
+  @override
+  String get tipFailed => 'لم تكتمل عملية الشراء';
 }

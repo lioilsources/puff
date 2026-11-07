@@ -208,4 +208,29 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get paletteHoliday => 'Праздники';
+
+  @override
+  String get supporter => 'ПОДДЕРЖКА';
+
+  @override
+  String get tipJar => 'ЧАЕВЫЕ';
+
+  @override
+  String get tipJarInfo =>
+      'Puff остаётся бесплатным и без рекламы. Чаевые ничего не открывают — это просто спасибо и значок поддержки в меню.';
+
+  @override
+  String get tipSmall => 'НЕМНОГО ЧАЕВЫХ';
+
+  @override
+  String get tipMedium => 'СРЕДНИЕ ЧАЕВЫЕ';
+
+  @override
+  String get tipLarge => 'ЩЕДРЫЕ ЧАЕВЫЕ';
+
+  @override
+  String get tipThanks => 'СПАСИБО!';
+
+  @override
+  String get tipFailed => 'ПОКУПКА НЕ ПРОШЛА';
 }

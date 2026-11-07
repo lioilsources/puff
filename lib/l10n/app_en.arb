@@ -182,5 +182,37 @@
   "paletteHoliday": "Holiday",
   "@paletteHoliday": {
     "description": "Seasonal palette offered in December."
+  },
+  "supporter": "SUPPORTER",
+  "@supporter": {
+    "description": "Badge under the title in the menu after any tip."
+  },
+  "tipJar": "TIP JAR",
+  "@tipJar": {
+    "description": "Menu button and title of the tip jar screen (optional in-app tips)."
+  },
+  "tipJarInfo": "Puff stays free, with no ads. A tip unlocks nothing — it just says thanks and adds a supporter badge to the menu.",
+  "@tipJarInfo": {
+    "description": "Tip jar screen: tips are voluntary and unlock nothing."
+  },
+  "tipSmall": "SMALL TIP",
+  "@tipSmall": {
+    "description": "Smallest tip; the store price follows after a dot."
+  },
+  "tipMedium": "MEDIUM TIP",
+  "@tipMedium": {
+    "description": "Middle tip; the store price follows after a dot."
+  },
+  "tipLarge": "LARGE TIP",
+  "@tipLarge": {
+    "description": "Largest tip; the store price follows after a dot."
+  },
+  "tipThanks": "THANK YOU!",
+  "@tipThanks": {
+    "description": "Shown after a tip went through."
+  },
+  "tipFailed": "PURCHASE DIDN'T GO THROUGH",
+  "@tipFailed": {
+    "description": "Shown when the store reports the tip purchase failed."
   }
 }

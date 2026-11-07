@@ -206,4 +206,29 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get paletteHoliday => '홀리데이';
+
+  @override
+  String get supporter => '후원자';
+
+  @override
+  String get tipJar => '팁';
+
+  @override
+  String get tipJarInfo =>
+      'Puff는 무료이며 광고가 없습니다. 팁으로 잠금 해제되는 것은 없으며, 감사의 뜻으로 메뉴에 후원자 배지가 표시됩니다.';
+
+  @override
+  String get tipSmall => '작은 팁';
+
+  @override
+  String get tipMedium => '중간 팁';
+
+  @override
+  String get tipLarge => '큰 팁';
+
+  @override
+  String get tipThanks => '감사합니다!';
+
+  @override
+  String get tipFailed => '구매가 완료되지 않았습니다';
 }

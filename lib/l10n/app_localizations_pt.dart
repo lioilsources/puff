@@ -207,4 +207,29 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get paletteHoliday => 'Festas';
+
+  @override
+  String get supporter => 'APOIADOR';
+
+  @override
+  String get tipJar => 'GORJETA';
+
+  @override
+  String get tipJarInfo =>
+      'Puff continua grátis e sem anúncios. Uma gorjeta não desbloqueia nada — só agradece e adiciona um selo de apoiador ao menu.';
+
+  @override
+  String get tipSmall => 'GORJETA PEQUENA';
+
+  @override
+  String get tipMedium => 'GORJETA MÉDIA';
+
+  @override
+  String get tipLarge => 'GORJETA GRANDE';
+
+  @override
+  String get tipThanks => 'OBRIGADO!';
+
+  @override
+  String get tipFailed => 'A COMPRA NÃO FOI CONCLUÍDA';
 }

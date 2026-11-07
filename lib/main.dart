@@ -15,6 +15,7 @@ import 'app/overlays.dart';
 import 'app/remote_config.dart';
 import 'app/review_policy.dart';
 import 'app/settings.dart';
+import 'app/tip_jar.dart';
 import 'l10n/app_localizations.dart';
 import 'game/palette.dart';
 import 'game/puff_game.dart';
@@ -64,6 +65,7 @@ class PuffApp extends StatefulWidget {
 class _PuffAppState extends State<PuffApp> {
   late final PuffGame game;
   final gameCenter = GameCenter();
+  late final TipJar tipJar = TipJar(widget.settings);
   late final AppLifecycleListener _lifecycle;
   final _links = AppLinks();
   StreamSubscription<Uri>? _linkSub;
@@ -113,6 +115,7 @@ class _PuffAppState extends State<PuffApp> {
     });
     widget.remote.addListener(_onRemoteConfig);
     widget.remote.refresh();
+    tipJar.init();
   }
 
   @override
@@ -122,6 +125,7 @@ class _PuffAppState extends State<PuffApp> {
     _activitySub?.cancel();
     widget.remote.removeListener(_onRemoteConfig);
     gameCenter.dispose();
+    tipJar.dispose();
     super.dispose();
   }
 
@@ -275,6 +279,7 @@ class _PuffAppState extends State<PuffApp> {
                   settings: s,
                   gameCenter: gameCenter,
                   weekly: () => weekly,
+                  tipJar: tipJar,
                 ),
                 PuffGame.hudOverlay: (_, g) => HudOverlay(game: g, settings: s),
                 PuffGame.pauseOverlay: (_, g) =>
@@ -283,6 +288,8 @@ class _PuffAppState extends State<PuffApp> {
                     GameOverOverlay(game: g, settings: s, gameCenter: gameCenter),
                 PuffGame.settingsOverlay: (_, g) =>
                     SettingsOverlay(game: g, settings: s),
+                PuffGame.tipJarOverlay: (_, g) =>
+                    TipJarOverlay(game: g, settings: s, tipJar: tipJar),
               },
             );
           },

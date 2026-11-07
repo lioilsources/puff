@@ -86,6 +86,7 @@ class PuffGame extends Forge2DGame {
   static const pauseOverlay = 'pause';
   static const gameOverOverlay = 'gameOver';
   static const settingsOverlay = 'settings';
+  static const tipJarOverlay = 'tipJar';
 
   /// Scripted input for screenshots: `--dart-define=PUFF_DEMO=true`.
   static const bool demoMode = bool.fromEnvironment('PUFF_DEMO');
@@ -445,7 +446,14 @@ class PuffGame extends Forge2DGame {
       GamePhase.paused => {hudOverlay, pauseOverlay},
       GamePhase.gameOver => {gameOverOverlay},
     };
-    for (final name in [menuOverlay, hudOverlay, pauseOverlay, gameOverOverlay, settingsOverlay]) {
+    for (final name in [
+      menuOverlay,
+      hudOverlay,
+      pauseOverlay,
+      gameOverOverlay,
+      settingsOverlay,
+      tipJarOverlay,
+    ]) {
       if (wanted.contains(name)) {
         overlays.add(name);
       } else {

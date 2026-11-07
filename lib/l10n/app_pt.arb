@@ -58,5 +58,13 @@
   "share": "COMPARTILHAR",
   "shareText": "Meu novo recorde no Puff: {score}. Consegue bater? {link}",
   "reducedFlashes": "MENOS FLASHES",
-  "paletteHoliday": "Festas"
+  "paletteHoliday": "Festas",
+  "supporter": "APOIADOR",
+  "tipJar": "GORJETA",
+  "tipJarInfo": "Puff continua grátis e sem anúncios. Uma gorjeta não desbloqueia nada — só agradece e adiciona um selo de apoiador ao menu.",
+  "tipSmall": "GORJETA PEQUENA",
+  "tipMedium": "GORJETA MÉDIA",
+  "tipLarge": "GORJETA GRANDE",
+  "tipThanks": "OBRIGADO!",
+  "tipFailed": "A COMPRA NÃO FOI CONCLUÍDA"
 }

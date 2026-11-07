@@ -207,4 +207,29 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get paletteHoliday => 'Fêtes';
+
+  @override
+  String get supporter => 'SOUTIEN';
+
+  @override
+  String get tipJar => 'POURBOIRE';
+
+  @override
+  String get tipJarInfo =>
+      'Puff reste gratuit et sans publicité. Un pourboire ne débloque rien : il dit simplement merci et ajoute un badge de soutien au menu.';
+
+  @override
+  String get tipSmall => 'PETIT POURBOIRE';
+
+  @override
+  String get tipMedium => 'POURBOIRE MOYEN';
+
+  @override
+  String get tipLarge => 'GROS POURBOIRE';
+
+  @override
+  String get tipThanks => 'MERCI !';
+
+  @override
+  String get tipFailed => 'L\'ACHAT N\'A PAS ABOUTI';
 }

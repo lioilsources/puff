@@ -58,5 +58,13 @@
   "share": "シェア",
   "shareText": "Puffで自己ベスト更新：{score}。超えられる？ {link}",
   "reducedFlashes": "フラッシュ軽減",
-  "paletteHoliday": "ホリデー"
+  "paletteHoliday": "ホリデー",
+  "supporter": "サポーター",
+  "tipJar": "チップ",
+  "tipJarInfo": "Puffは無料で広告もありません。チップで何かが解放されることはありません。感謝の気持ちとして、メニューにサポーターバッジが付きます。",
+  "tipSmall": "小さなチップ",
+  "tipMedium": "中くらいのチップ",
+  "tipLarge": "大きなチップ",
+  "tipThanks": "ありがとう！",
+  "tipFailed": "購入できませんでした"
 }
