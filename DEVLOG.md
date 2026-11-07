@@ -514,6 +514,54 @@ Not verified:
 - **The boom** has not been heard.
 - **Scores inflate** with heat; the leaderboards are unchanged.
 
+## 1.3.0 — Game Center, weekly challenge, store hooks (2026-11-07)
+
+Plan: `Prompts/PUFF_STORE_PLAN.md`; what to type into App Store Connect:
+`store/APP_STORE.md` → *1.3.0*.
+
+- **Weekly challenge.** `WeeklyChallenge.at(now)`: Monday 00:00 UTC weeks
+  from 23 Nov 2026, environment cycling by week, modifier stepping by 2 (a
+  pair repeats after 20 weeks), seed mixed from the week number. The spawner
+  and shape factory now draw from their own `SeededRandom` (`spawnRandom`),
+  so blasts and particles consuming random numbers no longer shift what is
+  spawned. Fixed: the shapes and their timing. Not fixed: physics, frame
+  rate. A weekly run borrows the week's environment and modifier and puts
+  the player's own back on MENU or a free PLAY.
+- **Achievements**, 14, evaluated at run end from a `RunRecord`
+  (`sim/achievements.dart`). Unlocked set and reported set are separate in
+  the prefs, so unlocks earned signed out go up at the next sign-in.
+- **Challenges and game activities** need iOS 26 GameKit, which
+  games_services does not wrap: `ios/Runner/PuffGameKit.swift` behind the
+  `puff/gamekit` channel. A conforming class cannot implement the iOS 26
+  listener method on an iOS 15 target (compiler: "requires … to be
+  available in iOS 15.0 and newer"), so the listener is a separate
+  `@available(iOS 26.0, *)` class registered only there. Activities wait in
+  native until Dart calls `listen`.
+- **Seasons.** `Palette.inSeason` is filled at startup from the saved
+  remote config and the date, refreshed in the background. Out of season a
+  selected Holiday palette falls back to Cyberpunk.
+- **Deep links** through app_links; Flutter's own deep linking is off on
+  both platforms (`FlutterDeepLinkingEnabled`, `flutter_deeplinking_enabled`)
+  so a link never becomes a Navigator route.
+- **Reduced flashes**: settings toggle, or the system's reduce motion via
+  `MediaQuery.disableAnimationsOf`. `PuffGame.intensity` scales flashes,
+  shake, plasma background flashes and aberration; zoom pulses are off.
+- **Share card**: drawn with `dart:ui`, not captured, 1080×1350.
+- **Alternate icons** for the App Store product page test: the eight picks
+  from the icon sheet (Flash, Halves, Well, Wordmark, Orbit, Charged,
+  Pulse, Waves) replace Blast, Cloud and Shatter. `tool/gen_picked_icons.sh`
+  renders them from `tool/icon_designs.html` with headless Chrome. The glow
+  filter uses `userSpaceOnUse`, otherwise it clips to a square around small
+  shapes. Not switchable in the app.
+
+Verified: `flutter analyze`, `flutter test` (28 new tests), `flutter build
+ios --simulator`, `flutter build apk --debug`, menu with the weekly
+challenge in the iPhone simulator, `puff://` opens the app (system prompt).
+
+Not verified: Game Center on a device (achievements, weekly board,
+challenges, activities need the ASC entries first), the review sheet, the
+share sheet, the remote config (file not uploaded yet).
+
 ## 1.2.2 — App Store page (2026-10-31)
 
 3 205 impressions a year, 30 page views: 0.9 % of the people who see Puff in

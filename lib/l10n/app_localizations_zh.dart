@@ -167,6 +167,45 @@ class AppLocalizationsZh extends AppLocalizations {
   String hudEscaped(String environment, int escaped, int max) {
     return '$environment  逃逸 $escaped/$max';
   }
+
+  @override
+  String get weekly => '每周挑战';
+
+  @override
+  String weeklyDaysLeft(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '剩余 $days 天',
+      zero: '最后一天',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String weeklyBest(int score) {
+    return '本周最佳 · $score';
+  }
+
+  @override
+  String get achievements => '成就';
+
+  @override
+  String get challenges => '挑战';
+
+  @override
+  String get share => '分享';
+
+  @override
+  String shareText(int score, String link) {
+    return '我在 Puff 的新纪录：$score。你能超过吗？$link';
+  }
+
+  @override
+  String get reducedFlashes => '减少闪烁';
+
+  @override
+  String get paletteHoliday => '节日';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -332,4 +371,43 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String hudEscaped(String environment, int escaped, int max) {
     return '$environment  逃逸 $escaped/$max';
   }
+
+  @override
+  String get weekly => '每週挑戰';
+
+  @override
+  String weeklyDaysLeft(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '剩餘 $days 天',
+      zero: '最後一天',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String weeklyBest(int score) {
+    return '本週最佳 · $score';
+  }
+
+  @override
+  String get achievements => '成就';
+
+  @override
+  String get challenges => '挑戰';
+
+  @override
+  String get share => '分享';
+
+  @override
+  String shareText(int score, String link) {
+    return '我在 Puff 的新紀錄：$score。你能超越嗎？$link';
+  }
+
+  @override
+  String get reducedFlashes => '減少閃爍';
+
+  @override
+  String get paletteHoliday => '節日';
 }

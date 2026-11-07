@@ -1,0 +1,6 @@
+{
+  "weekly": true,
+  "seasons": [
+    {"name": "Holiday", "enabled": true}
+  ]
+}

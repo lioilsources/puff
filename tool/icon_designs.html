@@ -1,0 +1,113 @@
+<!doctype html>
+<!-- Source of the alternate app icons, the same drawings as the icon picker
+     artifact. Opened by tool/gen_picked_icons.sh as icon_designs.html#B4 in
+     headless Chrome at 1024x1024; each drawing is a 100x100 SVG, so the glow
+     scales with it. -->
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Audiowide&display=block">
+<style>html,body{margin:0;background:#000;overflow:hidden}#icon svg{display:block;width:100vw;height:100vh}</style>
+<svg id="defs" style="position:absolute;width:0;height:0" aria-hidden="true">
+  <defs>
+    <filter id="glow" filterUnits="userSpaceOnUse" x="-50" y="-50" width="200" height="200" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="0.7" result="b1"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="2.4" result="b2"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="6.5" result="b3"/>
+      <feMerge><feMergeNode in="b3"/><feMergeNode in="b2"/><feMergeNode in="b2"/><feMergeNode in="b1"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="bgV" cx="50%" cy="50%" r="72%"><stop offset="0" stop-color="#1a143a"/><stop offset="1" stop-color="#060510"/></radialGradient>
+    <radialGradient id="bgM" cx="50%" cy="50%" r="72%"><stop offset="0" stop-color="#3a0f33"/><stop offset="1" stop-color="#0a0410"/></radialGradient>
+    <radialGradient id="bgT" cx="50%" cy="50%" r="72%"><stop offset="0" stop-color="#06303a"/><stop offset="1" stop-color="#020a0e"/></radialGradient>
+    <radialGradient id="orb" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ffffff"/><stop offset=".35" stop-color="#f4f000"/><stop offset=".75" stop-color="#ff2d7a" stop-opacity=".55"/><stop offset="1" stop-color="#ff2d7a" stop-opacity="0"/></radialGradient>
+  </defs>
+</svg>
+<div id="icon"></div>
+<script>
+const C = { cyan: '#22e6ff', mag: '#ff2d7a', yel: '#f4f000', wht: '#f0fcff' };
+const R = n => +n.toFixed(2);
+const el = (tag, a) => `<${tag} ${Object.entries(a).map(([k, v]) => `${k}="${v}"`).join(' ')}/>`;
+const P = (cx, cy, r, deg) => [R(cx + r * Math.cos(deg * Math.PI / 180)), R(cy + r * Math.sin(deg * Math.PI / 180))];
+
+// A neon stroke: coloured tube plus a hot white core, both bloomed.
+function neon(tag, a, col, w, extra = {}) {
+  const base = { fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', ...a };
+  return `<g filter="url(#glow)">${el(tag, { ...base, stroke: col, 'stroke-width': w, ...extra })}${el(tag, { ...base, stroke: '#fff', 'stroke-width': R(w * 0.36), 'stroke-opacity': 0.6, ...extra })}</g>`;
+}
+const circ = (cx, cy, r, col, w, x) => neon('circle', { cx, cy, r }, col, w, x);
+const path = (d, col, w, x) => neon('path', { d }, col, w, x);
+const poly = (pts, col, w, x) => neon('polygon', { points: pts.map(p => p.join(',')).join(' ') }, col, w, x);
+const line = (a, b, col, w, x) => neon('line', { x1: a[0], y1: a[1], x2: b[0], y2: b[1] }, col, w, x);
+const dot = (cx, cy, r, col, op = 1) => `<g filter="url(#glow)">${el('circle', { cx, cy, r, fill: col, 'fill-opacity': op })}</g>`;
+const regular = (cx, cy, r, n, rot = -90) => Array.from({ length: n }, (_, i) => P(cx, cy, r, rot + i * 360 / n));
+const arc = (cx, cy, r, a0, a1) => { const s = P(cx, cy, r, a0), e = P(cx, cy, r, a1); return `M${s} A${r} ${r} 0 ${((a1 - a0) % 360 + 360) % 360 > 180 ? 1 : 0} 1 ${e}`; };
+const move = (pts, dx, dy) => pts.map(([x, y]) => [R(x + dx), R(y + dy)]);
+const rot = (pts, deg, cx = 50, cy = 50) => pts.map(([x, y]) => { const a = deg * Math.PI / 180, dx = x - cx, dy = y - cy; return [R(cx + dx * Math.cos(a) - dy * Math.sin(a)), R(cy + dx * Math.sin(a) + dy * Math.cos(a))]; });
+function rng(seed) { return () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }; }
+const pStem = 'M36 22 V78', pBowl = 'M36 22 H53 A14.5 14.5 0 0 1 53 51 H36';
+const Pletter = (col, w) => path(`${pStem} ${pBowl}`, col, w);
+
+const TYPES = [
+  { code: 'A', name: 'Oblak', desc: 'Tlakový oblak, který hráč nabíjí podržením prstu. Nejpřímější odkaz na hlavní mechaniku.', v: [
+    ['Tlakový prstenec', 'bgV', () => dot(50, 50, 30, C.cyan, .14) + circ(50, 50, 30, C.cyan, 5) + circ(50, 50, 6, C.yel, 3)],
+    ['Kupa', 'bgV', () => `<g transform="translate(0,4)">${path('M30 68 A12 12 0 0 1 30 44 A15 15 0 0 1 60 38 A14 14 0 0 1 72 68 Z', C.mag, 4.5)}</g>` + circ(50, 58, 5, C.cyan, 3)],
+    ['Tlakové vlny', 'bgV', () => circ(50, 50, 34, C.cyan, 2, { 'stroke-opacity': .4 }) + circ(50, 50, 24, C.cyan, 3, { 'stroke-opacity': .7 }) + circ(50, 50, 14, C.cyan, 4) + dot(50, 50, 5, C.yel)],
+    ['Plazmová koule', 'bgM', () => `<circle cx="50" cy="50" r="38" fill="url(#orb)"/>` + circ(50, 50, 24, C.wht, 1.5, { 'stroke-opacity': .7 })],
+    ['Nabíjení', 'bgV', () => circ(50, 50, 24, C.cyan, 4) + path(arc(50, 50, 34, -90, 180), C.mag, 5) + circ(50, 50, 6, C.yel, 3)],
+  ]},
+  { code: 'B', name: 'Výbuch', desc: 'Okamžik uvolnění: tlaková vlna, která rozmetá geometrii.', v: [
+    ['Rozptyl', 'bgV', () => { const r = rng(7); let s = ''; for (let i = 0; i < 16; i++) { const a = i * 22.5 + r() * 8, l = 6 + r() * 6; s += line(P(50, 50, 25, a), P(50, 50, 25 + l, a), C.cyan, 3.5); } return s + circ(50, 50, 14, C.yel, 5) + circ(50, 50, 5, C.yel, 3); }],
+    ['Hvězda', 'bgV', () => poly(Array.from({ length: 24 }, (_, i) => P(50, 50, i % 2 ? 17 : 36, -90 + i * 15)), C.mag, 4) + dot(50, 50, 6, C.yel)],
+    ['Rázová vlna', 'bgT', () => circ(50, 50, 38, C.cyan, 2, { 'stroke-dasharray': '20 18', 'stroke-opacity': .5 }) + circ(50, 50, 27, C.cyan, 3, { 'stroke-dasharray': '30 12' }) + circ(50, 50, 15, C.cyan, 4, { 'stroke-dasharray': '19 6' }) + dot(50, 50, 4.5, C.wht)],
+    ['Záblesk', 'bgK', () => { let s = ''; for (let i = 0; i < 24; i++) { const l = i % 2 ? 22 : (i % 4 ? 32 : 40); s += line(P(50, 50, 10, i * 15), P(50, 50, l, i * 15), i % 2 ? C.wht : C.yel, 2.4); } return s + dot(50, 50, 7, C.wht); }],
+    ['Střepy', 'bgV', () => { const r = rng(3); let s = circ(50, 50, 8, C.yel, 4); for (let i = 0; i < 7; i++) { const a = i * 51 + 10, rr = 27 + r() * 8, [x, y] = P(50, 50, rr, a); const shape = i % 2 ? regular(x, y, 5, 3, r() * 120) : regular(x, y, 4.6, 4, r() * 90); s += poly(shape, i % 3 ? C.mag : C.cyan, 2.6); } return s; }],
+  ]},
+  { code: 'C', name: 'Tříštění', desc: 'Tvar praskající vejpůl. Dobře čitelný i v malé velikosti, říká „rozbij to“.', v: [
+    ['Rozlomený čtverec', 'bgV', () => poly(rot([[22, 26], [47, 26], [41, 40], [48, 52], [42, 74], [22, 74]], -7, 35, 50), C.mag, 4) + poly(rot([[55, 26], [78, 26], [78, 74], [50, 74], [56, 52], [49, 40]], 7, 65, 50), C.mag, 4) + line([52, 14], [52, 19], C.cyan, 2.5) + line([51, 82], [51, 87], C.cyan, 2.5)],
+    ['Trojúhelník', 'bgV', () => { const v = [[50, 18], [84, 76], [16, 76]], c = [50, 56.7]; return [[0, 1], [1, 2], [2, 0]].map(([i, j]) => { const mx = (v[i][0] + v[j][0]) / 2 - c[0], my = (v[i][1] + v[j][1]) / 2 - c[1], d = Math.hypot(mx, my); return poly(move([v[i], v[j], c], mx / d * 4, my / d * 4), C.cyan, 3.4); }).join(''); }],
+    ['Prasklý hexagon', 'bgV', () => poly(regular(50, 50, 32, 6), C.yel, 4) + path('M50 22 L46 36 L54 46 L44 60 L50 78 M54 46 L68 52', C.wht, 2)],
+    ['Půlky', 'bgV', () => `<g transform="translate(-5,0)">${path('M50 20 A30 30 0 0 0 50 80 L46 66 L53 52 L45 36 Z', C.mag, 4)}</g><g transform="translate(5,0)">${path('M50 20 A30 30 0 0 1 50 80 L46 66 L53 52 L45 36 Z', C.cyan, 4)}</g>`],
+    ['Rozpad', 'bgM', () => { const q = [[30, 30], [70, 30], [70, 70], [30, 70]], cols = [C.mag, C.cyan, C.yel, C.wht]; let s = ''; for (let i = 0; i < 4; i++) { const a = q[i], b = q[(i + 1) % 4]; const mx = (a[0] + b[0]) / 2 - 50, my = (a[1] + b[1]) / 2 - 50; s += poly(rot(move([a, b, [50, 50]], mx * .3, my * .3), i % 2 ? 9 : -9, 50 + mx * 1.2, 50 + my * 1.2), cols[i], 3); } return s + dot(16, 22, 1.6, C.cyan) + dot(84, 80, 1.6, C.mag) + dot(84, 20, 1.2, C.yel); }],
+  ]},
+  { code: 'D', name: 'Jádro', desc: 'Jádro, ke kterému se geometrie stahuje. Klidnější, „systémový“ výraz.', v: [
+    ['Oběžnice', 'bgV', () => { const t = 30 * Math.PI / 180; const [sx, sy] = rot([[50 + 34 * Math.cos(t), 50 + 14 * Math.sin(t)]], -25)[0]; return `<g transform="rotate(-25 50 50)">${neon('ellipse', { cx: 50, cy: 50, rx: 34, ry: 14 }, C.cyan, 2.5)}</g>` + dot(50, 50, 10, C.yel, .95) + poly(regular(sx, sy, 5, 4, 20), C.mag, 2.6); }],
+    ['Terč', 'bgV', () => circ(50, 50, 31, C.mag, 3) + circ(50, 50, 20, C.mag, 3) + circ(50, 50, 9, C.mag, 3.5) + dot(50, 50, 3, C.wht)],
+    ['Hex jádro', 'bgV', () => poly(regular(50, 50, 24, 6, 0), C.cyan, 4) + `<g filter="url(#glow)"><polygon points="${regular(50, 50, 10, 6, 0).map(p => p.join(',')).join(' ')}" fill="${C.yel}" fill-opacity=".85"/></g>` + regular(50, 50, 36, 6, 30).map(([x, y]) => dot(x, y, 2, C.mag)).join('')],
+    ['Gravitační studna', 'bgT', () => { const pts = []; for (let t = 0; t <= 3 * 360; t += 6) { const r = 38 - t / 1080 * 31; pts.push(P(50, 50, r, t - 90)); } return path('M' + pts.join(' L'), C.cyan, 2.8) + dot(50, 50, 4.5, C.yel); }],
+    ['Přitahování', 'bgV', () => circ(50, 50, 8, C.yel, 4) + poly(regular(20, 22, 7, 3), C.cyan, 2.6) + poly(regular(80, 22, 6.5, 4, 0), C.mag, 2.6) + poly(regular(80, 78, 7, 6, 0), C.cyan, 2.6) + circ(20, 78, 6, C.mag, 2.6) + [[26, 28], [74, 28], [74, 72], [26, 72]].map(([x, y]) => line([x, y], [50 + (x - 50) * .45, 50 + (y - 50) * .45], C.wht, 1.6, { 'stroke-dasharray': '2 4', 'stroke-opacity': .6 })).join('')],
+  ]},
+  { code: 'E', name: 'Monogram', desc: 'Písmeno nebo název. Buduje značku, ale méně vypráví o hře.', v: [
+    ['Neon P', 'bgV', () => Pletter(C.cyan, 6)],
+    ['P z oblaku', 'bgV', () => line([36, 37], [36, 78], C.mag, 6) + circ(50, 37, 14, C.cyan, 6) + dot(50, 37, 4, C.yel)],
+    ['puff', 'bgV', () => `<g filter="url(#glow)"><text x="50" y="59" text-anchor="middle" font-family="Audiowide, sans-serif" font-size="27" fill="${C.cyan}">puff</text></g><text x="50" y="59" text-anchor="middle" font-family="Audiowide, sans-serif" font-size="27" fill="#fff" fill-opacity=".55">puff</text>`],
+    ['P s výbuchem', 'bgV', () => { let s = ''; for (let i = 0; i < 12; i++) s += line(P(48, 50, 38, i * 30 + 15), P(48, 50, 44, i * 30 + 15), C.cyan, 3); return s + `<g transform="translate(2,0)">${Pletter(C.yel, 6)}</g>`; }],
+    ['Rozlomené P', 'bgK', () => Pletter(C.mag, 7) + `<path d="M20 60 L38 52 L44 58 L60 46 L80 40" fill="none" stroke="#08070f" stroke-width="3.2" stroke-linejoin="round"/>`],
+  ]},
+  { code: 'F', name: 'Dotek', desc: 'Prst, který drží a pouští. Ukazuje ovládání, ne obsah hry.', v: [
+    ['Přidržení', 'bgV', () => circ(50, 50, 38, C.cyan, 2, { 'stroke-opacity': .25 }) + circ(50, 50, 28, C.cyan, 2.5, { 'stroke-opacity': .5 }) + circ(50, 50, 18, C.cyan, 3, { 'stroke-opacity': .85 }) + dot(50, 50, 9, C.cyan, .95)],
+    ['Tlakoměr', 'bgV', () => `<path d="${arc(50, 50, 28, 135, 405)}" fill="none" stroke="#fff" stroke-opacity=".12" stroke-width="5" stroke-linecap="round"/>` + path(arc(50, 50, 28, 135, 345), C.yel, 5) + dot(50, 50, 8, C.mag)],
+    ['Táhni a pusť', 'bgV', () => path('M28 72 C34 56 46 46 62 40', C.cyan, 2.4, { 'stroke-dasharray': '3 5' }) + dot(28, 72, 6, C.cyan) + circ(64, 38, 8, C.mag, 3.5) + circ(64, 38, 17, C.mag, 2.4, { 'stroke-opacity': .55 })],
+    ['Pulzní kruhy', 'bgM', () => circ(50, 50, 34, C.yel, 2.2, { 'stroke-dasharray': '6 10', 'stroke-opacity': .5 }) + circ(50, 50, 24, C.yel, 3, { 'stroke-dasharray': '10 7' }) + circ(50, 50, 14, C.yel, 3.6) + dot(50, 50, 5, C.wht)],
+    ['Otisk', 'bgT', () => { let s = ''; for (let i = 0; i < 6; i++) { const rx = 6 + i * 5, ry = rx * 1.25, a0 = 120 + i * 6, a1 = 420 - i * 3; const pts = []; for (let a = a0; a <= a1; a += 6) { const t = a * Math.PI / 180; pts.push([R(50 + rx * Math.cos(t)), R(54 + ry * Math.sin(t))]); } s += path('M' + pts.join(' L'), C.cyan, 2.4); } return s; }],
+  ]},
+  { code: 'G', name: 'Tvary', desc: 'Geometrie, která se ve hře rozpadá. Pestré, ale abstraktní.', v: [
+    ['Trojice', 'bgV', () => poly(regular(34, 40, 15, 3), C.cyan, 3.5) + poly(regular(66, 40, 14, 4, 20), C.mag, 3.5) + circ(50, 68, 12, C.yel, 3.5)],
+    ['Velký trojúhelník', 'bgV', () => `<g filter="url(#glow)"><polygon points="50,40 62,64 38,64" fill="${C.yel}" fill-opacity=".35"/></g>` + poly([[50, 18], [82, 76], [18, 76]], C.mag, 5)],
+    ['Orbit tvarů', 'bgV', () => circ(50, 50, 8, C.cyan, 3.5) + poly(regular(...P(50, 50, 29, -90), 7, 3), C.mag, 2.8) + poly(regular(...P(50, 50, 29, 0), 6, 4, 0), C.yel, 2.8) + poly(regular(...P(50, 50, 29, 90), 6.5, 5), C.cyan, 2.8) + poly(regular(...P(50, 50, 29, 180), 6.5, 6, 0), C.mag, 2.8)],
+    ['Padající', 'bgV', () => [[30, 26, 7, C.cyan], [48, 44, 10, C.mag], [70, 68, 14, C.cyan]].map(([x, y, s, c], i) => line([x - s * 1.7, y - s * 1.7], [x - s * .9, y - s * .9], c, 1.6, { 'stroke-opacity': .5 }) + poly(regular(x, y, s, 4, 15 + i * 15), c, 3)).join('')],
+    ['Pentagon', 'bgT', () => { const r = rng(11); let s = poly(regular(50, 52, 28, 5), C.yel, 4.2); for (let i = 0; i < 6; i++) { const [x, y] = P(50, 52, 38 + r() * 4, i * 60 + 20); s += i % 2 ? dot(x, y, 1.8, C.cyan) : poly(regular(x, y, 3, 4, r() * 90), C.cyan, 1.8); } return s; }],
+  ]},
+  { code: 'H', name: 'Energie', desc: 'Náboj, výboj a energetická křivka ze simulace. Nejvíc „arkádové“.', v: [
+    ['Blesk', 'bgV', () => `<g filter="url(#glow)"><path d="M58 14 L30 54 H48 L42 86 L72 44 H54 L62 14 Z" fill="${C.yel}" fill-opacity=".14"/></g>` + path('M58 14 L30 54 H48 L42 86 L72 44 H54 L62 14 Z', C.yel, 3.6)],
+    ['Oblouk', 'bgV', () => { const zig = (seed, amp) => { const r = rng(seed), pts = []; for (let i = 0; i <= 10; i++) { const t = i / 10, x = 26 + 48 * t, y = 64 - 28 * t, j = (i && i < 10) ? (r() - .5) * amp : 0; pts.push([R(x + j * .5), R(y + j)]); } return 'M' + pts.join(' L'); }; return path(zig(5, 18), C.mag, 1.8, { 'stroke-opacity': .7 }) + path(zig(9, 12), C.cyan, 2.6) + circ(26, 64, 6, C.cyan, 3) + circ(74, 36, 6, C.cyan, 3); }],
+    ['Nabitý prstenec', 'bgM', () => circ(50, 50, 20, C.mag, 4.5) + [0, 120, 240].map(a => path(`M${P(50, 50, 25, a)} L${P(50, 50, 31, a + 9)} L${P(50, 50, 33, a - 5)} L${P(50, 50, 40, a + 4)}`, C.cyan, 2.2)).join('') + dot(50, 50, 4, C.wht)],
+    ['Puls', 'bgK', () => path('M12 54 H32 L38 38 L46 74 L55 24 L62 54 H88', C.cyan, 4) + dot(88, 54, 3, C.yel)],
+    ['Křivka energie', 'bgV', () => `<g stroke="#fff" stroke-opacity=".12" stroke-width="1">${[30, 50, 70].map(v => `<line x1="20" y1="${v}" x2="82" y2="${v}"/>`).join('')}</g>` + line([20, 80], [82, 80], C.wht, 1.4, { 'stroke-opacity': .4 }) + path('M20 78 C46 77 62 64 78 24', C.yel, 4) + dot(78, 24, 5, C.mag)],
+  ]},
+];
+const BG = { bgV: 'url(#bgV)', bgM: 'url(#bgM)', bgT: 'url(#bgT)', bgK: '#08070f' };
+
+const id = location.hash.slice(1).toUpperCase();
+const t = TYPES.find(t => t.code === id[0]);
+const [name, bg, draw] = t.v[+id.slice(1) - 1];
+document.getElementById('icon').innerHTML =
+  `<svg viewBox="0 0 100 100" aria-label="${id} ${name}"><rect width="100" height="100" fill="${BG[bg]}"/>${draw()}</svg>`;
+</script>

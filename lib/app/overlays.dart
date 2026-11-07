@@ -7,9 +7,11 @@ import '../game/puff_game.dart';
 import '../game/sim/environment.dart';
 import '../game/sim/jukebox.dart';
 import '../game/sim/modifier.dart';
+import '../game/sim/weekly.dart';
 import '../l10n/app_localizations.dart';
 import 'game_center.dart';
 import 'settings.dart';
+import 'share_card.dart';
 import 'theme.dart';
 
 class MainMenuOverlay extends StatelessWidget {
@@ -18,14 +20,19 @@ class MainMenuOverlay extends StatelessWidget {
     required this.game,
     required this.settings,
     required this.gameCenter,
+    required this.weekly,
   });
 
   final PuffGame game;
   final PuffSettings settings;
   final GameCenter gameCenter;
 
+  /// The week's challenge, or null while there is none.
+  final WeeklyChallenge? Function() weekly;
+
   @override
   Widget build(BuildContext context) {
+    final week = weekly();
     return AnimatedBuilder(
       // Game Center signs in after the menu is already up.
       animation: Listenable.merge([settings, gameCenter]),
@@ -63,6 +70,32 @@ class MainMenuOverlay extends StatelessWidget {
                 size: 12,
                 glow: false,
               ),
+              if (week != null) ...[
+                const SizedBox(height: 10),
+                NeonButton(
+                  label: l10n.weekly,
+                  color: p.primary,
+                  onTap: () {
+                    game.audio.click();
+                    game.startGame(challenge: week);
+                  },
+                ),
+                NeonText(
+                  '${l10n.environmentName(week.environment)} · '
+                  '${l10n.modifierName(week.modifier)} · '
+                  '${l10n.weeklyDaysLeft(week.timeLeft(DateTime.now()).inDays)}',
+                  color: p.glow.withValues(alpha: 0.75),
+                  size: 11,
+                  glow: false,
+                ),
+                if (settings.weeklyBestFor(week.id) > 0)
+                  NeonText(
+                    l10n.weeklyBest(settings.weeklyBestFor(week.id)),
+                    color: p.secondary,
+                    size: 11,
+                    glow: false,
+                  ),
+              ],
               const SizedBox(height: 18),
               NeonPicker<EnvironmentKind>(
                 title: l10n.environmentTitle,
@@ -92,7 +125,7 @@ class MainMenuOverlay extends StatelessWidget {
               NeonPicker<Palette>(
                 title: l10n.paletteTitle,
                 palette: p,
-                values: Palette.builtIns,
+                values: Palette.available,
                 selected: settings.palette,
                 labelOf: l10n.paletteName,
                 colorOf: (pal) => pal.primary,
@@ -110,6 +143,24 @@ class MainMenuOverlay extends StatelessWidget {
                   onTap: () {
                     game.audio.click();
                     gameCenter.show(settings.environment);
+                  },
+                ),
+              if (gameCenter.available)
+                NeonButton(
+                  label: l10n.achievements,
+                  color: p.accent,
+                  onTap: () {
+                    game.audio.click();
+                    gameCenter.showAchievements();
+                  },
+                ),
+              if (gameCenter.challengesOffered)
+                NeonButton(
+                  label: l10n.challenges,
+                  color: p.accent,
+                  onTap: () {
+                    game.audio.click();
+                    gameCenter.showChallenges();
                   },
                 ),
               NeonButton(
@@ -201,7 +252,7 @@ class PauseOverlay extends StatelessWidget {
             color: p.primary,
             onTap: () {
               game.audio.click();
-              game.startGame();
+              game.restartRun();
             },
           ),
           if (settings.music)
@@ -251,31 +302,38 @@ class GameOverOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     final p = settings.palette;
     final s = game.score;
-    final best = settings.highScoreFor(settings.environment);
+    final week = game.weekly;
+    final best = week == null
+        ? settings.highScoreFor(game.environment.kind)
+        : settings.weeklyBestFor(week.id);
     final isBest = game.lastRunWasBest;
     final l10n = AppLocalizations.of(context);
+    final run = l10n.gameOverRun(
+      l10n.environmentName(game.environment.kind),
+      l10n.modifierName(game.modifiers.spec.kind),
+      game.elapsed.toStringAsFixed(0),
+    );
     return OverlayScrim(
       palette: p,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           NeonText(l10n.gameOver, color: p.hazard, size: 30, spacing: 8),
+          if (week != null)
+            NeonText(l10n.weekly, color: p.primary, size: 12, glow: false, spacing: 3),
           const SizedBox(height: 16),
           NeonText('${s.score}', color: p.primary, size: 48, weight: FontWeight.w800),
           NeonText(
-            isBest ? l10n.newBest : l10n.bestScore(best),
+            isBest
+                ? l10n.newBest
+                : (week == null ? l10n.bestScore(best) : l10n.weeklyBest(best)),
             color: isBest ? p.accent : p.secondary,
             size: 13,
             glow: isBest,
           ),
           const SizedBox(height: 10),
           NeonText(
-            '${l10n.gameOverStats(s.bestCombo, s.bodiesDisplaced, s.fractures)}\n'
-            '${l10n.gameOverRun(
-              l10n.environmentName(game.environment.kind),
-              l10n.modifierName(game.modifiers.spec.kind),
-              game.elapsed.toStringAsFixed(0),
-            )}',
+            '${l10n.gameOverStats(s.bestCombo, s.bodiesDisplaced, s.fractures)}\n$run',
             color: p.glow.withValues(alpha: 0.8),
             size: 12,
             glow: false,
@@ -288,9 +346,28 @@ class GameOverOverlay extends StatelessWidget {
             primary: true,
             onTap: () {
               game.audio.click();
-              game.startGame();
+              game.restartRun();
             },
           ),
+          if (isBest)
+            Builder(
+              builder: (button) => NeonButton(
+                label: l10n.share,
+                color: p.primary,
+                onTap: () {
+                  game.audio.click();
+                  final box = button.findRenderObject() as RenderBox?;
+                  ShareCard.share(
+                    palette: p,
+                    score: s.score,
+                    headline: week == null ? l10n.newBest : l10n.weekly,
+                    detail: run,
+                    text: l10n.shareText(s.score, ShareLinks.forPlatform()),
+                    origin: box == null ? null : box.localToGlobal(Offset.zero) & box.size,
+                  );
+                },
+              ),
+            ),
           NeonButton(
             label: l10n.menu,
             color: p.secondary,
@@ -305,7 +382,7 @@ class GameOverOverlay extends StatelessWidget {
               color: p.glow.withValues(alpha: 0.8),
               onTap: () {
                 game.audio.click();
-                gameCenter.show(game.environment.kind);
+                week == null ? gameCenter.show(game.environment.kind) : gameCenter.showWeekly();
               },
             ),
         ],
@@ -376,6 +453,16 @@ class SettingsOverlay extends StatelessWidget {
                   game.audio.click();
                   settings.update((s) => s.music = v);
                   game.jukebox.enabled = v;
+                },
+              ),
+              NeonToggle(
+                label: l10n.reducedFlashes,
+                value: settings.reducedFlashes,
+                color: p.accent,
+                onChanged: (v) {
+                  game.audio.click();
+                  settings.update((s) => s.reducedFlashes = v);
+                  game.calm = v || MediaQuery.disableAnimationsOf(context);
                 },
               ),
               NeonToggle(

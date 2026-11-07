@@ -31,6 +31,7 @@ extension LocalizedNames on AppLocalizations {
     'Mono' => paletteMono,
     'Ember' => paletteEmber,
     'Arctic' => paletteArctic,
+    'Holiday' => paletteHoliday,
     _ => palette.name,
   };
 

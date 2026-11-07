@@ -49,5 +49,14 @@
   "heatTier3": "HITTE III",
   "heatTierOverdrive": "OVERDRIVE",
   "hudCombo": "x{multiplier}  combo {combo}",
-  "hudEscaped": "{environment}  ontsnapt {escaped}/{max}"
+  "hudEscaped": "{environment}  ontsnapt {escaped}/{max}",
+  "weekly": "WEEKUITDAGING",
+  "weeklyDaysLeft": "{days, plural, =0{laatste dag} =1{nog 1 dag} other{nog {days} dagen}}",
+  "weeklyBest": "weekrecord · {score}",
+  "achievements": "PRESTATIES",
+  "challenges": "UITDAGINGEN",
+  "share": "DELEN",
+  "shareText": "Mijn nieuwe record in Puff: {score}. Kun jij het verbeteren? {link}",
+  "reducedFlashes": "MINDER FLITSEN",
+  "paletteHoliday": "Feestdagen"
 }

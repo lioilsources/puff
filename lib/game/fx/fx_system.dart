@@ -100,11 +100,12 @@ class FxSystem extends Component with HasGameReference<PuffGame> {
         jitter: e.radius * 1.4,
       );
     }
+    final calm = game.intensity;
     shake.addTrauma(
-      fizzle ? 0.15 : (0.22 + 0.55 * energy) * heatLerp(heat, 1, Tuning.fxShakeHot),
+      (fizzle ? 0.15 : (0.22 + 0.55 * energy) * heatLerp(heat, 1, Tuning.fxShakeHot)) * calm,
     );
     final zoomFrom = 0.55 - Tuning.fxThresholdDrop * hot;
-    if (!fizzle && energy > zoomFrom) {
+    if (!fizzle && energy > zoomFrom && !game.calm) {
       shake.addZoomPulse(0.025 + 0.07 * (energy - zoomFrom));
     }
     final post = game.postProcess;
@@ -115,7 +116,7 @@ class FxSystem extends Component with HasGameReference<PuffGame> {
         _echoes.add((Tuning.fxEchoDelay, e.position.clone(), energy * 0.7, scale));
       }
       post.addFlash(
-        (0.05 + 0.18 * energy) * heatLerp(heat, 1, Tuning.fxFlashHot),
+        (0.05 + 0.18 * energy) * heatLerp(heat, 1, Tuning.fxFlashHot) * calm,
         role,
       );
     }
@@ -151,7 +152,7 @@ class FxSystem extends Component with HasGameReference<PuffGame> {
         jitter: 0.05,
       );
     }
-    shake.addTrauma(0.06);
+    shake.addTrauma(0.06 * game.intensity);
   }
 
   void onArc(ArcEvent a) {
@@ -167,9 +168,12 @@ class FxSystem extends Component with HasGameReference<PuffGame> {
         jitter: 0.1,
       );
     }
-    shake.addTrauma(0.08 + 0.1 * a.energy);
+    shake.addTrauma((0.08 + 0.1 * a.energy) * game.intensity);
     if (game.environment.kind == EnvironmentKind.plasma) {
-      game.background?.flash = math.max(game.background!.flash, 0.6 + 0.4 * a.energy);
+      game.background?.flash = math.max(
+        game.background!.flash,
+        (0.6 + 0.4 * a.energy) * game.intensity,
+      );
     }
   }
 
@@ -188,11 +192,12 @@ class FxSystem extends Component with HasGameReference<PuffGame> {
         Tuning.bloomIntensityOver,
       );
       post.aberration = heatLerp(
-        heat,
-        Tuning.aberration,
-        Tuning.aberrationHot,
-        Tuning.aberrationOver,
-      );
+            heat,
+            Tuning.aberration,
+            Tuning.aberrationHot,
+            Tuning.aberrationOver,
+          ) *
+          game.intensity;
     }
     for (var i = _echoes.length - 1; i >= 0; i--) {
       final (left, position, energy, scale) = _echoes[i];

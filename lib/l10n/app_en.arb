@@ -128,5 +128,59 @@
         "type": "int"
       }
     }
+  },
+  "weekly": "WEEKLY CHALLENGE",
+  "@weekly": {
+    "description": "Main menu button and game over label for the weekly challenge: the same run for every player this week."
+  },
+  "weeklyDaysLeft": "{days, plural, =0{last day} =1{1 day left} other{{days} days left}}",
+  "@weeklyDaysLeft": {
+    "description": "Weekly challenge: whole days until the week ends.",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "weeklyBest": "week best · {score}",
+  "@weeklyBest": {
+    "description": "Best score in this week's challenge.",
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "achievements": "ACHIEVEMENTS",
+  "@achievements": {
+    "description": "Button that opens Game Center achievements."
+  },
+  "challenges": "CHALLENGES",
+  "@challenges": {
+    "description": "Button that opens Game Center challenges (iOS 26+)."
+  },
+  "share": "SHARE",
+  "@share": {
+    "description": "Game over: share the new best score."
+  },
+  "shareText": "My new best in Puff: {score}. Can you beat it? {link}",
+  "@shareText": {
+    "description": "Text shared with the score card. {link} is the store link.",
+    "placeholders": {
+      "score": {
+        "type": "int"
+      },
+      "link": {
+        "type": "String"
+      }
+    }
+  },
+  "reducedFlashes": "REDUCED FLASHES",
+  "@reducedFlashes": {
+    "description": "Settings toggle: weaker flashes and screen shake (accessibility)."
+  },
+  "paletteHoliday": "Holiday",
+  "@paletteHoliday": {
+    "description": "Seasonal palette offered in December."
   }
 }

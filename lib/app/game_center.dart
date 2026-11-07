@@ -1,9 +1,22 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:games_services/games_services.dart';
 
+import '../game/sim/achievements.dart';
 import '../game/sim/environment.dart';
+import '../game/sim/weekly.dart';
+
+/// A Game Center game activity the player chose in the Games app, an In-App
+/// Event or a challenge invite (iOS 26+). Its properties are set per
+/// activity in App Store Connect.
+class GameActivity {
+  const GameActivity(this.definition, this.properties);
+
+  final String definition;
+  final Map<String, String> properties;
+}
 
 /// Leaderboards, one per environment: Game Center on iOS and macOS, Play Games
 /// Services on Android.
@@ -16,6 +29,18 @@ import '../game/sim/environment.dart';
 class GameCenter extends ChangeNotifier {
   bool _available = false;
   StreamSubscription<PlayerData?>? _player;
+  bool _challenges = false;
+
+  static const _kit = MethodChannel('puff/gamekit');
+  static bool get _ios => defaultTargetPlatform == TargetPlatform.iOS;
+
+  /// Game activities as they arrive; see [GameActivity].
+  final _activities = StreamController<GameActivity>.broadcast();
+  Stream<GameActivity> get activities => _activities.stream;
+
+  /// True when App Store Connect has challenges for this game and the system
+  /// can show them (iOS 26+, signed in).
+  bool get challengesOffered => _available && _challenges;
 
   /// True once the player is signed in and submissions can be made.
   bool get available => _available;
@@ -69,6 +94,18 @@ class GameCenter extends ChangeNotifier {
     if (!_supported) {
       return;
     }
+    if (_ios) {
+      _kit.setMethodCallHandler((call) async {
+        if (call.method == 'activity') {
+          _emitActivity(call.arguments);
+        }
+      });
+      try {
+        _emitActivity(await _kit.invokeMethod<Object?>('listen'));
+      } catch (error) {
+        debugPrint('Puff: GameKit bridge failed: $error');
+      }
+    }
     _player ??= GameAuth.player.listen(
       (player) => _setAvailable(player != null),
       onError: (Object error) {
@@ -96,30 +133,153 @@ class GameCenter extends ChangeNotifier {
     }
     _available = value;
     notifyListeners();
+    if (value) {
+      _onSignedIn();
+    }
+  }
+
+  /// Achievements earned while signed out, waiting to be reported. Set by
+  /// the app from the settings; [onReported] persists what went through.
+  Set<String> Function()? pendingAchievements;
+  Future<void> Function(Iterable<String> ids)? onReported;
+
+  Future<void> _onSignedIn() async {
+    await reportAchievements();
+    if (!_ios) {
+      return;
+    }
+    try {
+      _challenges = await _kit.invokeMethod<bool>('hasChallenges') ?? false;
+      notifyListeners();
+    } catch (error) {
+      debugPrint('Puff: GameKit bridge failed: $error');
+    }
+  }
+
+  void _emitActivity(Object? payload) {
+    if (payload is! Map) {
+      return;
+    }
+    final definition = payload['definition'];
+    final properties = payload['properties'];
+    if (definition is! String) {
+      return;
+    }
+    _activities.add(
+      GameActivity(definition, {
+        if (properties is Map)
+          for (final e in properties.entries) '${e.key}': '${e.value}',
+      }),
+    );
   }
 
   @override
   void dispose() {
     _player?.cancel();
+    _activities.close();
     super.dispose();
   }
 
-  /// Posts a finished run. Game Center keeps the best of what it is sent, so
-  /// every run goes up, not only local bests.
-  Future<void> submit(EnvironmentKind env, int score) async {
+  /// Reports every unlocked achievement Game Center has not accepted yet.
+  Future<void> reportAchievements() async {
+    final pending = pendingAchievements?.call() ?? const <String>{};
+    if (!_available || pending.isEmpty) {
+      return;
+    }
+    final done = <String>[];
+    for (final id in pending) {
+      final a = AchievementId.values.where((a) => a.id == id).firstOrNull;
+      if (a == null || (defaultTargetPlatform == TargetPlatform.android && a.androidId.isEmpty)) {
+        continue;
+      }
+      try {
+        await Achievements.unlock(
+          achievement: Achievement(iOSID: a.id, androidID: a.androidId),
+        );
+        done.add(id);
+      } catch (error) {
+        debugPrint('Puff: achievement $id not reported: $error');
+      }
+    }
+    if (done.isNotEmpty) {
+      await onReported?.call(done);
+    }
+  }
+
+  /// Opens the system achievements list.
+  Future<void> showAchievements() async {
     if (!_available) {
+      return;
+    }
+    try {
+      await Achievements.showAchievements();
+    } catch (error) {
+      debugPrint('Puff: achievements failed to open: $error');
+    }
+  }
+
+  /// Opens the system challenges screen (iOS 26+).
+  Future<void> showChallenges() async {
+    if (!challengesOffered) {
+      return;
+    }
+    try {
+      await _kit.invokeMethod<bool>('showChallenges');
+    } catch (error) {
+      debugPrint('Puff: challenges failed to open: $error');
+    }
+  }
+
+  /// Reports the run's score on the game activity that started it, if any,
+  /// and ends the activity. Harmless without one.
+  Future<void> finishActivity(String leaderboard, int score) async {
+    if (!_ios) {
+      return;
+    }
+    try {
+      await _kit.invokeMethod<void>('finishActivity', {
+        'score': score,
+        'leaderboard': leaderboard,
+      });
+    } catch (error) {
+      debugPrint('Puff: activity not finished: $error');
+    }
+  }
+
+  /// Posts a finished run. Game Center keeps the best of what it is sent, so
+  /// every run goes up, not only local bests. A weekly run goes to the
+  /// recurring weekly board instead of the environment's.
+  Future<void> submit(EnvironmentKind env, int score, {WeeklyChallenge? weekly}) async {
+    final ios = weekly == null ? leaderboardId(env) : WeeklyChallenge.leaderboardId;
+    // No Play Games board for the weekly challenge yet: Play has no
+    // recurring leaderboards, only daily/weekly views of a normal one.
+    final android = weekly == null ? androidLeaderboardId(env) : '';
+    await finishActivity(ios, score);
+    if (!_available || (defaultTargetPlatform == TargetPlatform.android && android.isEmpty)) {
       return;
     }
     try {
       await Leaderboards.submitScore(
         score: Score(
-          iOSLeaderboardID: leaderboardId(env),
-          androidLeaderboardID: androidLeaderboardId(env),
+          iOSLeaderboardID: ios,
+          androidLeaderboardID: android,
           value: score,
         ),
       );
     } catch (error) {
       debugPrint('Puff: Game Center submit failed: $error');
+    }
+  }
+
+  /// Opens the weekly leaderboard (iOS only for now).
+  Future<void> showWeekly() async {
+    if (!_available || !_ios) {
+      return;
+    }
+    try {
+      await Leaderboards.showLeaderboards(iOSLeaderboardID: WeeklyChallenge.leaderboardId);
+    } catch (error) {
+      debugPrint('Puff: weekly leaderboard failed to open: $error');
     }
   }
 

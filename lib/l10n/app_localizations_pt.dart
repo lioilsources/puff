@@ -167,4 +167,44 @@ class AppLocalizationsPt extends AppLocalizations {
   String hudEscaped(String environment, int escaped, int max) {
     return '$environment  escaparam $escaped/$max';
   }
+
+  @override
+  String get weekly => 'DESAFIO SEMANAL';
+
+  @override
+  String weeklyDaysLeft(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'faltam $days dias',
+      one: 'falta 1 dia',
+      zero: 'último dia',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String weeklyBest(int score) {
+    return 'melhor da semana · $score';
+  }
+
+  @override
+  String get achievements => 'CONQUISTAS';
+
+  @override
+  String get challenges => 'DESAFIOS';
+
+  @override
+  String get share => 'COMPARTILHAR';
+
+  @override
+  String shareText(int score, String link) {
+    return 'Meu novo recorde no Puff: $score. Consegue bater? $link';
+  }
+
+  @override
+  String get reducedFlashes => 'MENOS FLASHES';
+
+  @override
+  String get paletteHoliday => 'Festas';
 }

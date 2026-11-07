@@ -49,5 +49,14 @@
   "heatTier3": "HITZE III",
   "heatTierOverdrive": "OVERDRIVE",
   "hudCombo": "x{multiplier}  kombo {combo}",
-  "hudEscaped": "{environment}  entkommen {escaped}/{max}"
+  "hudEscaped": "{environment}  entkommen {escaped}/{max}",
+  "weekly": "WOCHEN-CHALLENGE",
+  "weeklyDaysLeft": "{days, plural, =0{letzter Tag} =1{noch 1 Tag} other{noch {days} Tage}}",
+  "weeklyBest": "Wochenbestwert · {score}",
+  "achievements": "ERFOLGE",
+  "challenges": "CHALLENGES",
+  "share": "TEILEN",
+  "shareText": "Mein neuer Rekord in Puff: {score}. Schaffst du mehr? {link}",
+  "reducedFlashes": "WENIGER BLITZE",
+  "paletteHoliday": "Festtage"
 }

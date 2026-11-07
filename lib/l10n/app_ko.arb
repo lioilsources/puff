@@ -49,5 +49,14 @@
   "heatTier3": "히트 III",
   "heatTierOverdrive": "오버드라이브",
   "hudCombo": "x{multiplier}  콤보 {combo}",
-  "hudEscaped": "{environment}  탈출 {escaped}/{max}"
+  "hudEscaped": "{environment}  탈출 {escaped}/{max}",
+  "weekly": "주간 챌린지",
+  "weeklyDaysLeft": "{days, plural, =0{마지막 날} other{{days}일 남음}}",
+  "weeklyBest": "이번 주 최고 · {score}",
+  "achievements": "업적",
+  "challenges": "챌린지",
+  "share": "공유",
+  "shareText": "Puff 새 최고 기록: {score}. 넘을 수 있어? {link}",
+  "reducedFlashes": "번쩍임 줄이기",
+  "paletteHoliday": "홀리데이"
 }
