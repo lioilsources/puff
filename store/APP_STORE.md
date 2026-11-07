@@ -509,6 +509,14 @@ and campaign attribution does not work.
 
 ### Remote config
 
+App Privacy stays **Data Not Collected** only while the server keeps nothing
+from these requests beyond what it needs to answer them (Apple counts data
+kept "longer than necessary to service the request"). Check the olin.now
+access logs: if they keep IP addresses, either turn that off for
+`/apps/puff/` or answer the questionnaire accordingly. The privacy policy
+(`docs/privacy.html`, Network access) says the request shows the IP address
+and nothing else.
+
 `store/remote_config.json` goes to `https://olin.now/apps/puff/config.json`
 (the `RemoteConfig.url` constant). Optional: without it the built-in dates
 apply (Holiday palette 1 Dec – 6 Jan). It can switch the weekly challenge or
