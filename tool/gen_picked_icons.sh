@@ -7,13 +7,15 @@
 #   store/play/icon_tests/<name>_512.png                    Play experiments
 #
 # Order is Ol1n's priority; Product Page Optimization takes up to three.
+# D4 (Well) became the primary icon on 8 Nov 2026 (tool/gen_primary_icon.sh);
+# the old pineapple primary is kept as AppIcon-Pineapple, copied by hand.
 # Needs Google Chrome (headless, loads the Audiowide font from Google Fonts)
 # and ImageMagick.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
 CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-PICKS=(B4:Flash C4:Halves D4:Well E3:Wordmark G3:Orbit H3:Charged F4:Pulse A3:Waves)
+PICKS=(B4:Flash C4:Halves E3:Wordmark G3:Orbit H3:Charged F4:Pulse A3:Waves)
 TMP=$(mktemp -d)
 mkdir -p assets/icon/alt store/play/icon_tests
 

@@ -602,3 +602,20 @@ Not verified:
   Info.plist lists all three alternates. CI on the tag is the real check.
 - **The preview** has not been recorded yet, for the same reason.
 - **Search popularity** of the keywords: no Apple Search Ads account.
+
+## 1.3.0 build 17 — new primary icon (2026-11-08)
+
+- **The spiral is the icon everywhere.** Ol1n picked D4 (Gravitační studna,
+  `Well`) from the icon picker. The App Store and the app on both platforms
+  still showed the pineapple, while the Play listing had a third icon
+  uploaded by hand that the repo never had. 1.3.0 build 16 was pulled out
+  of App Review to ship the change at once.
+- `tool/gen_primary_icon.sh` renders it from `tool/icon_designs.html`, which
+  now also draws a single layer: `#D4/fg` (drawing on transparency) and
+  `#D4/bg` (background only) for the Android adaptive icon. The Play icon
+  is `store/play/icon_512.png`.
+- `flutter_launcher_icons` 0.14.4 rewrote two more Xcode settings this time
+  (`ALTERNATE_APPICON_NAMES` and `INCLUDE_ALL_APPICON_ASSETS` became
+  `AppIcon`), which would have dropped every alternate icon. The script now
+  saves `project.pbxproj` before running it and puts it back afterwards.
+- The pineapple stays as `AppIcon-Pineapple`; `AppIcon-Well` is gone.
