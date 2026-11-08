@@ -289,7 +289,7 @@ produces `+1` (pubspec says `1.2.0+1`) and Play will refuse it.
 | v1.1.0 | — | **never tagged**, so no AAB exists; Jukebox ships inside 1.2.0 |
 | v1.2.0 | 11 | never reached production; superseded by 1.2.1 |
 | v1.2.1 | 12 | **production since 2026-10-27** — Jukebox, Heat, UI localization |
-| v1.3.0-icon | 16 | **in review since 2026-11-08** — spiral icon (listing icon too), weekly challenge, Holiday palette, sharing |
+| v1.3.0-icon | 16 | **live since 2026-11-08** (approved the same day) — spiral icon (listing icon too), weekly challenge, Holiday palette, sharing |
 
 Until 2026-10-27 Play still served 1.0.4 while the App Store already had the Jukebox, which
 is why Android players had no music. The next AAB must come from CI with a
