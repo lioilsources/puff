@@ -474,15 +474,19 @@ The run's score is reported back on the activity when it ends.
 
 ### Product Page Optimization — icon test
 
-1.3.0 carries eight alternate icons, picked in the icon picker on 7 Nov
-2026, in Ol1n's order of priority (drawings in `tool/icon_designs.html`,
+Since build 17 of 1.3.0 (8 Nov 2026) the primary icon is D4, the gravity
+well spiral, on iOS, Android and the Play listing (`tool/gen_primary_icon.sh`).
+The pineapple it replaced stays in the build as `AppIcon-Pineapple`. The
+other alternates were picked in the icon picker on 7 Nov 2026, in Ol1n's
+order of priority (drawings in `tool/icon_designs.html`,
 rendered by `tool/gen_picked_icons.sh`):
 
 | # | Pick | Icon set | Drawing |
 |---|---|---|---|
 | 1 | B4 | `AppIcon-Flash` | white-yellow starburst flash |
 | 2 | C4 | `AppIcon-Halves` | circle split into magenta and cyan halves |
-| 3 | D4 | `AppIcon-Well` | cyan gravity-well spiral, yellow core |
+| — | D4 | primary `AppIcon` | cyan gravity-well spiral, yellow core |
+| — | — | `AppIcon-Pineapple` | the old pineapple and banana |
 | 4 | E3 | `AppIcon-Wordmark` | "puff" in neon |
 | 5 | G3 | `AppIcon-Orbit` | four shapes orbiting a core |
 | 6 | H3 | `AppIcon-Charged` | magenta ring with arcs |
@@ -490,8 +494,8 @@ rendered by `tool/gen_picked_icons.sh`):
 | 8 | A3 | `AppIcon-Waves` | cyan pressure waves |
 
 Product Page Optimization → Create Test → Icon: original plus up to three
-treatments. First round: Flash, Halves, Well. The winner plays the next
-round against 4–6. Blast, Cloud and Shatter from 1.2.2 are gone, so start the
+treatments. First round: Flash, Halves, Wordmark against the spiral; add
+Pineapple if the old icon should be checked once more. Blast, Cloud and Shatter from 1.2.2 are gone, so start the
 test on 1.3.0, not on 1.2.3. Play experiments take the 512 px copies in
 `store/play/icon_tests/`.
 
