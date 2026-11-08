@@ -20,6 +20,7 @@ class ShapeBody extends BodyComponent<PuffGame>
     double angle = 0,
     double angularVelocity = 0,
     this.generation = 0,
+    this.fractureDepth = Tuning.fractureMaxDepth,
   }) : _initialPosition = position.clone(),
        _initialVelocity = velocity.clone(),
        _initialAngle = angle,
@@ -30,6 +31,9 @@ class ShapeBody extends BodyComponent<PuffGame>
 
   /// Fracture depth: 0 for spawned shapes, +1 per split.
   final int generation;
+
+  /// Generations of this shape's family that may split; a Kolos gets one more.
+  final int fractureDepth;
 
   static int _nextId = 0;
 

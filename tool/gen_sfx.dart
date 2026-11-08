@@ -35,6 +35,7 @@ void main() {
   write(out, 'core_hit.wav', coreHit());
   write(out, 'ui_click.wav', click());
   write(out, 'game_over.wav', gameOver());
+  write(out, 'release_boom.wav', boom());
   stdout.writeln('SFX written to ${out.path}');
 }
 
@@ -200,6 +201,32 @@ Float64List gameOver() {
     buf[i] = (math.sin(2 * math.pi * f * t) * 0.35 + math.sin(2 * math.pi * f * 0.5 * t) * 0.2) * env;
   }
   return lowpass(buf, 3000);
+}
+
+/// Sub boom layered under big releases late in a run: an 80 -> 40 Hz sweep
+/// with a little filtered rumble, about 6 dB under `release_high`.
+Float64List boom() {
+  final seconds = 0.6;
+  final n = (seconds * sampleRate).round();
+  final buf = Float64List(n);
+  final rumble = Float64List(n);
+  var phase = 0.0;
+  for (var i = 0; i < n; i++) {
+    final t = i / sampleRate;
+    final f = 40 + 40 * math.exp(-t * 6);
+    phase += 2 * math.pi * f / sampleRate;
+    buf[i] = math.sin(phase) * math.exp(-t * 5) * 0.9;
+    rumble[i] = (rng.nextDouble() * 2 - 1) * math.exp(-t * 7) * 0.5;
+  }
+  final low = lowpass(rumble, 160);
+  for (var i = 0; i < n; i++) {
+    buf[i] += low[i];
+  }
+  final out = softclip(buf, 0.95);
+  for (var i = 0; i < n; i++) {
+    out[i] *= 0.5;
+  }
+  return out;
 }
 
 // ---- DSP helpers -----------------------------------------------------------

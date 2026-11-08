@@ -7,6 +7,7 @@ import 'package:flame_forge2d/flame_forge2d.dart' show Aabb;
 import '../fx/shaders.dart';
 import '../puff_game.dart';
 import '../sim/energy.dart';
+import '../sim/heat.dart';
 import '../tuning.dart';
 import 'shape_body.dart';
 
@@ -66,7 +67,13 @@ class Cloud extends PositionComponent with HasGameReference<PuffGame> {
     time += dt;
     _refreshInside();
     charge.tick(dt, drainingBodies: inside.length);
-    radius = Tuning.cloudRMin + (Tuning.cloudRMax - Tuning.cloudRMin) * energy;
+    final rMax = heatLerp(
+      game.heat,
+      Tuning.cloudRMax,
+      Tuning.cloudRMaxHot,
+      Tuning.cloudRMaxOver,
+    );
+    radius = Tuning.cloudRMin + (rMax - Tuning.cloudRMin) * energy;
 
     final lag = Tuning.lagBase + Tuning.lagPerRadius * radius;
     final k = 1 - math.exp(-dt / lag);

@@ -52,15 +52,17 @@ class FractureRules {
   /// |cos| between the impulse and an axis above which a square splits in 2.
   final double axisAlignedCos;
 
-  bool canFracture(ShapeSpec spec, int generation) =>
-      spec.canFracture && generation < maxDepth;
+  bool canFracture(ShapeSpec spec, int generation, {int? maxDepth}) =>
+      spec.canFracture && generation < (maxDepth ?? this.maxDepth);
 
   FractureResult fracture({
     required ShapeSpec spec,
     required int generation,
     required Vector2 localImpulse,
+    int? maxDepth,
   }) {
-    if (!canFracture(spec, generation)) {
+    final depth = maxDepth ?? this.maxDepth;
+    if (!canFracture(spec, generation, maxDepth: depth)) {
       return const FractureResult(fragments: [], dust: []);
     }
     final verts = spec.vertices();
@@ -70,7 +72,7 @@ class FractureRules {
     } else {
       pieces = _fan(verts);
     }
-    return _pack(spec, generation, pieces);
+    return _pack(spec, generation, pieces, depth);
   }
 
   /// Centroid fan: one triangle per edge.
@@ -123,7 +125,12 @@ class FractureRules {
     ];
   }
 
-  FractureResult _pack(ShapeSpec spec, int generation, List<List<Vector2>> pieces) {
+  FractureResult _pack(
+    ShapeSpec spec,
+    int generation,
+    List<List<Vector2>> pieces,
+    int maxDepth,
+  ) {
     final fragments = <Fragment>[];
     final dust = <Vector2>[];
     for (final piece in pieces) {

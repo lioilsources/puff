@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../puff_game.dart';
 import '../sim/explosion_event.dart';
 import '../sim/fx_event.dart';
+import '../tuning.dart';
 
 /// Haptics scaled to blast energy. Fracture ticks are throttled.
 class HapticsSystem extends Component with HasGameReference<PuffGame> {
@@ -40,7 +41,7 @@ class HapticsSystem extends Component with HasGameReference<PuffGame> {
     }
     if (e.energy < 0.3) {
       HapticFeedback.lightImpact();
-    } else if (e.energy < 0.7) {
+    } else if (e.energy < 0.7 - Tuning.fxThresholdDrop * game.heat.clamp(0.0, 1.0)) {
       HapticFeedback.mediumImpact();
     } else {
       HapticFeedback.heavyImpact();

@@ -6,16 +6,20 @@ import 'package:flame/post_process.dart';
 
 import '../palette.dart';
 import '../puff_game.dart';
+import '../tuning.dart';
 import 'shaders.dart';
 
 enum PostProcessQuality { low, med, high }
 
 /// An expanding ring distortion in world space.
 class Shockwave {
-  Shockwave({required this.position, required this.energy});
+  Shockwave({required this.position, required this.energy, this.scale = 1});
 
   final Vector2 position;
   final double energy;
+
+  /// Radius multiplier; grows with the run's heat.
+  final double scale;
   double t = 0;
 
   double get duration => 0.45 + 0.45 * energy;
@@ -23,7 +27,7 @@ class Shockwave {
   bool get finished => t >= duration;
 
   /// Ring radius in meters.
-  double get radius => (0.3 + 4.5 * energy) * math.pow(progress, 0.6);
+  double get radius => (0.3 + 4.5 * energy) * scale * math.pow(progress, 0.6);
 
   double get strength => 0.018 * (0.3 + energy) * (1 - progress) * (1 - progress);
 }
@@ -73,16 +77,18 @@ class PuffPostProcess extends PostProcess {
 
   double bloomThreshold = 0.42;
   double bloomKnee = 0.18;
-  double bloomIntensity = 1.35;
-  double aberration = 0.006;
+  double bloomIntensity = Tuning.bloomIntensity;
+  double aberration = Tuning.aberration;
   double vignette = 0.55;
   double shockWidth = 0.035;
 
-  void addShockwave(Vector2 position, double energy) {
+  void addShockwave(Vector2 position, double energy, {double scale = 1}) {
     if (shockwaves.length >= 4) {
       shockwaves.removeAt(0);
     }
-    shockwaves.add(Shockwave(position: position.clone(), energy: energy));
+    shockwaves.add(
+      Shockwave(position: position.clone(), energy: energy, scale: scale),
+    );
   }
 
   void addFlash(double amount, PaletteRole role) {

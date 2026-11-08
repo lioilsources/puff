@@ -345,3 +345,277 @@ Notes from wiring it up:
   with `GKErrorDomain Code=3` and the app is none the wiser.
 - The simulator cannot verify the signed-in half. That needs a sandbox Game
   Center account on a real device with a provisioned build.
+
+## 1.0.4 — Game Center leaderboards (2026-09-11)
+
+The leaderboards above, released. The code needed nothing more; the words did.
+
+- **Every public text said Puff had no network code.** The store description,
+  Notes to Review, privacy policy, support FAQ, terms and landing page all
+  promised that scores never leave the device. With Game Center that is false
+  for a signed-in player, and inaccurate metadata is a rejection. They now say
+  the score goes to Game Center when the player is signed in, and nothing else
+  leaves the device.
+- App Privacy stays **Data Not Collected**: the score goes to Apple through
+  GameKit, and Puff never reads player data back — it only opens the system
+  board.
+- The support page still said iOS 13; the floor has been 14 since the plugin.
+- The App Store Connect half — four boards and attaching them to the version,
+  without which they stay *Not Live* — is written out in `store/APP_STORE.md`.
+
+## 1.0.5 — Google Play (2026-10-12)
+
+1.0.4 went to Play as it was; this is the paperwork around it and the Android
+half of the leaderboards, wired but switched off.
+
+- **Play listing in `store/GOOGLE_PLAY.md`**, next to the App Store one: texts
+  against Play's limits, the App content declarations, the release order. The
+  description is the App Store text minus Game Center and iPhone/iPad — Play
+  rejects a listing that names another platform.
+- **Screenshots had to be reshot.** Play refuses anything taller than 2:1 and
+  the "Android" set was iPhone frames, Dynamic Island included; a 9:16 crop
+  cut the HUD in half. `tool/gen_screenshots_android.sh` overrides the
+  emulator display to 1080x1920 so the game renders at 9:16 natively.
+- Palettes are stored by display name (`Vaporwave`), not enum name. The iOS
+  screenshot driver still passes them lower-case, so every one of its runs
+  comes out Cyberpunk.
+- **Play Games leaderboards are in, and inert.** `GameCenter` supports Android
+  once all four board IDs are filled in; until then the build has no
+  leaderboards, exactly like 1.0.4. `games_services` does not initialise Play
+  Games v2, so `PuffApplication` does — and skips it while `games-ids.xml` is
+  empty.
+- Android never raises the sign-in dialog on its own. Play Games tries
+  silently at launch and the player stream reports the outcome; an explicit
+  `signIn()` there is a dialog, and a player who declined once would get it on
+  every launch. The LEADERBOARD button is the sign-in instead.
+- Verified on the emulator with made-up IDs: the SDK initialises, the button
+  appears, sign-in fails and nothing else happens. The signed-in half needs
+  the real Play Games project, which needs the SHA-1 of the app signing key,
+  which exists only after the first upload.
+
+## 1.1.0 — Jukebox (2026-10-13)
+
+The first Play review asked for one thing: music, "something like Shatter".
+ROADMAP §3.3 had it as the missing brand element anyway. Spec in
+`Prompts/PUFF_JUKEBOX_PLAN.md`. Ten tracks generated on SPARK (ACE-Step 1.5
+turbo, about 33 s each once the model is loaded), 24 MB of OGG.
+
+- **A theme per environment, not one loop.** Two tracks each for Vacuum, Air,
+  Water and Plasma, one for the menu, a sting when a run ends: ten files.
+  `Track` in `sim/jukebox.dart` lists them; `Jukebox` holds the one rule — an
+  environment never repeats the track of its previous visit.
+- **A retry keeps the track playing.** Runs last half a minute; restarting the
+  theme on every AGAIN would loop its first bars. Only a new environment or
+  NEXT TRACK on the pause screen changes it.
+- **Music is on SoLoud, SFX stay on `flame_audio`.** `audioplayers` cannot
+  loop a compressed file without a gap, nor fade one player into another.
+  `flutter_soloud` does both, streams OGG from disk (ten decoded loops would
+  be a few hundred MB), and on iOS it never touches the audio session, so the
+  two engines have nothing to fight over. Spike on the Android emulator and
+  the iPhone simulator, by reading the engine back every two seconds: the mix
+  position keeps advancing through SFX, a pause, a skip, game over and three
+  loop wraps; the voice count returns to one after every crossfade.
+- **The engine is looked up inside a try.** The first Android run had no
+  native library (see below) and `SoLoud.instance` in a field initialiser
+  took the whole game down with it. Music that cannot load is now silence,
+  never a white screen.
+- **`dart pub get --offline` does not register a new plugin.** It resolves
+  the lock file and leaves `.flutter-plugins-dependencies` alone, so with
+  `--no-pub` the APK is built without the plugin's `.so`. After adding a
+  plugin: `flutter pub get --offline`, once.
+- **Android keeps playing in the background.** Flame stops the game loop, the
+  audio thread does not care. `AppLifecycleListener` in `main.dart` pauses the
+  voice; measured, the position moved 1.2 s across 13 s away.
+- **iOS now follows the silent switch.** `audioplayers` defaults to the
+  playback category, which ignores it, and that was fine for a few blips. A
+  game that plays music over a muted phone is not. The session is set to
+  solo-ambient once at start; SoLoud inherits it. This changes the SFX too.
+- **MUSIC is its own switch**, under SOUND. The HUD shows `♪ TITLE` for three
+  seconds when a track starts; the menu carries it in small print. Scripted
+  screenshot runs (`PUFF_DEMO`) start with music off, or the title would land
+  in the store shots.
+- **`tool/gen_music.py` + `tool/music_manifest.json`.** Standard library only.
+  Prompt, BPM and key go in; seed, sha256, length and loudness come back and
+  are saved after every track. The manifest is JSON, not the YAML the plan
+  named: there is no YAML parser in the standard library, and it lives in
+  `tool/` so it is not bundled into the app. Between tracks the script reads
+  SPARK's thermal log and waits while the machine is hot.
+- `test/music_manifest_test.dart` ties the manifest, the `Track` enum and the
+  files on disk together.
+
+Not verified, because it cannot be from here:
+
+- **The mix in the game.** The tracks were listened to on their own and
+  accepted; the game has only reported on itself. Whether music sits under
+  the blasts at 0.55 and whether the 1.5 s crossfade is right needs ears on
+  a device. `game_over.wav` no longer plays over the sting: with music on,
+  the sting alone ends the run.
+- **A real iPhone.** `audioplayers` deactivates the audio session whenever
+  none of its own players is playing. On the simulator SoLoud plays on; on a
+  device that call is expected to fail as "busy" and change nothing, but that
+  is an expectation.
+- **Android audio focus.** SoLoud does not request it, so a call or another
+  player does not stop the music by itself; the lifecycle pause covers the
+  cases where Puff leaves the foreground, not a picture-in-picture player
+  starting on top of it.
+
+## 1.2.0 — Heat: runs escalate (2026-10-13)
+
+A run got busier and never bigger: only the spawn interval moved. Spec in
+`Prompts/PUFF_HEAT_PLAN.md`; phases 1–3 are in, phase 4 (tuning by hand,
+store texts, version) is not.
+
+- **One number, `PuffGame.heat`.** `sim/heat.dart`: 0 for the first 20 s, 1.0
+  at 150 s, 1.5 from 240 s. It depends on elapsed time alone, so a seeded run
+  escalates identically. Every knob is `heatLerp(heat, cold, hot, over)` and
+  all of them sit in one block of `Tuning`.
+- **What it scales.** Shape size (0.5 → 0.8 m at the top end), metal share,
+  spawn speed; blast radius ×1.24 and impulse ×1.27, cloud radius; particles,
+  shake, shockwave radius plus a second ring, flash, bloom, aberration; the
+  thresholds for the zoom pulse and the heavy haptic; a new sub boom
+  (`release_boom.wav`) under big releases. The HUD names the tier when it
+  changes — HEAT II, HEAT III, OVERDRIVE; the first one arrives unannounced.
+- **Kolos.** From heat 0.6, every 40 s (25 in overdrive): a 7–8-sided polygon
+  1.1–1.4 m across. About fifteen times the mass of a normal shape, so a
+  blast barely moves it; it has to be cracked. Its family splits one
+  generation deeper than anything else (8 → 24 → 72 pieces), only while
+  fewer than 140 bodies are alive.
+- **Volleys** from tier III: three to five shapes from one edge, 0.12 s
+  apart.
+- **The spawn interval keeps its own linear ramp.** The plan put it on heat;
+  heat is a smoothstep with a warm-up, which would have made the first
+  minute slower than it is today. Heat only takes it from 0.45 to 0.4 s in
+  overdrive.
+- **A Kolos' break threshold follows the environment's blast multiplier.**
+  The plan accepted a Kolos that never cracks in Water (blasts ×0.6) as a
+  first pass; the arithmetic said never, not rarely. It now takes the same
+  charge everywhere and still flies differently.
+- **A Kolos stopped outside the screen in Water.** A damped body coasts
+  speed / damping meters, and it starts 1.5 m out. Found on the first
+  simulator run: twenty seconds after spawning it was a sliver at the left
+  edge. Its spawn speed is now at least what carries it 2.5 m inside.
+- **Four shockwave rings, not six.** The shader takes four; the second ring
+  shares the cap.
+- `--dart-define=PUFF_HEAT=1.3` pins the heat, for tuning and screenshots.
+  The debug overlay shows heat, tier and the seconds to the next Kolos.
+
+Verified: 50 tests (curve, lerp, a rim blast cracks a Kolos at the heat it
+first appears, the fracture family fits the body budget); iPhone 17
+simulator, demo driver in Water at heat 1.3 for two minutes, 56–60 fps in a
+debug build at 20–40 bodies, a Kolos on screen, no exceptions.
+
+Not verified:
+
+- **Nobody has played it.** The timeline and every multiplier are a first
+  guess. Whether minute three feels heavier or just harder is phase 4.
+- **A Kolos cracking, and overdrive under load.** The demo driver never hit
+  one squarely in the runs watched, so 72 fragments plus overdrive particles
+  have not been on screen together. Nothing has been profiled on a phone.
+- **The boom** has not been heard.
+- **Scores inflate** with heat; the leaderboards are unchanged.
+
+## 1.3.0 — Game Center, weekly challenge, store hooks (2026-11-07)
+
+Plan: `Prompts/PUFF_STORE_PLAN.md`; what to type into App Store Connect:
+`store/APP_STORE.md` → *1.3.0*.
+
+- **Weekly challenge.** `WeeklyChallenge.at(now)`: Monday 00:00 UTC weeks
+  from 23 Nov 2026, environment cycling by week, modifier stepping by 2 (a
+  pair repeats after 20 weeks), seed mixed from the week number. The spawner
+  and shape factory now draw from their own `SeededRandom` (`spawnRandom`),
+  so blasts and particles consuming random numbers no longer shift what is
+  spawned. Fixed: the shapes and their timing. Not fixed: physics, frame
+  rate. A weekly run borrows the week's environment and modifier and puts
+  the player's own back on MENU or a free PLAY.
+- **Achievements**, 14, evaluated at run end from a `RunRecord`
+  (`sim/achievements.dart`). Unlocked set and reported set are separate in
+  the prefs, so unlocks earned signed out go up at the next sign-in.
+- **Challenges and game activities** need iOS 26 GameKit, which
+  games_services does not wrap: `ios/Runner/PuffGameKit.swift` behind the
+  `puff/gamekit` channel. A conforming class cannot implement the iOS 26
+  listener method on an iOS 15 target (compiler: "requires … to be
+  available in iOS 15.0 and newer"), so the listener is a separate
+  `@available(iOS 26.0, *)` class registered only there. Activities wait in
+  native until Dart calls `listen`.
+- **Seasons.** `Palette.inSeason` is filled at startup from the saved
+  remote config and the date, refreshed in the background. Out of season a
+  selected Holiday palette falls back to Cyberpunk.
+- **Deep links** through app_links; Flutter's own deep linking is off on
+  both platforms (`FlutterDeepLinkingEnabled`, `flutter_deeplinking_enabled`)
+  so a link never becomes a Navigator route.
+- **Reduced flashes**: settings toggle, or the system's reduce motion via
+  `MediaQuery.disableAnimationsOf`. `PuffGame.intensity` scales flashes,
+  shake, plasma background flashes and aberration; zoom pulses are off.
+- **Share card**: drawn with `dart:ui`, not captured, 1080×1350.
+- **Alternate icons** for the App Store product page test: the eight picks
+  from the icon sheet (Flash, Halves, Well, Wordmark, Orbit, Charged,
+  Pulse, Waves) replace Blast, Cloud and Shatter. `tool/gen_picked_icons.sh`
+  renders them from `tool/icon_designs.html` with headless Chrome. The glow
+  filter uses `userSpaceOnUse`, otherwise it clips to a square around small
+  shapes. Not switchable in the app.
+
+Verified: `flutter analyze`, `flutter test` (28 new tests), `flutter build
+ios --simulator`, `flutter build apk --debug`, menu with the weekly
+challenge in the iPhone simulator, `puff://` opens the app (system prompt).
+
+Not verified: Game Center on a device (achievements, weekly board,
+challenges, activities need the ASC entries first), the review sheet, the
+share sheet, the remote config (file not uploaded yet).
+
+## 1.2.2 — App Store page (2026-10-31)
+
+3 205 impressions a year, 30 page views: 0.9 % of the people who see Puff in
+search open it (USA 0.6 %). Handoff in `Prompts/PUFF_ASO_PLAN.md`, the
+paste-ready texts and the release order in `store/APP_STORE.md` → *ASO*.
+
+- **The icon is a pineapple and a banana on cream.** It has nothing to do
+  with the game and it is what every impression sees. It stays primary for
+  now so the test has a control: three alternates ship in the build
+  (`AppIcon-Blast`, `-Cloud`, `-Shatter`) for Product Page Optimization,
+  which can only test icons that are in the binary. `tool/gen_alt_icons.py`
+  draws them: one neon object on near-black, checked at 60x60.
+- **Alternate icons are build settings, not Info.plist.** 
+  `ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES` plus
+  `INCLUDE_ALL_APPICON_ASSETS`; actool writes `CFBundleAlternateIcons` for
+  iPhone and iPad itself. Each set is a single 1024 image.
+- **Captioned screenshots, ten locales.** `tool/gen_store_shots.py` puts a
+  caption of at most four words over the blast, the combo and the calm
+  frame, on a blurred copy of the frame. Captions in
+  `store/appstore/captions.json`; output in `build/store_shots/<locale>/`,
+  the folder layout `fastlane deliver` reads. The three raw frames are now
+  in `store/appstore/raw/` instead of only in ol1n.now.
+- **App preview.** `tool/gen_app_preview.sh` records the demo driver and
+  cuts 25 s at 886x1920 that start on a blast, with the vacuum theme as the
+  audio track.
+- **Subtitle and keywords were already done** in 1.2.0 (waiting for review):
+  `Satisfying Physics Stress Toy`, asmr/calm/fidget/… The repo did not
+  know; App Store Connect, read through the API, did. 1.2.2 keeps them.
+- **Promo text on live 1.0.4** changed through the API (App Manager key).
+  The first PATCH mentioned the soundtrack, which 1.0.4 does not have;
+  corrected a minute later.
+
+Not verified:
+
+- **The iOS build with the new settings.** The simulator build does not pass
+  inside the agent sandbox (Flutter's lipo check of `Flutter.framework`
+  comes back empty), so only `actool` on the catalog was run: the partial
+  Info.plist lists all three alternates. CI on the tag is the real check.
+- **The preview** has not been recorded yet, for the same reason.
+- **Search popularity** of the keywords: no Apple Search Ads account.
+
+## 1.3.0 build 17 — new primary icon (2026-11-08)
+
+- **The spiral is the icon everywhere.** Ol1n picked D4 (Gravitační studna,
+  `Well`) from the icon picker. The App Store and the app on both platforms
+  still showed the pineapple, while the Play listing had a third icon
+  uploaded by hand that the repo never had. 1.3.0 build 16 was pulled out
+  of App Review to ship the change at once.
+- `tool/gen_primary_icon.sh` renders it from `tool/icon_designs.html`, which
+  now also draws a single layer: `#D4/fg` (drawing on transparency) and
+  `#D4/bg` (background only) for the Android adaptive icon. The Play icon
+  is `store/play/icon_512.png`.
+- `flutter_launcher_icons` 0.14.4 rewrote two more Xcode settings this time
+  (`ALTERNATE_APPICON_NAMES` and `INCLUDE_ALL_APPICON_ASSETS` became
+  `AppIcon`), which would have dropped every alternate icon. The script now
+  saves `project.pbxproj` before running it and puts it back afterwards.
+- The pineapple stays as `AppIcon-Pineapple`; `AppIcon-Well` is gone.

@@ -144,7 +144,7 @@ class ShapeFactory {
   final double baseBreakThreshold;
   final double metalChance;
 
-  ShapeSpec next({double minSize = 0.28, double maxSize = 0.5}) {
+  ShapeSpec next({double minSize = 0.28, double maxSize = 0.5, double? metalChance}) {
     final roll = random.nextDouble();
     final kind = roll < 0.32
         ? ShapeKind.tri
@@ -155,7 +155,7 @@ class ShapeFactory {
         : ShapeKind.circle;
     final size = minSize + random.nextDouble() * (maxSize - minSize);
     final sides = 5 + random.nextInt(4);
-    final material = random.nextDouble() < metalChance
+    final material = random.nextDouble() < (metalChance ?? this.metalChance)
         ? ShapeMaterial.metal
         : ShapeMaterial.neon;
     // Bigger and rounder shapes are tougher.

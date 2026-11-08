@@ -4,6 +4,7 @@ import 'package:flame/components.dart';
 import 'package:flame/text.dart';
 import 'package:flutter/painting.dart' show TextStyle, FontWeight;
 
+import '../localized_names.dart';
 import '../puff_game.dart';
 import '../tuning.dart';
 
@@ -14,12 +15,20 @@ class Hud extends PositionComponent with HasGameReference<PuffGame> {
   late final TextComponent _score;
   late final TextComponent _multiplier;
   late final TextComponent _status;
+  late final TextComponent _track;
   late final TextComponent _center;
 
   final _barBg = Paint()..style = PaintingStyle.fill;
   final _bar = Paint()..style = PaintingStyle.fill;
 
   final Map<int, TextPaint> _paintCache = {};
+
+  /// The heat tier last announced, and how long its name stays up.
+  int _tier = 0;
+
+  /// Reading direction the layout was last computed for.
+  TextDirection? _laidOutFor;
+  double _tierToast = 0;
 
   /// Text renderers are cached per (color, size) so palette switches work
   /// without allocating a TextPaint every frame.
@@ -62,7 +71,12 @@ class Hud extends PositionComponent with HasGameReference<PuffGame> {
       textRenderer: _paint(p.glow, 22),
       anchor: Anchor.center,
     );
-    addAll([_score, _multiplier, _status, _center]);
+    _track = TextComponent(
+      text: '',
+      textRenderer: _paint(p.secondary, 12),
+      anchor: Anchor.topCenter,
+    );
+    addAll([_score, _multiplier, _status, _track, _center]);
     _layout(game.size);
   }
 
@@ -75,10 +89,15 @@ class Hud extends PositionComponent with HasGameReference<PuffGame> {
   }
 
   void _layout(Vector2 size) {
+    _laidOutFor = game.textDirection;
     final top = game.safeTop + 12;
     _score.position = Vector2(size.x / 2, top);
     _multiplier.position = Vector2(size.x / 2, top + 38);
-    _status.position = Vector2(16, top);
+    // The status line sits at the reading start, opposite the pause button.
+    final rtl = game.textDirection == TextDirection.rtl;
+    _status.anchor = rtl ? Anchor.topRight : Anchor.topLeft;
+    _status.position = Vector2(rtl ? size.x - 16 : 16, top);
+    _track.position = Vector2(size.x / 2, top + 62);
     _center.position = Vector2(size.x / 2, size.y * 0.42);
   }
 
@@ -86,17 +105,39 @@ class Hud extends PositionComponent with HasGameReference<PuffGame> {
   void update(double dt) {
     final p = game.palette;
     final s = game.score;
+    final l10n = game.l10n;
+    if (_laidOutFor != game.textDirection) {
+      _layout(game.size);
+    }
     _score.text = '${s.score}';
     _score.textRenderer = _paint(p.primary, 30);
     _multiplier.text = s.combo > 0 && game.isPlaying
-        ? 'x${s.multiplier.toStringAsFixed(2)}  combo ${s.combo}'
+        ? l10n.hudCombo(s.multiplier.toStringAsFixed(2), s.combo)
         : '';
     _multiplier.textRenderer = _paint(p.accent, 16);
+    final envName = l10n.environmentName(game.environment.kind).toUpperCase();
     _status.text = Tuning.loseRule == LoseRule.core
-        ? game.environment.name.toUpperCase()
-        : '${game.environment.name.toUpperCase()}  escaped ${game.escapes}/${Tuning.maxEscapes}';
+        ? envName
+        : l10n.hudEscaped(envName, game.escapes, Tuning.maxEscapes);
     _status.textRenderer = _paint(p.secondary, 13);
-    _center.text = '';
+    // Opacity in a few steps, so the fade does not fill the paint cache.
+    final jukebox = game.jukebox;
+    final alpha = (jukebox.toastOpacity * 6).round() / 6;
+    _track.text = alpha > 0 ? jukebox.toastText : '';
+    _track.textRenderer = _paint(p.secondary.withValues(alpha: alpha), 12);
+    // Announce a new heat tier; the first one arrives quietly.
+    final tier = game.isPlaying ? game.tier : 0;
+    if (tier > _tier && tier > 1) {
+      _tierToast = Tuning.tierToastSeconds;
+    }
+    _tier = tier;
+    _tierToast = game.isPlaying ? (_tierToast - dt).clamp(0.0, double.infinity) : 0;
+    final tierAlpha = ((_tierToast / 0.4).clamp(0.0, 1.0) * 6).round() / 6;
+    _center.text = tierAlpha > 0 ? l10n.heatTierName(tier) : '';
+    _center.textRenderer = _paint(
+      (tier >= 4 ? p.hazard : p.glow).withValues(alpha: tierAlpha),
+      22,
+    );
   }
 
   @override
