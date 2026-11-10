@@ -1,0 +1,7 @@
+Puff is een minimalistisch neon-natuurkundespel: vasthouden, slepen, loslaten.
+
+• Houd vast om een drukwolk op te laden, sleep hem waar het telt en laat los om de vormen op weg naar de kern te laten barsten
+• Te lang vasthouden en hij dooft uit: wanneer laat je los?
+• Vier omgevingen (vacuüm, lucht, water, plasma), vijf modifiers en zes kleurpaletten
+• Een wekelijkse uitdaging: dezelfde run voor alle spelers
+• Geen advertenties, geen tracking, werkt offline

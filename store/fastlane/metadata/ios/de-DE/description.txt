@@ -1,0 +1,7 @@
+Puff ist ein minimalistisches Neon-Physikspiel: halten, ziehen, loslassen.
+
+• Halte, um eine Druckwolke aufzuladen, zieh sie dorthin, wo es zählt, und lass los, um die Formen auf dem Weg zum Kern zu sprengen
+• Zu lange gehalten, verpufft sie: wann lässt du los?
+• Vier Umgebungen (Vakuum, Luft, Wasser, Plasma), fünf Modifikatoren und sechs Farbpaletten
+• Eine Wochen-Challenge: derselbe Lauf für alle Spieler
+• Keine Werbung, kein Tracking, funktioniert offline

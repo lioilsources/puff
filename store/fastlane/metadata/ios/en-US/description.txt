@@ -1,0 +1,7 @@
+Puff is a minimalist neon physics game: hold, drag, release.
+
+• Hold to charge a pressure cloud, drag it where it matters, release to blast the shapes drifting toward the core
+• Hold too long and it fizzles: when do you let go?
+• Four environments (vacuum, air, water, plasma), five modifiers and six colour palettes
+• A weekly challenge: the same run for every player
+• No ads, no tracking, works offline
