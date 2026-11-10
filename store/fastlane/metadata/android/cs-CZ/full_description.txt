@@ -1,0 +1,7 @@
+Puff je minimalistická neonová fyzikální hra: podrž, táhni, pusť.
+
+• Podržením nabiješ tlakový oblak, přetáhneš ho, kam je třeba, a puštěním rozbiješ tvary, které plují k jádru
+• Podržíš-li moc dlouho, vyšumí: kdy pustit?
+• Čtyři prostředí (vakuum, vzduch, voda, plazma), pět modifikátorů a šest barevných palet
+• Týdenní výzva: stejný běh pro všechny hráče
+• Žádné reklamy, žádné sledování, funguje offline

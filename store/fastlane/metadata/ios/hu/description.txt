@@ -1,0 +1,7 @@
+A Puff minimalista neon fizikai játék: tartsd, húzd, engedd el.
+
+• Tartsd nyomva a nyomásfelhő feltöltéséhez, húzd oda, ahol számít, és engedd el, hogy szétzúzd a mag felé sodródó alakzatokat
+• Ha túl sokáig tartod, elpuffan: mikor engeded el?
+• Négy környezet (vákuum, levegő, víz, plazma), öt módosító és hat színpaletta
+• Heti kihívás: ugyanaz a menet minden játékosnak
+• Reklám és követés nélkül, offline is működik

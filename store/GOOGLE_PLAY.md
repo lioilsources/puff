@@ -207,7 +207,7 @@ Console: *Grow users → Store presence → Store settings*.
 - **Category:** Arcade
 - **Tags:** Arcade, Casual, Single player, Abstract, Offline (pick up to five
   from what the console offers)
-- **Email:** oldrich.vorechovsky.jr@gmail.com
+- **Email:** business@olin.now
 - **Website:** `https://lioilsources.github.io/puff/`
 - **Phone:** leave empty
 - **External marketing:** on

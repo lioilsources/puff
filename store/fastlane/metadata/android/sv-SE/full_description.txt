@@ -1,0 +1,7 @@
+Puff är ett minimalistiskt neonfysikspel: håll, dra, släpp.
+
+• Håll för att ladda ett tryckmoln, dra det dit det gäller och släpp för att spränga formerna som driver mot kärnan
+• Håller du för länge falnar det: när släpper du?
+• Fyra miljöer (vakuum, luft, vatten, plasma), fem modifierare och sex färgpaletter
+• En veckoutmaning: samma runda för alla spelare
+• Inga annonser, ingen spårning, fungerar offline

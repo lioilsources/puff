@@ -1,0 +1,7 @@
+Puff on minimalistinen neonfysiikkapeli: pidä, vedä, päästä irti.
+
+• Pidä ladataksesi painepilven, vedä se oikeaan kohtaan ja päästä irti räjäyttääksesi ytimeen ajautuvat muodot
+• Jos pidät liian kauan, se sammuu: milloin päästät irti?
+• Neljä ympäristöä (tyhjiö, ilma, vesi, plasma), viisi muunninta ja kuusi väripalettia
+• Viikoittainen haaste: sama kierros kaikille pelaajille
+• Ei mainoksia, ei seurantaa, toimii offline-tilassa

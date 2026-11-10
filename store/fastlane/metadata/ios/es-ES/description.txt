@@ -1,0 +1,7 @@
+Puff es un juego minimalista de física neón: mantén, arrastra, suelta.
+
+• Mantén para cargar una nube de presión, arrástrala donde importa y suelta para romper las formas que van hacia el núcleo
+• Si mantienes demasiado, se desinfla: ¿cuándo sueltas?
+• Cuatro entornos (vacío, aire, agua, plasma), cinco modificadores y seis paletas de color
+• Un reto semanal: la misma partida para todos los jugadores
+• Sin anuncios, sin seguimiento, funciona sin conexión

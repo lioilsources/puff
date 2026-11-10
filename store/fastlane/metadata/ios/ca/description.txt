@@ -1,0 +1,7 @@
+Puff és un joc minimalista de física de neó: mantén, arrossega, deixa anar.
+
+• Mantén per carregar un núvol de pressió, arrossega'l on cal i deixa anar per fer saltar les formes que van cap al nucli
+• Si mantens massa estona, s'esvaeix: quan has de deixar anar?
+• Quatre entorns (buit, aire, aigua, plasma), cinc modificadors i sis paletes de colors
+• Un repte setmanal: la mateixa partida per a tots els jugadors
+• Sense anuncis, sense seguiment, funciona sense connexió

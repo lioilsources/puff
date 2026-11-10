@@ -1,0 +1,7 @@
+Puff ialah permainan fizik neon minimalis: tahan, seret, lepas.
+
+• Tahan untuk mengecas awan tekanan, seret ke tempat yang perlu, lepas untuk meletupkan bentuk yang hanyut ke teras
+• Terlalu lama menahan, ia padam: bila anda melepas?
+• Empat persekitaran (vakum, udara, air, plasma), lima pengubah suai dan enam palet warna
+• Cabaran mingguan: larian yang sama untuk semua pemain
+• Tiada iklan, tiada penjejakan, berfungsi tanpa talian

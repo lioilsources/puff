@@ -1,0 +1,7 @@
+Puff, minimalist bir neon fizik oyunudur: basılı tut, sürükle, bırak.
+
+• Basılı tutarak bir basınç bulutunu şarj et, gerektiği yere sürükle ve çekirdeğe doğru süzülen şekilleri parçalamak için bırak
+• Fazla tutarsan sönüp gider: ne zaman bırakacaksın?
+• Dört ortam (vakum, hava, su, plazma), beş değiştirici ve altı renk paleti
+• Haftalık meydan okuma: tüm oyuncular için aynı tur
+• Reklam yok, izleme yok, çevrimdışı çalışır

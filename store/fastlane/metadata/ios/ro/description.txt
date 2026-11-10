@@ -1,0 +1,7 @@
+Puff este un joc minimalist de fizică neon: ține, trage, eliberează.
+
+• Ține apăsat ca să încarci un nor de presiune, trage-l unde contează și eliberează ca să spargi formele care plutesc spre nucleu
+• Dacă ții prea mult, se stinge: când eliberezi?
+• Patru medii (vid, aer, apă, plasmă), cinci modificatori și șase palete de culori
+• O provocare săptămânală: aceeași rundă pentru toți jucătorii
+• Fără reclame, fără urmărire, funcționează offline

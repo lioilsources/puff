@@ -1,0 +1,7 @@
+Puff je minimalistička neonska fizikalna igra: drži, povuci, pusti.
+
+• Drži da napuniš oblak tlaka, povuci ga gdje treba i pusti da razneseš oblike koji plutaju prema jezgri
+• Ako držiš predugo, ugasi se: kada ćeš pustiti?
+• Četiri okoline (vakuum, zrak, voda, plazma), pet modifikatora i šest paleta boja
+• Tjedni izazov: isti prolaz za sve igrače
+• Bez oglasa, bez praćenja, radi offline

@@ -1,0 +1,7 @@
+Puff to minimalistyczna neonowa gra fizyczna: przytrzymaj, przeciągnij, puść.
+
+• Przytrzymaj, by naładować chmurę ciśnienia, przeciągnij ją tam, gdzie trzeba, i puść, by rozbić kształty dryfujące ku rdzeniowi
+• Trzymasz za długo i ładunek gaśnie: kiedy puścić?
+• Cztery środowiska (próżnia, powietrze, woda, plazma), pięć modyfikatorów i sześć palet kolorów
+• Wyzwanie tygodnia: ta sama runda dla wszystkich graczy
+• Bez reklam, bez śledzenia, działa offline

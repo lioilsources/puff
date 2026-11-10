@@ -1,0 +1,7 @@
+Puff là game vật lý neon tối giản: giữ, kéo, thả.
+
+• Giữ để nạp đám mây áp suất, kéo đến nơi cần thiết, thả để làm nổ các hình khối đang trôi về lõi
+• Giữ quá lâu thì nó tắt ngúm: khi nào thả?
+• Bốn môi trường (chân không, không khí, nước, plasma), năm bộ điều chỉnh và sáu bảng màu
+• Thử thách hằng tuần: cùng một ván cho mọi người chơi
+• Không quảng cáo, không theo dõi, chơi được ngoại tuyến
