@@ -15,6 +15,7 @@ import 'app/overlays.dart';
 import 'app/remote_config.dart';
 import 'app/review_policy.dart';
 import 'app/settings.dart';
+import 'l10n/resolve_locale.dart';
 import 'l10n/app_localizations.dart';
 import 'game/palette.dart';
 import 'game/puff_game.dart';
@@ -255,6 +256,7 @@ class _PuffAppState extends State<PuffApp> {
       title: 'Puff',
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
+      localeListResolutionCallback: resolveLocale,
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(useMaterial3: true),
       home: Scaffold(
