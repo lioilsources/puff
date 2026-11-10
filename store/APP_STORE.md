@@ -264,7 +264,7 @@ Drop the ripple line if 1.0.3 already went live with its own notes.
 
 **Sign-in required:** No — no accounts anywhere in the app.
 
-**Contact:** Oldřich Vořechovský · oldrich.vorechovsky.jr@gmail.com
+**Contact:** Oldřich Vořechovský · business@olin.now
 
 **Notes to Review**
 
