@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:in_app_review/in_app_review.dart';
+import 'package:ol1n_telemetry/ol1n_telemetry.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import 'app/deep_link.dart';
@@ -15,6 +16,7 @@ import 'app/overlays.dart';
 import 'app/remote_config.dart';
 import 'app/review_policy.dart';
 import 'app/settings.dart';
+import 'app/telemetry.dart';
 import 'l10n/app_localizations.dart';
 import 'game/palette.dart';
 import 'game/puff_game.dart';
@@ -25,14 +27,36 @@ import 'game/sim/weekly.dart';
 import 'game/tuning.dart';
 
 Future<void> main() async {
+  final launchedAt = DateTime.now();
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   await _configureAudioSession();
   final settings = await PuffSettings.load();
+  final telemetry = PuffTelemetry();
+  // Anonymous statistics (docs/telemetry.md). Not awaited: the game never
+  // waits on it, and a build without TELEMETRY_KEY does nothing at all.
+  unawaited(Telemetry.init(
+    app: kTelemetryApp,
+    appVersion: kAppVersion,
+    dictionary: puffDictionary,
+    store: PrefsTelemetryStore(settings.prefs),
+    lang: () => telemetryLang,
+    tester: kTesterBuild,
+    // `session` counts launches and is already saved for this one: more
+    // than one means Puff was played before measuring began.
+    hadDataBefore: () => settings.session > 1,
+    pauseProps: () => {'runs': telemetry.runs},
+    launchedAt: launchedAt,
+  ));
   // Before the game reads the palette: a seasonal one may be selected.
   final remote = RemoteConfigLoader(settings.prefs);
-  runApp(PuffApp(settings: settings, remote: remote));
+  runApp(PuffApp(
+    settings: settings,
+    remote: remote,
+    telemetry: telemetry,
+    launchedAt: launchedAt,
+  ));
 }
 
 /// iOS: sound effects and music follow the silent switch, like any casual
@@ -52,10 +76,18 @@ Future<void> _configureAudioSession() async {
 }
 
 class PuffApp extends StatefulWidget {
-  const PuffApp({super.key, required this.settings, required this.remote});
+  const PuffApp({
+    super.key,
+    required this.settings,
+    required this.remote,
+    required this.telemetry,
+    required this.launchedAt,
+  });
 
   final PuffSettings settings;
   final RemoteConfigLoader remote;
+  final PuffTelemetry telemetry;
+  final DateTime launchedAt;
 
   @override
   State<PuffApp> createState() => _PuffAppState();
@@ -102,7 +134,11 @@ class _PuffAppState extends State<PuffApp> {
       musicEnabled: s.music && !PuffGame.demoMode,
       debugOverlayEnabled: s.debugOverlay,
       onRunFinished: _runFinished,
-    );
+    )..observer = widget.telemetry;
+    game.loaded.then((_) {
+      final ms = DateTime.now().difference(widget.launchedAt).inMilliseconds;
+      Telemetry.track('menu_ready', {'ms': ms.clamp(0, 600000)});
+    });
     gameCenter
       ..pendingAchievements = (() => s.achievements.unlocked.difference(s.reportedAchievements))
       ..onReported = s.markReported;
@@ -266,6 +302,7 @@ class _PuffAppState extends State<PuffApp> {
             game.calm = s.reducedFlashes || MediaQuery.disableAnimationsOf(context);
             game.safeBottom = padding.bottom;
             game.l10n = AppLocalizations.of(context);
+            setTelemetryLocale(Localizations.localeOf(context));
             game.textDirection = Directionality.of(context);
             return GameWidget<PuffGame>(
               game: game,
