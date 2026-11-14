@@ -58,5 +58,6 @@
   "share": "ПОДЕЛИТЬСЯ",
   "shareText": "Мой новый рекорд в Puff: {score}. Сможешь побить? {link}",
   "reducedFlashes": "МЕНЬШЕ ВСПЫШЕК",
+  "anonymousStats": "АНОНИМНАЯ СТАТИСТИКА",
   "paletteHoliday": "Праздники"
 }

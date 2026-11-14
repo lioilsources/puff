@@ -58,5 +58,6 @@
   "share": "공유",
   "shareText": "Puff 새 최고 기록: {score}. 넘을 수 있어? {link}",
   "reducedFlashes": "번쩍임 줄이기",
+  "anonymousStats": "익명 통계",
   "paletteHoliday": "홀리데이"
 }

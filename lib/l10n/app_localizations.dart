@@ -471,6 +471,12 @@ abstract class AppLocalizations {
   /// **'REDUCED FLASHES'**
   String get reducedFlashes;
 
+  /// Settings toggle: anonymous usage statistics on or off. Shown only in builds that can send them.
+  ///
+  /// In en, this message translates to:
+  /// **'ANONYMOUS STATS'**
+  String get anonymousStats;
+
   /// Seasonal palette offered in December.
   ///
   /// In en, this message translates to:

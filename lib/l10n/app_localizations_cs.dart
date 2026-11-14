@@ -207,5 +207,8 @@ class AppLocalizationsCs extends AppLocalizations {
   String get reducedFlashes => 'MÉNĚ ZÁBLESKŮ';
 
   @override
+  String get anonymousStats => 'ANONYMNÍ STATISTIKY';
+
+  @override
   String get paletteHoliday => 'Svátky';
 }

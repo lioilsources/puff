@@ -58,5 +58,6 @@
   "share": "シェア",
   "shareText": "Puffで自己ベスト更新：{score}。超えられる？ {link}",
   "reducedFlashes": "フラッシュ軽減",
+  "anonymousStats": "匿名の統計",
   "paletteHoliday": "ホリデー"
 }

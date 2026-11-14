@@ -179,6 +179,10 @@
   "@reducedFlashes": {
     "description": "Settings toggle: weaker flashes and screen shake (accessibility)."
   },
+  "anonymousStats": "ANONYMOUS STATS",
+  "@anonymousStats": {
+    "description": "Settings toggle: anonymous usage statistics on or off. Shown only in builds that can send them."
+  },
   "paletteHoliday": "Holiday",
   "@paletteHoliday": {
     "description": "Seasonal palette offered in December."
