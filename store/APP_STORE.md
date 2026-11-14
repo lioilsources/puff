@@ -138,7 +138,7 @@ https://lioilsources.github.io/puff/privacy.html
 
 **Age rating** — 4+. No objectionable content of any kind: no violence toward
 characters (abstract geometry only), no gambling, no user-generated content,
-no web browsing, no ads, no data collection.
+no web browsing, no ads, no personal data collection.
 
 **Content rights** — Contains no third-party content.
 
@@ -196,7 +196,7 @@ MADE TO BE PICKED UP
 • iPhone and iPad, portrait or landscape.
 
 NO STRINGS
-No sign-up, no ads, no in-app purchases, no subscriptions, no tracking, no analytics. Puff plays fully in airplane mode; the only thing it ever sends is your score to Game Center, and only when you are signed in to it.
+No sign-up, no ads, no in-app purchases, no subscriptions, no tracking, no third-party analytics. Puff plays fully in airplane mode. Online, it sends anonymous gameplay statistics to its developer, with no identifiers and a switch in Settings to turn them off, and your score to Game Center when you are signed in to it.
 
 Built with Flutter, Flame and Forge2D (Box2D v3), drawn with custom fragment shaders on Impeller. The source is public on GitHub.
 ```
@@ -275,7 +275,7 @@ Game Center: when the device is signed in to Game Center, Puff authenticates sil
 
 How to play: touch and hold anywhere on the playfield. A pressure cloud grows under your finger; drag it to move it. Release to detonate. Hold too long and the cloud goes into overpressure (the rim flickers) — the release then fizzles and costs points. Geometry drifts in from the edges toward the core in the middle of the screen; the run ends when a shape reaches the core.
 
-Environment (Vacuum / Air / Water / Plasma), blast modifier, colour palette, render quality, sound and haptics are all on the main menu and in Settings. High scores are stored locally per environment (NSUserDefaults); the only data that leaves the device is the score sent to Game Center.
+Environment (Vacuum / Air / Water / Plasma), blast modifier, colour palette, render quality, sound and haptics are all on the main menu and in Settings. High scores are stored locally per environment (NSUserDefaults). Puff also sends anonymous gameplay statistics (screens, run length and result, load time; no identifiers) to the developer's own server; ANONYMOUS STATS in Settings turns them off. Apart from that, the only data that leaves the device is the score sent to Game Center.
 ```
 
 **Attachment:** none needed.
@@ -284,16 +284,17 @@ Environment (Vacuum / Air / Water / Plasma), blast modifier, colour palette, ren
 
 ## App Privacy (the questionnaire)
 
-Answer: **Data Not Collected.**
+Until the first build with anonymous gameplay statistics (`docs/telemetry.md`)
+the answer is **Data Not Collected**. For that build the answers change; see
+`store/PRIVACY_ANSWERS.md`. Fill them in **before** that build is submitted and
+only after the new `docs/privacy.html` is live.
 
-Puff has no analytics or ad SDK and no server of its own.
-`shared_preferences` (NSUserDefaults) holds settings and the local high scores.
-The one thing that leaves the device is a score handed to GameKit when the
-player is signed in to Game Center. Apple runs that service under its own
-privacy policy and Puff receives no player data back (it only opens the system
-leaderboard UI), so it is not data the developer collects. There is no
-tracking, so no App Tracking Transparency prompt and no
-`NSUserTrackingUsageDescription`.
+Puff has no analytics or ad SDK. `shared_preferences` (NSUserDefaults) holds
+settings and the local high scores. A score handed to GameKit when the player
+is signed in to Game Center is Apple's data under its own privacy policy, and
+Puff receives no player data back (it only opens the system leaderboard UI), so
+it is not data the developer collects. There is no tracking, so no App Tracking
+Transparency prompt and no `NSUserTrackingUsageDescription`.
 
 ## Export compliance
 
@@ -513,8 +514,9 @@ and campaign attribution does not work.
 
 ### Remote config
 
-App Privacy stays **Data Not Collected** only while the server keeps nothing
-from these requests beyond what it needs to answer them (Apple counts data
+Independently of the statistics, the remote config request itself counts as
+collection only if the server keeps something from it beyond what it needs to
+answer it (Apple counts data
 kept "longer than necessary to service the request"). Check the olin.now
 access logs: if they keep IP addresses, either turn that off for
 `/apps/puff/` or answer the questionnaire accordingly. The privacy policy
