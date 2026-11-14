@@ -34,6 +34,12 @@ Future<void> main() async {
   await _configureAudioSession();
   final settings = await PuffSettings.load();
   final telemetry = PuffTelemetry();
+  // The language MaterialApp will pick, for the events sent before the
+  // first frame; the widget layer keeps it current afterwards.
+  setTelemetryLocale(basicLocaleListResolution(
+    WidgetsBinding.instance.platformDispatcher.locales,
+    AppLocalizations.supportedLocales,
+  ));
   // Anonymous statistics (docs/telemetry.md). Not awaited: the game never
   // waits on it, and a build without TELEMETRY_KEY does nothing at all.
   unawaited(Telemetry.init(
