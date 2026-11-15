@@ -87,7 +87,7 @@ MADE TO BE PICKED UP
 • Haptics scaled to the size of the blast, plus synthesized sound effects. Music, sound and haptics each have their own switch.
 
 NO STRINGS
-No sign-up, no ads, no in-app purchases, no subscriptions, no tracking, no analytics. Puff plays fully offline and sends nothing anywhere.
+No sign-up, no ads, no in-app purchases, no subscriptions, no tracking, no third-party analytics. Puff plays fully offline. Online, it sends anonymous gameplay statistics to its developer, with no identifiers and a switch in Settings to turn them off.
 
 Built with Flutter, Flame and Forge2D (Box2D v3), drawn with custom fragment shaders on Impeller. The source is public on GitHub.
 ```
@@ -162,7 +162,7 @@ STAČÍ VZÍT DO RUKY
 • Vibrace podle velikosti výbuchu a syntetizované zvukové efekty. Hudba, zvuky i vibrace mají každý svůj vypínač.
 
 BEZ HÁČKŮ
-Žádná registrace, žádné reklamy, žádné nákupy v aplikaci, žádné předplatné, žádné sledování, žádná analytika. Puff funguje zcela offline a nikam nic neposílá.
+Žádná registrace, žádné reklamy, žádné nákupy v aplikaci, žádné předplatné, žádné sledování, žádná analytika třetích stran. Puff funguje zcela offline. Online posílá vývojáři anonymní statistiky hraní, bez identifikátorů a s vypínačem v nastavení.
 
 Postaveno na Flutteru, Flame a Forge2D (Box2D v3), vykresleno vlastními fragment shadery na Impelleru. Zdrojový kód je veřejně na GitHubu.
 ```
@@ -226,7 +226,7 @@ under "Nastavení aplikace" on the dashboard.
 | Ads | No, the app does not contain ads |
 | Content rating | Questionnaire below → expected **Everyone / PEGI 3** |
 | Target audience | **13–15, 16–17, 18+** (see note) |
-| Data safety | No data collected, no data shared (below) |
+| Data safety | No data collected, no data shared, until the build with anonymous statistics; then `store/PRIVACY_ANSWERS.md` |
 | Advertising ID | No, the app does not use an advertising ID |
 | Government app | No |
 | Financial features | None |
@@ -247,6 +247,11 @@ cheaper one. To the follow-up "could the listing unintentionally appeal to
 children?" answer **No**.
 
 **Data safety.**
+
+From the first build with anonymous gameplay statistics (`docs/telemetry.md`)
+the answers change: see `store/PRIVACY_ANSWERS.md`. Update the form **before**
+that build is submitted and only after the new `docs/privacy.html` is live.
+Until then:
 
 - Does your app collect or share any of the required user data types? **No**
 - Is all user data encrypted in transit? not asked once the answer above is No
