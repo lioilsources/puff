@@ -139,7 +139,7 @@ local high score per environment via shared_preferences. No accounts.
   the `^3.12.2` SDK constraint, so `pub get` and the Xcode build both failed
   (the missing `FlutterGeneratedPluginSwiftPackage` was a symptom). Reset the
   SDK back to `ad70ec4` = 3.44.4, the revision `.metadata` records.
-- `flutter build ios --release`: automatic signing with team P82HWPG7FN,
+- `flutter build ios --release`: automatic signing with team `$APPLE_TEAM_ID`,
   `Runner.app` 18.1 MB. No `PUFF_DEMO` / `PUFF_DEBUG` this time, so it is the
   plain game with no fps overlay.
 - Installed `com.ol1n.puff` 1.0.0 (build 1) on the cabled iPhone 12 mini and
