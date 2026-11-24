@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#07060F">
+  <meta name="description" content="Puff — podrž, táhni, pusť. Neonová fyzikální hra v prohlížeči.">
+  <title>Puff</title>
+</head>
+<body>
+  <canvas id="game"></canvas>
+  <div id="top" class="hud"><span id="hp"></span><span><span id="mult"></span><span id="score">0</span></span></div>
+  <div id="pressbar" class="hud"><div id="press"></div></div>
+  <div id="over" hidden>
+    <div>Konec</div>
+    <div id="over-score">0</div>
+    <div id="over-stats"></div>
+    <button id="again">Znovu</button>
+    <div class="stores">Celá hra: <a id="as" href="#">App Store</a> <a id="gp" href="#">Google Play</a></div>
+  </div>
+  <div id="fps" class="hud" hidden></div>
+  <script type="module" src="/src/game/main.ts"></script>
+</body>
+</html>
