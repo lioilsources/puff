@@ -33,8 +33,11 @@ jobs:
           channel: stable
           cache: true
       - run: flutter pub get && dart run tool/dump_vectors.dart
-      - name: Regenerated vectors equal the committed ones
-        run: git diff --exit-code --stat babylon/test/golden babylon/src/rules/generated
+      # Files without libm (constants, score, heat) must be byte-identical. blast, energy, shapes and
+      # fracture go through pow/sin/cos, which may differ in the last bit between macOS and Linux: the
+      # TS replay below checks those freshly generated ones with a 1e-9 tolerance instead.
+      - name: Discrete vectors equal the committed ones
+        run: git diff --exit-code --stat babylon/src/rules/generated babylon/test/golden/score.json babylon/test/golden/heat.json
       - uses: actions/setup-node@v4
         with:
           node-version: 24
