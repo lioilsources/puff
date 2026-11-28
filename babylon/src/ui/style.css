@@ -1,0 +1,19 @@
+html, body { margin: 0; height: 100%; background: #07060F; overflow: hidden; touch-action: none; user-select: none; }
+body { font-family: ui-monospace, 'SF Mono', Menlo, monospace; color: #E8FCFF; }
+#game { position: fixed; inset: 0; width: 100%; height: 100%; display: block; outline: none; }
+.hud { position: fixed; pointer-events: none; text-shadow: 0 0 8px #00F0FF; }
+#top { top: calc(env(safe-area-inset-top) + 12px); left: 16px; right: 16px; display: flex; justify-content: space-between; align-items: baseline; font-size: 28px; }
+#mult { color: #F9F002; font-size: 18px; margin-right: 8px; }
+#hp { color: #FF3D00; font-size: 16px; letter-spacing: 3px; text-shadow: 0 0 8px #FF3D00; }
+#pressbar { top: calc(env(safe-area-inset-top) + 52px); left: 16px; right: 16px; height: 3px; background: #14112E; }
+#press { height: 100%; background: #7DF9FF; transform-origin: left; transform: scaleX(0); }
+#press.hot { background: #FF2A6D; }
+#fps { bottom: 8px; left: 8px; font-size: 12px; }
+#over { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; background: #07060Fd9; font-size: 18px; }
+#over[hidden] { display: none; }
+#over-score { font-size: 64px; color: #00F0FF; text-shadow: 0 0 16px #00F0FF; }
+#over button { font: inherit; font-size: 20px; color: #07060F; background: #00F0FF; border: 0; border-radius: 24px; padding: 10px 28px; margin-top: 12px; }
+#over .stores { display: flex; gap: 12px; margin-top: 18px; font-size: 14px; }
+#over .stores a { color: #7DF9FF; }
+body.boom::after { content: ''; position: fixed; inset: 0; pointer-events: none; background: #7DF9FF; animation: boom 0.25s ease-out forwards; }
+@keyframes boom { from { opacity: 0.18; } to { opacity: 0; } }

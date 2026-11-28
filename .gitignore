@@ -48,3 +48,17 @@ app.*.map.json
 # Android signing (written by CI from secrets)
 android/key.properties
 android/app/release.keystore
+# devconv:start
+.env
+.env.*
+!.env.example
+*.p8
+*.p12
+*.jks
+key.properties
+.claude/settings.local.json
+CLAUDE.local.md
+build/
+.flutter-plugins
+lib/**/secrets.dart
+# devconv:end
