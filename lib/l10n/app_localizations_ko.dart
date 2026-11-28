@@ -205,5 +205,8 @@ class AppLocalizationsKo extends AppLocalizations {
   String get reducedFlashes => '번쩍임 줄이기';
 
   @override
+  String get anonymousStats => '익명 통계';
+
+  @override
   String get paletteHoliday => '홀리데이';
 }

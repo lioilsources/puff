@@ -40,6 +40,33 @@ import 'tuning.dart';
 
 enum GamePhase { menu, playing, paused, gameOver }
 
+/// What the player is looking at: the phase, or the settings on top of it.
+enum GameScreen { menu, play, pause, result, settings }
+
+/// How a run ended.
+enum RunEnd {
+  /// The core (or the bottom edge) gave out: the run was played to the end.
+  death,
+
+  /// Restarted from the pause menu, or replaced by a run from a link.
+  restart,
+
+  /// Left to the main menu.
+  menu,
+}
+
+/// Watches the game from the app layer (anonymous statistics). The game
+/// never reads anything back.
+abstract interface class PuffObserver {
+  void screenChanged(GameScreen screen);
+
+  /// A run begins; [from] is the phase it was started from.
+  void runStarted(PuffGame game, GamePhase from);
+
+  /// The current run ends, before its state is cleared.
+  void runEnded(PuffGame game, RunEnd end);
+}
+
 class PuffGame extends Forge2DGame {
   PuffGame({
     Palette? palette,
@@ -182,6 +209,44 @@ class PuffGame extends Forge2DGame {
   final List<void Function(ArcEvent)> arcListeners = [];
   final List<void Function(GamePhase)> phaseListeners = [];
 
+  /// Set by the app layer before the game loads.
+  PuffObserver? observer;
+
+  GameScreen? _screen;
+
+  /// The screen as the player sees it.
+  GameScreen get screen => overlays.isActive(settingsOverlay)
+      ? GameScreen.settings
+      : switch (phase) {
+          GamePhase.menu => GameScreen.menu,
+          GamePhase.playing => GameScreen.play,
+          GamePhase.paused => GameScreen.pause,
+          GamePhase.gameOver => GameScreen.result,
+        };
+
+  void _notifyScreen() {
+    final now = screen;
+    if (now == _screen) {
+      return;
+    }
+    _screen = now;
+    observer?.screenChanged(now);
+  }
+
+  /// Opens the settings on top of the menu or the pause screen.
+  void openSettings() {
+    overlays.add(settingsOverlay);
+    _notifyScreen();
+  }
+
+  void closeSettings() {
+    overlays.remove(settingsOverlay);
+    _notifyScreen();
+  }
+
+  /// A run is on screen (playing or paused).
+  bool get _inRun => phase == GamePhase.playing || phase == GamePhase.paused;
+
   bool get isPlaying => phase == GamePhase.playing;
 
   /// Shapes that have a valid physics body right now.
@@ -241,6 +306,7 @@ class PuffGame extends Forge2DGame {
 
     phase = startInMenu ? GamePhase.menu : GamePhase.playing;
     _syncOverlays();
+    _notifyScreen();
   }
 
   void showDebugOverlay(bool show) {
@@ -436,6 +502,7 @@ class PuffGame extends Forge2DGame {
       listener(next);
     }
     _syncOverlays();
+    _notifyScreen();
   }
 
   void _syncOverlays() {
@@ -461,6 +528,10 @@ class PuffGame extends Forge2DGame {
   /// Starts a run. With [challenge] it is the week's run: its environment,
   /// its modifier and its spawn seed.
   void startGame({WeeklyChallenge? challenge}) {
+    final from = phase;
+    if (_inRun) {
+      observer?.runEnded(this, RunEnd.restart);
+    }
     if (challenge != null) {
       _freeSetup ??= (environment, modifiers.spec);
       setEnvironment(Environment.byKind(challenge.environment));
@@ -473,6 +544,7 @@ class PuffGame extends Forge2DGame {
     weekly = challenge;
     _clearRun();
     _setPhase(GamePhase.playing);
+    observer?.runStarted(this, from);
   }
 
   void _restoreFreeSetup() {
@@ -520,6 +592,9 @@ class PuffGame extends Forge2DGame {
   }
 
   void gameOver() {
+    if (_inRun) {
+      observer?.runEnded(this, RunEnd.death);
+    }
     touch.reset();
     cloud?.removeFromParent();
     cloud = null;
@@ -539,6 +614,9 @@ class PuffGame extends Forge2DGame {
   }
 
   void backToMenu() {
+    if (_inRun) {
+      observer?.runEnded(this, RunEnd.menu);
+    }
     weekly = null;
     _restoreFreeSetup();
     _clearRun();

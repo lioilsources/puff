@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ol1n_telemetry/ol1n_telemetry.dart';
 
 import '../game/fx/post_process.dart';
 import '../game/localized_names.dart';
@@ -105,6 +106,7 @@ class MainMenuOverlay extends StatelessWidget {
                 labelOf: l10n.environmentName,
                 onSelect: (e) {
                   game.audio.click();
+                  Telemetry.feature('environment');
                   settings.update((s) => s.environment = e);
                   game.setEnvironment(Environment.byKind(e));
                 },
@@ -118,6 +120,7 @@ class MainMenuOverlay extends StatelessWidget {
                 colorOf: (_) => p.accent,
                 onSelect: (m) {
                   game.audio.click();
+                  Telemetry.feature('modifier');
                   settings.update((s) => s.modifier = m);
                   game.setModifier(ModifierSpec.byKind(m));
                 },
@@ -131,6 +134,7 @@ class MainMenuOverlay extends StatelessWidget {
                 colorOf: (pal) => pal.primary,
                 onSelect: (pal) {
                   game.audio.click();
+                  Telemetry.feature('palette');
                   settings.update((s) => s.paletteName = pal.name);
                   game.setPalette(pal);
                 },
@@ -142,6 +146,7 @@ class MainMenuOverlay extends StatelessWidget {
                   color: p.accent,
                   onTap: () {
                     game.audio.click();
+                    Telemetry.feature('leaderboard');
                     gameCenter.show(settings.environment);
                   },
                 ),
@@ -151,6 +156,7 @@ class MainMenuOverlay extends StatelessWidget {
                   color: p.accent,
                   onTap: () {
                     game.audio.click();
+                    Telemetry.feature('achievements');
                     gameCenter.showAchievements();
                   },
                 ),
@@ -160,6 +166,7 @@ class MainMenuOverlay extends StatelessWidget {
                   color: p.accent,
                   onTap: () {
                     game.audio.click();
+                    Telemetry.feature('challenges');
                     gameCenter.showChallenges();
                   },
                 ),
@@ -168,7 +175,7 @@ class MainMenuOverlay extends StatelessWidget {
                 color: p.secondary,
                 onTap: () {
                   game.audio.click();
-                  game.overlays.add(PuffGame.settingsOverlay);
+                  game.openSettings();
                 },
               ),
               ValueListenableBuilder<Track?>(
@@ -261,6 +268,7 @@ class PauseOverlay extends StatelessWidget {
               color: p.secondary,
               onTap: () {
                 game.audio.click();
+                Telemetry.feature('next_track');
                 game.jukebox.skip();
               },
             ),
@@ -269,7 +277,7 @@ class PauseOverlay extends StatelessWidget {
             color: p.secondary,
             onTap: () {
               game.audio.click();
-              game.overlays.add(PuffGame.settingsOverlay);
+              game.openSettings();
             },
           ),
           NeonButton(
@@ -356,6 +364,7 @@ class GameOverOverlay extends StatelessWidget {
                 color: p.primary,
                 onTap: () {
                   game.audio.click();
+                  Telemetry.feature('share');
                   final box = button.findRenderObject() as RenderBox?;
                   ShareCard.share(
                     palette: p,
@@ -382,6 +391,7 @@ class GameOverOverlay extends StatelessWidget {
               color: p.glow.withValues(alpha: 0.8),
               onTap: () {
                 game.audio.click();
+                Telemetry.feature('leaderboard');
                 week == null ? gameCenter.show(game.environment.kind) : gameCenter.showWeekly();
               },
             ),
@@ -420,6 +430,7 @@ class SettingsOverlay extends StatelessWidget {
                 labelOf: l10n.qualityName,
                 onSelect: (q) {
                   game.audio.click();
+                  Telemetry.feature('quality');
                   settings.update((s) => s.quality = q);
                   game.setQuality(q);
                 },
@@ -461,10 +472,26 @@ class SettingsOverlay extends StatelessWidget {
                 color: p.accent,
                 onChanged: (v) {
                   game.audio.click();
+                  if (v) {
+                    Telemetry.feature('reduced_flashes');
+                  }
                   settings.update((s) => s.reducedFlashes = v);
                   game.calm = v || MediaQuery.disableAnimationsOf(context);
                 },
               ),
+              // Anonymous statistics: shown only in a build that can send.
+              // Off wipes the queue at once.
+              if (Telemetry.isConfigured)
+                NeonToggle(
+                  label: l10n.anonymousStats,
+                  value: Telemetry.isEnabled,
+                  color: p.accent,
+                  onChanged: (v) async {
+                    game.audio.click();
+                    await Telemetry.setEnabled(v);
+                    settings.update((_) {});
+                  },
+                ),
               NeonToggle(
                 label: l10n.debugOverlay,
                 value: settings.debugOverlay,
@@ -482,7 +509,7 @@ class SettingsOverlay extends StatelessWidget {
                 primary: true,
                 onTap: () {
                   game.audio.click();
-                  game.overlays.remove(PuffGame.settingsOverlay);
+                  game.closeSettings();
                 },
               ),
             ],

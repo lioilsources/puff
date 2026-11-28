@@ -58,5 +58,6 @@
   "share": "DELEN",
   "shareText": "Mijn nieuwe record in Puff: {score}. Kun jij het verbeteren? {link}",
   "reducedFlashes": "MINDER FLITSEN",
+  "anonymousStats": "ANONIEME STATISTIEK",
   "paletteHoliday": "Feestdagen"
 }

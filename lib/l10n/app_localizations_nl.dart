@@ -206,5 +206,8 @@ class AppLocalizationsNl extends AppLocalizations {
   String get reducedFlashes => 'MINDER FLITSEN';
 
   @override
+  String get anonymousStats => 'ANONIEME STATISTIEK';
+
+  @override
   String get paletteHoliday => 'Feestdagen';
 }

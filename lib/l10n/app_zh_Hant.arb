@@ -58,5 +58,6 @@
   "share": "分享",
   "shareText": "我在 Puff 的新紀錄：{score}。你能超越嗎？{link}",
   "reducedFlashes": "減少閃爍",
+  "anonymousStats": "匿名統計",
   "paletteHoliday": "節日"
 }

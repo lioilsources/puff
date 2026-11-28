@@ -205,6 +205,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get reducedFlashes => '减少闪烁';
 
   @override
+  String get anonymousStats => '匿名统计';
+
+  @override
   String get paletteHoliday => '节日';
 }
 
@@ -407,6 +410,9 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get reducedFlashes => '減少閃爍';
+
+  @override
+  String get anonymousStats => '匿名統計';
 
   @override
   String get paletteHoliday => '節日';

@@ -206,5 +206,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get reducedFlashes => 'WENIGER BLITZE';
 
   @override
+  String get anonymousStats => 'ANONYME STATISTIK';
+
+  @override
   String get paletteHoliday => 'Festtage';
 }

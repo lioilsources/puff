@@ -205,5 +205,8 @@ class AppLocalizationsJa extends AppLocalizations {
   String get reducedFlashes => 'フラッシュ軽減';
 
   @override
+  String get anonymousStats => '匿名の統計';
+
+  @override
   String get paletteHoliday => 'ホリデー';
 }

@@ -206,5 +206,8 @@ class AppLocalizationsPt extends AppLocalizations {
   String get reducedFlashes => 'MENOS FLASHES';
 
   @override
+  String get anonymousStats => 'ESTATÍSTICAS ANÔNIMAS';
+
+  @override
   String get paletteHoliday => 'Festas';
 }

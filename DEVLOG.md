@@ -619,3 +619,19 @@ Not verified:
   `AppIcon`), which would have dropped every alternate icon. The script now
   saves `project.pbxproj` before running it and puts it back afterwards.
 - The pineapple stays as `AppIcon-Pineapple`; `AppIcon-Well` is gone.
+
+## Anonymous statistics (2026-11-14)
+
+- **`ol1n_telemetry` v0.1.0**, the shared client of all ol1n apps
+  (`DevConventions` `Prompts/04-PLAN-analytika.md`). Dictionary and rules in
+  `docs/telemetry.md`; code in `lib/app/telemetry.dart`.
+- The game reports to `PuffObserver` (screens = game states, run start and
+  end) and reads nothing back. Runs are the flow shared by ol1n games:
+  `run_start` / `run_end` with `result`, `secs`, `level` (heat tier),
+  `cause`. Activation is the first run played to the end.
+- Settings opens and closes through `PuffGame.openSettings()` /
+  `closeSettings()` so the screen change is seen.
+- Silent without `TELEMETRY_KEY` / `TELEMETRY_HOST` (release secrets, not
+  set yet); the ANONYMOUS STATS switch shows only in a build that can send.
+- The tip jar of 1.3.1 is not on `master` yet: a `tip` purchase flow and a
+  `shop` screen join the dictionary in the release that merges it.

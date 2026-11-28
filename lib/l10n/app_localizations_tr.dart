@@ -205,5 +205,8 @@ class AppLocalizationsTr extends AppLocalizations {
   String get reducedFlashes => 'AZ PARLAMA';
 
   @override
+  String get anonymousStats => 'ANONİM İSTATİSTİK';
+
+  @override
   String get paletteHoliday => 'Yılbaşı';
 }

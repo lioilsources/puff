@@ -207,5 +207,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get reducedFlashes => 'МЕНЬШЕ ВСПЫШЕК';
 
   @override
+  String get anonymousStats => 'АНОНИМНАЯ СТАТИСТИКА';
+
+  @override
   String get paletteHoliday => 'Праздники';
 }

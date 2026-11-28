@@ -58,5 +58,6 @@
   "share": "COMPARTIR",
   "shareText": "Mi nuevo récord en Puff: {score}. ¿Lo superas? {link}",
   "reducedFlashes": "MENOS DESTELLOS",
+  "anonymousStats": "ESTADÍSTICAS ANÓNIMAS",
   "paletteHoliday": "Fiestas"
 }

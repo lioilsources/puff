@@ -208,5 +208,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reducedFlashes => 'ومضات أقل';
 
   @override
+  String get anonymousStats => 'إحصاءات مجهولة';
+
+  @override
   String get paletteHoliday => 'الأعياد';
 }
